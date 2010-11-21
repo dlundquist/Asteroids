@@ -29,8 +29,9 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 		gl.glEnable (GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-		// Create sprites and load the texture files
-		Sprite.loadSprites(gl);       
+		// Create sprite and load the texture files
+		Sprite.loadSprites(gl);
+		
 		Asteroids.init();
 		// We have to have focus for our KeyListener to get messages
 		requestFocus();
@@ -60,7 +61,7 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 		// we won't have ghosting
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-		// Draw background
+		// Render background
 		gl.glLoadIdentity();
 		gl.glBindTexture(GL.GL_TEXTURE_2D, Sprite.background().getTextureId());
 		gl.glTranslatef(0, 0, -1);
@@ -105,7 +106,7 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 	private void drawNormalSquare(GL2 gl){
 		// These points will be multiplied by the transformations above
 		// to produce the desired and described transformations.
-		gl.glBegin(7);//GL_QUADS isn't defined in the JOGL
+		gl.glBegin(/* GL.GL_QUADS */ 7);//GL_QUADS isn't defined in the JOGL
 		    // Points must be counter clockwise defined or they will
 		    // be removed by back face culling
 		
@@ -141,5 +142,4 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 		// TODO Auto-generated method stub
 		System.err.println("Key pressed");
 	}
-
 }
