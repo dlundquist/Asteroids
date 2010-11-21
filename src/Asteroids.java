@@ -1,3 +1,4 @@
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class Asteroids {
 	// All the actors currently in play
 	public static ArrayList<Actor> actors = new ArrayList<Actor>();
-	public static PlayerShip player;
+	private static PlayerShip player;
 
 	/**
 	 * Our main function
@@ -86,11 +87,20 @@ public class Asteroids {
 		
 	}
 
+	/**
+	 * This is called by ScenePanel for each KeyEvent
+	 * @param eventType KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED
+	 * @param the KeyEvent object
+	 */
+	public static void keyEvent(int eventType, KeyEvent e) {
+		// TODO handle keyboard input
+		System.err.println("Key pressed");
+	}
 	
 	/**
 	 * This checks that a position vector is in bounds (the on screen region) and if it
 	 * passes one side it moves it to the opposite edge.
-	 * @param a position vector
+	 * @param a position vector which is modified if it exceeds the bounds
 	 */
 	private static void checkBounds(Vector position) {
 		if (position.x() > 1)
@@ -103,4 +113,5 @@ public class Asteroids {
 		else if (position.y() < -1)
 			position.incrementYBy(2);		
 	}
+
 }

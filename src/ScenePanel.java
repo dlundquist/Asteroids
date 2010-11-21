@@ -55,6 +55,7 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 	}
 
 	private void render(GLAutoDrawable drawable) {
+		/* Fetch the OpenGL context */
 		GL2 gl = drawable.getGL().getGL2();
 		
 		// Clear the buffer in case we don't draw in every position
@@ -129,19 +130,16 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.err.println("Key pressed");		
+		Asteroids.keyEvent(KeyEvent.KEY_PRESSED, e);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.err.println("Key pressed");	
+		Asteroids.keyEvent(KeyEvent.KEY_RELEASED, e);
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.err.println("Key pressed");
+		Asteroids.keyEvent(KeyEvent.KEY_TYPED, e);
 	}
 }
