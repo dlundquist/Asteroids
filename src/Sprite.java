@@ -15,7 +15,7 @@ public class Sprite {
 	public static final int ASTEROID_ID = 1;
 	public static final int SHIP_ID = 2;
 	public static final int BULLET_ID = 3;
-	private static final String BACKGROUND_FILEPATH = "background.png";
+	private static final String BACKGROUND_FILEPATH = "background.jpg";
 	private static final String ASTEROID_FILEPATH = "asteroid.png";
 	private static final String SHIP_FILEPATH = "ship.png";
 	private static final String BULLET_FILEPATH = "bullet.png";
@@ -86,8 +86,14 @@ public class Sprite {
 		switch (img.getType()) {
 		case BufferedImage.TYPE_3BYTE_BGR:
 		case BufferedImage.TYPE_CUSTOM: { 
-			System.err.println("Loading  3byte BGR image");
 			byte[] data = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
+			
+			// Swap every first and third byte because this is BGR and we want RGB
+			for (int i = 0; i < data.length; i += 3) {
+				byte tmp =  data[i];
+				data[i] = data[i + 2];
+				data[i + 2] = tmp;
+			}
 			dest = ByteBuffer.allocateDirect(data.length);
 			dest.order(ByteOrder.nativeOrder());
 			dest.put(data, 0, data.length);
@@ -99,6 +105,16 @@ public class Sprite {
 		case BufferedImage.TYPE_4BYTE_ABGR: {
 			System.err.println("Loading 4byte ABGR image");
 			byte[] data = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
+			
+			// Swap bytes from ABGR to RGBA;
+			for (int i = 0; i < data.length; i += 4) {
+				byte tmp =  data[i];
+				data[i] = data[i + 3];
+				data[i + 3] = tmp;
+				tmp = data[i + 1];
+				data[i + 1] = data[i + 2];
+				data[i + 2] = tmp; 
+			}			
 			dest = ByteBuffer.allocateDirect(data.length);
 			dest.order(ByteOrder.nativeOrder());
 			dest.put(data, 0, data.length);
@@ -107,7 +123,7 @@ public class Sprite {
 			break;
 		}
 		case BufferedImage.TYPE_INT_RGB: {
-			System.err.println("Loading INT RBG image");
+			System.err.println("Loading INT RGB image");
 			int[] data = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 			dest = ByteBuffer.allocateDirect(data.length * 4);
 			dest.order(ByteOrder.nativeOrder());
@@ -119,10 +135,11 @@ public class Sprite {
 		case BufferedImage.TYPE_INT_ARGB_PRE: {
 			System.err.println("Loading INT ARGB image");
 			int[] data = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
+			
+			//TODO fix byte order
 			dest = ByteBuffer.allocateDirect(data.length * 4);
 			dest.order(ByteOrder.nativeOrder());
 			dest.asIntBuffer().put(data, 0, data.length);
-			//TODO do we need to change the byte order
 			type = GL.GL_RGBA;
 			break;
 		}

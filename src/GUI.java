@@ -21,7 +21,7 @@ public class GUI extends JFrame {
         // Create a BorderLayout manager.
         setLayout(new BorderLayout());
         
-        scene = new ScenePanel(60);
+        scene = new ScenePanel();
         score = new ScorePanel();
         banner = new BannerPanel();
 
