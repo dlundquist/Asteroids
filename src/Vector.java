@@ -27,12 +27,12 @@ public class Vector {
 	}
 	
 	public float setX(float x) {
-		this.x += x;
+		this.x = x;
 		return this.x;
 	}
 	
 	public float setY(float y) {
-		this.y += y;
+		this.y = y;
 		return this.y;
 	}	
 	
