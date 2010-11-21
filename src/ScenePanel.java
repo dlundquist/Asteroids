@@ -69,8 +69,10 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 		// The Polygon for our background image to map a texture to
 		drawNormalSquare(gl);
 
-		// This loop renders all of our actors
-		for (int i = 0; i < Asteroids.actors.size(); i++) {
+		/* Loop through all our actors in reverse order rendering them
+		 * so the PlayerShip gets drawn last.
+		 */
+		for (int i = Asteroids.actors.size() - 1; i >= 0; i--) {
 			// Get the ith Actor
 			Actor actor = Asteroids.actors.get(i);
 
