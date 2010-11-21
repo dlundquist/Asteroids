@@ -1,36 +1,36 @@
 public class Vector {
-	private double x;
-	private double y;
+	private float x;
+	private float y;
 	
-	public Vector(double x, double y) {
+	public Vector(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 	
-	public double x() {
+	public float x() {
 		return x;
 	}
 	
-	public double y() {
+	public float y() {
 		return y;
 	}
 	
-	public double setX(double x) {
+	public float setX(float x) {
 		this.x += x;
 		return this.x;
 	}
 	
-	public double setY(double y) {
+	public float setY(float y) {
 		this.y += y;
 		return this.y;
 	}	
 	
-	public double theta() {
-		return Math.atan2(y, x);
+	public float theta() {
+		return (float)Math.atan2(y, x);
 	}
 	
-	public double magnitude() {
-		return Math.sqrt(x * x + y * y);
+	public float magnitude() {
+		return (float)Math.sqrt(x * x + y * y);
 	}
 	
 	/**
@@ -38,14 +38,14 @@ public class Vector {
 	 * @param there
 	 * @return
 	 */
-	public double distance2(Vector there) {
-		double dx = this.x - there.x;
-		double dy = this.y - there.y;
+	public float distance2(Vector there) {
+		float dx = this.x - there.x;
+		float dy = this.y - there.y;
 		return dx * dx + dy * dy;
 	}
 	
-	public double distance(Vector there) {
-		return Math.sqrt(distance2(there));
+	public float distance(Vector there) {
+		return (float)Math.sqrt(distance2(there));
 	}
 
 	public void incrementBy(Vector velocity) {
@@ -53,11 +53,11 @@ public class Vector {
 		y += velocity.y;
 	}
 
-	public void incrementXBy(double delta) {
+	public void incrementXBy(float delta) {
 		x += delta;
 	}
 	
-	public void incrementYBy(double delta) {
+	public void incrementYBy(float delta) {
 		y += delta;
 	}
 }

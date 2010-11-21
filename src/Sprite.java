@@ -24,7 +24,9 @@ public class Sprite {
 	private static ArrayList<Sprite> sprites;
 
 	private int texture_id;
-
+    public int getTextureId(){
+    	return texture_id;
+    }
 	//
 	public Sprite(GL gl, String filename) {
 		BufferedImage image;

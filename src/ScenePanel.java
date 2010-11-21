@@ -29,7 +29,12 @@ public class ScenePanel extends GLJPanel implements GLEventListener {
 
     @Override
     public void init(GLAutoDrawable drawable) {
-        Sprite.loadSprites(drawable.getGL().getGL2());
+        GL2 gl = drawable.getGL().getGL2();
+        // Enable Textures
+    	gl.glEnable(GL.GL_TEXTURE_2D);
+    	// Create sprites and load the texture files
+    	Sprite.loadSprites(gl);
+        
         Asteroids.init();
     }
 
@@ -47,18 +52,30 @@ public class ScenePanel extends GLJPanel implements GLEventListener {
         for (int i = 0; i < Asteroids.actors.size(); i++) {
         	Actor actor = Asteroids.actors.get(i);
         	
-        	actor.position.x();
-        	actor.position.y();
-        	//actor.theta;
-
-            // draw a triangle filling the window
-            gl.glBegin(GL.GL_TRIANGLES);
-            gl.glColor3f(1, 0, 0);
-            gl.glVertex2d(-1, -1);
-            gl.glColor3f(0, 1, 0);
-            gl.glVertex2d(0, 1);
-            gl.glColor3f(0, 0, 1);
-            gl.glVertex2d(0, -0);
+        	
+        	actor.getPosition().x();
+        	actor.getPosition().y();
+        	
+        	gl.glLoadIdentity();
+        	gl.glBindTexture(GL.GL_TEXTURE_2D, actor.getSprite().getTextureId());
+        	gl.glTranslatef(actor.getPosition().x(), actor.getPosition().y(), 0.0f);
+        	gl.glRotatef(actor.getTheta(),0,0,1);
+        	gl.glScalef(actor.getSize(), actor.getSize(), 1);
+            
+        	// draw a triangle filling the window
+            gl.glBegin(7);//GL_QUADS
+	            //gl.glColor3f(1, 0, 0);
+	            gl.glTexCoord2f(1, 1);
+	            gl.glVertex2d(0.5f, 0.5f);
+	            //gl.glColor3f(0, 1, 0);
+	            gl.glTexCoord2f(0, 1);
+	            gl.glVertex2d(-0.5f, 0.5f);
+	            //gl.glColor3f(0, 0, 1);
+	            gl.glTexCoord2f(0, 0);
+	            gl.glVertex2d(-0.5f, -0.5f);
+	            //gl.glColor3f(1,1,1);
+	            gl.glTexCoord2f(1, 0);
+	            gl.glVertex2d(0.5f, -0.5f);
             gl.glEnd();
         }
 
