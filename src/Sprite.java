@@ -1,44 +1,44 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.media.opengl.*;
 import javax.imageio.*;
+import java.awt.image.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+/**
+ * This class handles the OpenGL textures for our actors
+ * @author Dustin Lundquist
+ */
 public class Sprite {
 	public static final int BACKGROUND_ID = 0;
-	public static final String BACKGROUND_FILEPATH = "background.png";
 	public static final int ASTEROID_ID = 1;
-	public static final String ASTEROID_FILEPATH = "asteroid.png";
 	public static final int SHIP_ID = 2;
-	public static final String SHIP_FILEPATH = "ship.png";
 	public static final int BULLET_ID = 3;
-	public static final String BULLET_FILEPATH = "bullet.png";
+	private static final String BACKGROUND_FILEPATH = "background.png";
+	private static final String ASTEROID_FILEPATH = "asteroid.png";
+	private static final String SHIP_FILEPATH = "ship.png";
+	private static final String BULLET_FILEPATH = "bullet.png";
+	private static final String texture_dir = "data";
 
 	private static ArrayList<Sprite> sprites;
 
 	private int texture_id;
 
 	//
-	public Sprite(GL gl, String filepath) {
-		System.err.println("Loading " + filepath);
-		
+	public Sprite(GL gl, String filename) {
 		BufferedImage image;
 		try {
 			//TODO change to file path extracted from line
-			image = ImageIO.read(new File(filepath));
+			image = ImageIO.read(new File(texture_dir, filename));
 		} catch (IOException ie) {
 			ie.printStackTrace();
-			throw new RuntimeException("unable to open " + filepath);
+			throw new RuntimeException("unable to open " + filename);
 		}
 
 		// Java really wanted to modify an array pointer
 		int[] texture_ids = new int[1];
-		gl.glGenTextures(1, texture_ids, 0); // WTF is the third arg
+		gl.glGenTextures(1, texture_ids, 0); // not sure what the third argument is.
 		texture_id = texture_ids[0];
 
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture_id);
@@ -56,6 +56,22 @@ public class Sprite {
 		sprites.add(new Sprite(gl, SHIP_FILEPATH));
 		sprites.add(new Sprite(gl, BULLET_FILEPATH));
 	}
+	
+	public static Sprite background() {
+		return sprites.get(BACKGROUND_ID);
+	}
+	
+	public static Sprite asteroid() {
+		return sprites.get(ASTEROID_ID);
+	}
+	
+	public static Sprite ship() {
+		return sprites.get(SHIP_ID);
+	}
+	
+	public static Sprite bullet() {
+		return sprites.get(BULLET_ID);
+	}
 
 	/* Code to convert a BufferedImage into a Buffer then load it as a GL texture
 	 * adapted (mostly just cut out GLU stuff) from NeHe OpenGL tutorial #6 (JoGL version) by Kevin J. Duling
@@ -64,8 +80,6 @@ public class Sprite {
 	private void makeRGBTexture(GL gl, BufferedImage img, int target) {
 		int type;
 		ByteBuffer dest = null;
-		System.err.println(img.getWidth() + "x" + img.getHeight());
-		
 		
 		switch (img.getType()) {
 		case BufferedImage.TYPE_3BYTE_BGR:
@@ -113,6 +127,8 @@ public class Sprite {
 		default:
 			throw new RuntimeException("Unsupported image type " + img.getType());
 		}
+		
+		// Rewind the buffer so we can read it starting and beginning
 		dest.rewind();
 
 		gl.glTexImage2D(target, 0, type, img.getWidth(), img.getHeight(), 0, type, GL.GL_UNSIGNED_BYTE, dest);
