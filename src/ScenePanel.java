@@ -90,8 +90,12 @@ public class ScenePanel extends GLJPanel implements GLEventListener {
 			drawNormalSquare(gl);  	
 		}
 	}
+	
+	/**
+	 * Draw a normalized square at the origin
+	 * @param gl - the OpenGL context
+	 */
 	private void drawNormalSquare(GL2 gl){
-		// Draw a normalized square at the origin
 		// These points will be multiplied by the transformations above
 		// to produce the desired and described transformations.
 		gl.glBegin(7);//GL_QUADS isn't defined in the JOGL
