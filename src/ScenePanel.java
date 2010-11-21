@@ -1,7 +1,7 @@
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLJPanel;
-import com.jogamp.opengl.util.*;
 import java.awt.Dimension;
+import com.jogamp.opengl.util.*;
 
 public class ScenePanel extends GLJPanel implements GLEventListener {
 	private static final long serialVersionUID = 702382815287044105L;
