@@ -101,7 +101,9 @@ public class Sprite {
 	private void makeRGBTexture(GL gl, BufferedImage img, int target) {
 		int type;
 		ByteBuffer dest = null;
-		// TODO figure out why our textures are flipped vertically
+		/*
+		 * This loads our textures upside down, see comment in ScenePanel.render()
+		 */
 		
 		switch (img.getType()) {
 		case BufferedImage.TYPE_3BYTE_BGR:
