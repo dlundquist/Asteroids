@@ -55,6 +55,7 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 	}
 
 	private void render(GLAutoDrawable drawable) {
+		/* Fetch the OpenGL context */
 		GL2 gl = drawable.getGL().getGL2();
 		
 		// Clear the buffer in case we don't draw in every position
@@ -69,8 +70,10 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 		// The Polygon for our background image to map a texture to
 		drawNormalSquare(gl);
 
-		// This loop renders all of our actors
-		for (int i = 0; i < Asteroids.actors.size(); i++) {
+		/* Loop through all our actors in reverse order rendering them
+		 * so the PlayerShip gets drawn last.
+		 */
+		for (int i = Asteroids.actors.size() - 1; i >= 0; i--) {
 			// Get the ith Actor
 			Actor actor = Asteroids.actors.get(i);
 
@@ -136,19 +139,16 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.err.println("Key pressed");		
+		Asteroids.keyEvent(KeyEvent.KEY_PRESSED, e);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.err.println("Key pressed");	
+		Asteroids.keyEvent(KeyEvent.KEY_RELEASED, e);
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.err.println("Key pressed");
+		Asteroids.keyEvent(KeyEvent.KEY_TYPED, e);
 	}
 }

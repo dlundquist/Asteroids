@@ -1,3 +1,4 @@
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
@@ -10,19 +11,41 @@ public class Asteroids {
 	public static ArrayList<Actor> actors = new ArrayList<Actor>();
 	private static PlayerShip player;
 
-	// called when game starts
+	/**
+	 * Our main function
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		new GUI();
+	}
+	
+	/**
+	 * This is called by ScenePanel as the beginning of the game
+	 * put any game initialization code here.
+	 */
 	public static void init() {
-		for (int i = 0; i < 5; i++)
-			actors.add(new Asteroid());
+		/* 
+		 * Put the player ship first, so when we we add additional actors
+		 * the players ship is always in the same position. This way
+		 * we can draw the actors in reverse order and the players ship
+		 * will always be on top. 
+		 */
 		player = new PlayerShip(0,0,0,0);
 		actors.add(player);
+
+		for (int i = 0; i < 5; i++)
+			actors.add(new Asteroid());
+		
 	}
 	
 	public static Actor getPlayer() {
 	    return player;
 	}
 	
-	// This is called every frame by the Scene Panel put game code here
+	/**
+	 *  This is called every frame by the ScenePanel
+	 *  put game code here
+	 */
 	public static void update() {
 		// Update each actor
 		for(int i = 0; i < actors.size(); i++) {
@@ -31,34 +54,53 @@ public class Asteroids {
 			checkBounds(actors.get(i).getPosition());
 		}
 		
-		// Check for collisions
 		/*
-		 * TODO fix array bounds bug
+		 * Collision detection
+		 * For each actor, check for collisions with the remaining actors
+		 * For collision purposes we are modeling each actor as a circle with radius getSize()
+		 * This algorithm is 1/2 n^2 compares, but it should be sufficient for our purposes
+		 */
 		for(int i = 0; i < actors.size(); i++) {
 			Actor a = actors.get(i);
 			
-			for (int j = i + 1; i < actors.size(); j++) {
+			for (int j = i + 1; j < actors.size(); j++) {
 				Actor b = actors.get(j);
+				float totalSize = a.getSize() + b.getSize();
 				
-				if (a.getPosition().distance2(b.getPosition()) < a.getSize() + b.getSize()) {
-					a.handle_collision(b);
-					b.handle_collision(a);
+				/* Here we compare the distance squared rather than the distance to avoid 
+				 * the computationally expensive square root operation.
+				 */			
+				if (a.getPosition().distance2(b.getPosition()) < totalSize * totalSize) {
+					a.handleCollision(b);
+					b.handleCollision(a);
 				}
 			}
-		}
-		*/
+		} /* End Collision Detection */
 		
 	}
 	
-	// Called when game is over
+	/**
+	 * This is called by ScenePanel at the end of the game
+	 * any cleanup code should go here
+	 */
 	public static void dispose() {
 		
+	}
+
+	/**
+	 * This is called by ScenePanel for each KeyEvent
+	 * @param eventType KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED
+	 * @param the KeyEvent object
+	 */
+	public static void keyEvent(int eventType, KeyEvent e) {
+		// TODO handle keyboard input
+		System.err.println("Key pressed");
 	}
 	
 	/**
 	 * This checks that a position vector is in bounds (the on screen region) and if it
 	 * passes one side it moves it to the opposite edge.
-	 * @param a position vector
+	 * @param a position vector which is modified if it exceeds the bounds
 	 */
 	private static void checkBounds(Vector position) {
 		if (position.x() > 1)
@@ -72,10 +114,4 @@ public class Asteroids {
 			position.incrementYBy(2);		
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new GUI();
-	}
 }
