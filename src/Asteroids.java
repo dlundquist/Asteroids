@@ -7,16 +7,22 @@ import java.util.ArrayList;
  */
 public class Asteroids {
 	public static ArrayList<Actor> actors = new ArrayList<Actor>();
+	private static PlayerShip player;
 
 	// called when game starts
 	public static void init() {
 		for (int i = 0; i < 5; i++)
 			actors.add(new Asteroid());
+		player = new PlayerShip(0,0,0,0);
+		actors.add(player);
+	}
+	
+	public static Actor getPlayer() {
+	    return player;
 	}
 	
 	// This is called every frame by the Scene Panel put game code here
 	public static void update() {
-	
 		// Update each actor
 		for(int i = 0; i < actors.size(); i++) {
 			actors.get(i).update();

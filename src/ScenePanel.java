@@ -1,9 +1,12 @@
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLJPanel;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import com.jogamp.opengl.util.*;
 import java.awt.Dimension;
 
-public class ScenePanel extends GLJPanel implements GLEventListener {
+public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener {
 	private static final long serialVersionUID = 702382815287044105L;
 
 	public ScenePanel() {
@@ -29,6 +32,10 @@ public class ScenePanel extends GLJPanel implements GLEventListener {
 		// Create sprites and load the texture files
 		Sprite.loadSprites(gl);       
 		Asteroids.init();
+		// We have to have focus for our KeyListener to get messages
+		requestFocus();
+		// Register ourself as the listener
+		addKeyListener(this);
 	}
 
 	@Override
@@ -112,4 +119,23 @@ public class ScenePanel extends GLJPanel implements GLEventListener {
 			gl.glVertex2d(-0.5f, 0.5f);
 		gl.glEnd();
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		System.err.println("Key pressed");		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		System.err.println("Key pressed");	
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		System.err.println("Key pressed");
+	}
+
 }

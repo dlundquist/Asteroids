@@ -7,6 +7,12 @@ public class Vector {
 		this.y = y;
 	}
 	
+	// Copy constructor
+	public Vector(Vector position) {
+		x = position.x;
+		y = position.y;
+	}
+
 	public float x() {
 		return x;
 	}

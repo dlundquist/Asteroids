@@ -13,11 +13,11 @@ import java.nio.ByteOrder;
 public class Sprite {
 	public static final int BACKGROUND_ID = 0;
 	public static final int ASTEROID_ID = 1;
-	public static final int SHIP_ID = 2;
+	public static final int PLAYERSHIP_ID = 2;
 	public static final int BULLET_ID = 3;
 	private static final String BACKGROUND_FILEPATH = "background.jpg";
 	private static final String ASTEROID_FILEPATH = "asteroid.png";
-	private static final String SHIP_FILEPATH = "ship.png";
+	private static final String PLAYERSHIP_FILEPATH = "ship.png";
 	private static final String BULLET_FILEPATH = "bullet.png";
 	private static final String texture_dir = "data";
 
@@ -55,7 +55,7 @@ public class Sprite {
 
 		sprites.add(new Sprite(gl, BACKGROUND_FILEPATH));
 		sprites.add(new Sprite(gl, ASTEROID_FILEPATH));
-		sprites.add(new Sprite(gl, SHIP_FILEPATH));
+		sprites.add(new Sprite(gl, PLAYERSHIP_FILEPATH));
 		sprites.add(new Sprite(gl, BULLET_FILEPATH));
 	}
 	
@@ -67,8 +67,8 @@ public class Sprite {
 		return sprites.get(ASTEROID_ID);
 	}
 	
-	public static Sprite ship() {
-		return sprites.get(SHIP_ID);
+	public static Sprite playerShip() {
+		return sprites.get(PLAYERSHIP_ID);
 	}
 	
 	public static Sprite bullet() {

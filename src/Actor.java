@@ -1,6 +1,6 @@
 interface Actor {
 	public void update();
-	public void handle_collision(Actor other);
+	public void handleCollision(Actor other);
 	public Vector getPosition();
 	public Vector getVelocity();
 	public float getTheta();

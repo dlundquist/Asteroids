@@ -46,7 +46,8 @@ public class Asteroid implements Actor {
 		return velocity;
 	}
 
-	public void handle_collision(Actor other) {
+	public void handleCollision(Actor other) {
+		// TODO
 	}
 
 	public void update() {
