@@ -15,6 +15,7 @@ public class Sprite {
 	public static final int ASTEROID_ID = 1;
 	public static final int PLAYERSHIP_ID = 2;
 	public static final int BULLET_ID = 3;
+	
 	private static final String BACKGROUND_FILEPATH = "background.jpg";
 	private static final String ASTEROID_FILEPATH = "asteroid.png";
 	private static final String PLAYERSHIP_FILEPATH = "ship.png";
@@ -24,10 +25,7 @@ public class Sprite {
 	private static ArrayList<Sprite> sprites;
 
 	private int texture_id;
-    public int getTextureId(){
-    	return texture_id;
-    }
-	//
+	
 	public Sprite(GL gl, String filename) {
 		BufferedImage image;
 		try {
@@ -50,6 +48,10 @@ public class Sprite {
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 	}
 
+	public int getTextureId(){
+    	return texture_id;
+    }
+	
 	public static void loadSprites(GL gl) {
 		sprites = new ArrayList<Sprite>(4);
 
@@ -58,7 +60,8 @@ public class Sprite {
 		sprites.add(new Sprite(gl, PLAYERSHIP_FILEPATH));
 		sprites.add(new Sprite(gl, BULLET_FILEPATH));
 	}
-	
+
+	// These four methods are for the ease of creating new Actors
 	public static Sprite background() {
 		return sprites.get(BACKGROUND_ID);
 	}
@@ -78,6 +81,9 @@ public class Sprite {
 	/* Code to convert a BufferedImage into a Buffer then load it as a GL texture
 	 * adapted (mostly just cut out GLU stuff) from NeHe OpenGL tutorial #6 (JoGL version) by Kevin J. Duling
 	 * http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=07
+	 * 
+	 * Added RGBA types
+	 * Fixed byte order issues
 	 */
 	private void makeRGBTexture(GL gl, BufferedImage img, int target) {
 		int type;
@@ -97,7 +103,6 @@ public class Sprite {
 			dest = ByteBuffer.allocateDirect(data.length);
 			dest.order(ByteOrder.nativeOrder());
 			dest.put(data, 0, data.length);
-			System.err.println("Pos: " + dest.position() + "\nCapacity" +dest.capacity());
 			type = GL.GL_RGB;
 			break;
 		}

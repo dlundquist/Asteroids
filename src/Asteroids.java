@@ -6,6 +6,7 @@ import java.util.ArrayList;
  *
  */
 public class Asteroids {
+	// All the actors currently in play
 	public static ArrayList<Actor> actors = new ArrayList<Actor>();
 	private static PlayerShip player;
 
@@ -31,7 +32,9 @@ public class Asteroids {
 		}
 		
 		// Check for collisions
-		/*for(int i = 0; i < actors.size(); i++) {
+		/*
+		 * TODO fix array bounds bug
+		for(int i = 0; i < actors.size(); i++) {
 			Actor a = actors.get(i);
 			
 			for (int j = i + 1; i < actors.size(); j++) {
@@ -42,8 +45,8 @@ public class Asteroids {
 					b.handle_collision(a);
 				}
 			}
-		}*/
-		
+		}
+		*/
 		
 	}
 	
@@ -52,15 +55,21 @@ public class Asteroids {
 		
 	}
 	
-	private static void checkBounds(Vector p) {
-		if (p.x() > 1)
-			p.incrementXBy(-2);
-		if (p.x() < -1)
-			p.incrementXBy(2);
-		if (p.y() > 1)
-			p.incrementYBy(-2);
-		if (p.y() < -1)
-			p.incrementYBy(2);		
+	/**
+	 * This checks that a position vector is in bounds (the on screen region) and if it
+	 * passes one side it moves it to the opposite edge.
+	 * @param a position vector
+	 */
+	private static void checkBounds(Vector position) {
+		if (position.x() > 1)
+			position.incrementXBy(-2);
+		else if (position.x() < -1)
+			position.incrementXBy(2);
+		
+		if (position.y() > 1)
+			position.incrementYBy(-2);
+		else if (position.y() < -1)
+			position.incrementYBy(2);		
 	}
 
 	/**
