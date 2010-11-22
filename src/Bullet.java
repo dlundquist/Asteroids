@@ -17,8 +17,9 @@ public class Bullet extends Actor {
 		// Relative to the ship
 		velocity = new Vector(ship.getVelocity());
 		// Add the speed of the shot
-		velocity.incrementXBy(BULLET_VELOCTIY * (float)Math.cos(ship.getTheta()));
-		velocity.incrementYBy(BULLET_VELOCTIY * (float)Math.sin(ship.getTheta()));
+		velocity.incrementXBy(BULLET_VELOCTIY * Math.cos(ship.getTheta()));
+		velocity.incrementYBy(BULLET_VELOCTIY * Math.sin(ship.getTheta()));
+		
 		framesToLive = BULLET_LIFETIME;
 		owner = ship;
 		theta = 0;
@@ -37,10 +38,12 @@ public class Bullet extends Actor {
 	public void update() {
 		// CL - Update our rotation and position as defined in Actor.update()
 		super.update();
+		
+		/* Decrement famesToLive counter */
 		framesToLive--;
+		
+		/* and remove the bullet when it reaches zero */
 		if(framesToLive == 0) {
-			// remove the bullet
-			// TODO lock the actors array so we don't cause an exception
 			delete();
 		}	
 	}
