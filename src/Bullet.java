@@ -1,8 +1,16 @@
+/**
+ * Ships shoot them
+ * @author Chris Lundquist
+ *
+ */
 public class Bullet extends Actor {
-	private static final float BULLET_VELOCTIY = 2;
+	private static final float BULLET_VELOCTIY = 0.035f;
+	private static final float BULLET_SIZE = 0.05f;
+	private static final float BULLET_SPIN = 0.05f;
 	private static final int BULLET_LIFETIME = 120; // 2 seconds
-	private Actor owner;   // The ship that shot this so we can check if we shot our self or limit the number of shots
-	private int frames_to_live; // Number of frames to live;
+	
+	private Actor owner;      // The ship that shot this so we can check if we shot our self or limit the number of shots
+	private int framesToLive; // Number of frames to live;
 
 	public Bullet(Actor ship) {
 		position = new Vector(ship.getPosition());
@@ -11,26 +19,29 @@ public class Bullet extends Actor {
 		// Add the speed of the shot
 		velocity.incrementXBy(BULLET_VELOCTIY * (float)Math.cos(ship.getTheta()));
 		velocity.incrementYBy(BULLET_VELOCTIY * (float)Math.sin(ship.getTheta()));
-		frames_to_live = BULLET_LIFETIME;
+		framesToLive = BULLET_LIFETIME;
 		owner = ship;
+		theta = 0;
 		sprite = Sprite.bullet();
-		omega = gen.nextFloat();
-		size = gen.nextFloat() / 3;
+		omega = BULLET_SPIN;
+		size = BULLET_SIZE;
 	}
 
 	public void handleCollision(Actor other) {
 		// We can't shoot ourself
 		if(other == owner)
 			return;
-		// TODO
+		Asteroids.actors.remove(this);
 	}
 
 	public void update() {
 		// CL - Update our rotation and position as defined in Actor.update()
 		super.update();
-		frames_to_live--;
-		if(frames_to_live == 0) {
-			// TODO remove the bullet
+		framesToLive--;
+		if(framesToLive == 0) {
+			// remove the bullet
+			// TODO lock the actors array so we don't cause an exception
+			Asteroids.actors.remove(this);
 		}	
 	}
 }

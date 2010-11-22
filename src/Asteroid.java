@@ -16,6 +16,6 @@ public class Asteroid extends Actor {
 
 	public void handleCollision(Actor other) {
 		// TODO
+		Asteroids.actors.remove(this);
 	}
-
 }

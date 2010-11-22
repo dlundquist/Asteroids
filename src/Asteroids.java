@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Asteroids {
 	// All the actors currently in play
 	public static ArrayList<Actor> actors = new ArrayList<Actor>();
-	private static PlayerShip player;
+	private static PlayerShip playerShip;
 
 	/**
 	 * Our main function
@@ -30,8 +30,8 @@ public class Asteroids {
 		 * we can draw the actors in reverse order and the players ship
 		 * will always be on top. 
 		 */
-		player = new PlayerShip(0,0,0,0);
-		actors.add(player);
+		playerShip = new PlayerShip(0,0,0,0);
+		actors.add(playerShip);
 
 		for (int i = 0; i < 5; i++)
 			actors.add(new Asteroid());
@@ -39,7 +39,7 @@ public class Asteroids {
 	}
 	
 	public static Actor getPlayer() {
-	    return player;
+	    return playerShip;
 	}
 	
 	/**
@@ -95,6 +95,13 @@ public class Asteroids {
 	public static void keyEvent(int eventType, KeyEvent e) {
 		// TODO handle keyboard input
 		System.err.println("Key pressed");
+		switch(eventType){
+		case(KeyEvent.KEY_PRESSED):
+			switch(e.getKeyCode()){
+			case(KeyEvent.VK_SPACE):
+			    actors.add(playerShip.shoot());
+			}
+		}
 	}
 	
 	/**

@@ -19,10 +19,9 @@ public class PlayerShip extends Actor {
 	public void handleCollision(Actor other) {
 		// TODO
 	}
-
-	public void update() {
-		// CL - Update our rotation and position as defined in Actor.update()
-		super.update();
+	
+	public Bullet shoot() {
+		return new Bullet(this);
 	}
 }
 
