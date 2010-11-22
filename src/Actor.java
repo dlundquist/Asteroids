@@ -1,8 +1,18 @@
-interface Actor {
+import java.util.Random;
+
+abstract class Actor {
+	static protected Random gen = new Random();
+	// These fields are protected so that our descendants can modify them
+	protected Vector position;
+	protected Vector velocity;
+	protected float theta; // Angular position
+	protected float omega; // Angular velocity
+	protected Sprite sprite; // This is the texture of this object
+	protected float size; // the radius of the object
 	/**
 	 * Call back before render loop for update to update it's position and do any housekeeping
 	 */
-	public void update();
+	abstract public void update();
 
 	/**
 	 * Call back upon collision detection for object to handle collision
@@ -12,41 +22,53 @@ interface Actor {
 	 *   Just explode
 	 * @param other the object this actor collided with
 	 */
-	public void handleCollision(Actor other);
+	abstract public void handleCollision(Actor other);
 	
 	/**
 	 * 
 	 * @return the actors current position
 	 */
-	public Vector getPosition();
+	public Vector getPosition() {
+		return position;
+	}
 	
 	/**
 	 * 
 	 * @return the actors current velocity
 	 */
-	public Vector getVelocity();
+	public Vector getVelocity(){
+		return velocity;
+	}
 	
 	/**
 	 * 
 	 * @return the actors current rotational position
 	 */
-	public float getTheta();
+	public float getTheta(){
+		return theta;
+	}
 	
 	/**
 	 * 
 	 * @return the actors current angular velocity
 	 */
-	public float getOmega();
+	public float getOmega() {
+		return omega;
+	}
 	
 	/**
 	 * 
 	 * @return the actors Sprite/Texture
 	 */
-	public Sprite getSprite();
+	public Sprite getSprite(){
+		return sprite;
+	}
 	
 	/**
 	 * 
 	 * @return the actors size (for texture scaling and collision detection)
 	 */
-	public float getSize();
+	public float getSize(){
+		return size;
+	}
 }
