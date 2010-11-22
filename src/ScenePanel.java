@@ -6,6 +6,11 @@ import java.awt.event.KeyListener;
 import com.jogamp.opengl.util.*;
 import java.awt.Dimension;
 
+/*
+ * Author: Chris Lundquist
+ * Description: This class handles the interface to OpenGL and delegates KeyListener to Asteroids.
+ *              it loops through the actor array rendering each actor with its respective location, rotation, and texture.
+ */
 public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener {
 	private static final long serialVersionUID = 702382815287044105L;
 
@@ -19,6 +24,10 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 		animator.start();
 	}
 
+	/*
+	 * Description: This is a callback in the interface we implement. It is where we should initialize
+	 *              various OpenGL features.
+	 */
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
@@ -53,7 +62,9 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
 	}
-
+/*
+ * Description: This is the main render loop where we draw each actor onto the frame buffer.
+ */
 	private void render(GLAutoDrawable drawable) {
 		/* Fetch the OpenGL context */
 		GL2 gl = drawable.getGL().getGL2();

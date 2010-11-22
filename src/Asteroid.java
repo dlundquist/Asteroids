@@ -19,7 +19,7 @@ public class Asteroid extends Actor {
 	}
 
 	public void update() {
-		position.incrementBy(velocity);	
-		theta += omega;
+		// CL - Update our rotation and position as defined in Actor.update()
+		super.update();
 	}
 }

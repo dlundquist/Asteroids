@@ -3,7 +3,7 @@ public class Bullet extends Actor {
 	private static final int BULLET_LIFETIME = 120; // 2 seconds
 	private Actor owner;   // The ship that shot this so we can check if we shot our self or limit the number of shots
 	private int frames_to_live; // Number of frames to live;
-	
+
 	public Bullet(Actor ship) {
 		position = new Vector(ship.getPosition());
 		// Relative to the ship
@@ -11,8 +11,8 @@ public class Bullet extends Actor {
 		// Add the speed of the shot
 		velocity.incrementXBy(BULLET_VELOCTIY * (float)Math.cos(ship.getTheta()));
 		velocity.incrementYBy(BULLET_VELOCTIY * (float)Math.sin(ship.getTheta()));
-        frames_to_live = BULLET_LIFETIME;
-        owner = ship;
+		frames_to_live = BULLET_LIFETIME;
+		owner = ship;
 		sprite = Sprite.bullet();
 		omega = gen.nextFloat();
 		size = gen.nextFloat() / 3;
@@ -21,13 +21,13 @@ public class Bullet extends Actor {
 	public void handleCollision(Actor other) {
 		// We can't shoot ourself
 		if(other == owner)
-		  return;
+			return;
 		// TODO
 	}
 
 	public void update() {
-		position.incrementBy(velocity);	
-		theta += omega;
+		// CL - Update our rotation and position as defined in Actor.update()
+		super.update();
 		frames_to_live--;
 		if(frames_to_live == 0) {
 			// TODO remove the bullet

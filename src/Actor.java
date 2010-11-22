@@ -12,7 +12,10 @@ abstract class Actor {
 	/**
 	 * Call back before render loop for update to update it's position and do any housekeeping
 	 */
-	abstract public void update();
+	 public void update() {
+		 theta += omega;
+		 position.incrementBy(velocity);
+	 }
 
 	/**
 	 * Call back upon collision detection for object to handle collision
