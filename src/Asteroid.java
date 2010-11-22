@@ -18,8 +18,4 @@ public class Asteroid extends Actor {
 		// TODO
 	}
 
-	public void update() {
-		// CL - Update our rotation and position as defined in Actor.update()
-		super.update();
-	}
 }
