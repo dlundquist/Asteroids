@@ -1,5 +1,4 @@
 import java.util.Random;
-
 abstract class Actor {
 	static protected Random gen = new Random();
 	// These fields are protected so that our descendants can modify them
@@ -15,6 +14,19 @@ abstract class Actor {
 	 public void update() {
 		 theta += omega;
 		 position.incrementBy(velocity);
+	 }
+	 
+	 /**
+	  * CL - We need to synchronize removing actors so we don't have threads
+	  *      stepping on eachother's toes.
+	  *      
+	  *      NOTE: thread concurrency is an advanced topic. This is a base
+	  *      implementation to handle the problem.
+	  */
+	 protected void delete(){
+		 synchronized (this){
+			 Asteroids.actors.remove(this);
+		 }
 	 }
 
 	/**

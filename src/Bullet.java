@@ -41,7 +41,7 @@ public class Bullet extends Actor {
 		if(framesToLive == 0) {
 			// remove the bullet
 			// TODO lock the actors array so we don't cause an exception
-			Asteroids.actors.remove(this);
+			delete();
 		}	
 	}
 }
