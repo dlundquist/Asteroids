@@ -1,8 +1,5 @@
-import java.awt.event.KeyEvent;
-
 /**
  * This is the main game logic
- * @author Dustin Lundquist
  *
  */
 public class Asteroids {
@@ -35,7 +32,7 @@ public class Asteroids {
 		
 	}
 	
-	public static Actor getPlayer() {
+	public static PlayerShip getPlayer() {
 	    return playerShip;
 	}
 	
@@ -74,12 +71,12 @@ public class Asteroids {
 				 * the computationally expensive square root operation.
 				 */			
 				if (a.getPosition().distance2(b.getPosition()) < minDistanceBetweenCenters * minDistanceBetweenCenters) {
+					System.err.println("DEBUG: detected collision between " + a + " and " + b);
 					a.handleCollision(b);
 					b.handleCollision(a);
 				}
 			}
 		} /* End Collision Detection */
-		
 	}
 	
 	/**
@@ -89,23 +86,7 @@ public class Asteroids {
 	public static void dispose() {
 		
 	}
-
-	/**
-	 * This is called by ScenePanel for each KeyEvent
-	 * @param eventType KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED
-	 * @param the KeyEvent object
-	 */
-	public static void keyEvent(int eventType, KeyEvent e) {
-		// TODO handle keyboard input
-		System.err.println("Key pressed");
-		switch(eventType){
-		case(KeyEvent.KEY_PRESSED):
-			switch(e.getKeyCode()){
-			case(KeyEvent.VK_SPACE):
-			    Actor.actors.add(playerShip.shoot());
-			}
-		}
-	}
+	
 	
 	/**
 	 * This checks that a position vector is in bounds (the on screen region) and if it
@@ -123,5 +104,4 @@ public class Asteroids {
 		else if (position.y() < -1)
 			position.incrementYBy(2);		
 	}
-
 }
