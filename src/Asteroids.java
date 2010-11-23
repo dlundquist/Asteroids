@@ -1,5 +1,4 @@
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 /**
  * This is the main game logic
@@ -7,8 +6,6 @@ import java.util.ArrayList;
  *
  */
 public class Asteroids {
-	// All the actors currently in play
-	public static ArrayList<Actor> actors = new ArrayList<Actor>();
 	private static PlayerShip playerShip;
 
 	/**
@@ -31,10 +28,10 @@ public class Asteroids {
 		 * will always be on top. 
 		 */
 		playerShip = new PlayerShip(0,0,0,0);
-		actors.add(playerShip);
+		Actor.actors.add(playerShip);
 
 		for (int i = 0; i < 5; i++)
-			actors.add(new Asteroid());
+			Actor.actors.add(new Asteroid());
 		
 	}
 	
@@ -48,10 +45,10 @@ public class Asteroids {
 	 */
 	public static void update() {
 		// Update each actor
-		for(int i = 0; i < actors.size(); i++) {
-			actors.get(i).update();
+		for(int i = 0; i < Actor.actors.size(); i++) {
+			Actor.actors.get(i).update();
 			// Bounds checks to keep thing in the screen
-			checkBounds(actors.get(i).getPosition());
+			checkBounds(Actor.actors.get(i).getPosition());
 		}
 		
 		/*
@@ -60,11 +57,11 @@ public class Asteroids {
 		 * For collision purposes we are modeling each actor as a circle with radius getSize()
 		 * This algorithm is 1/2 n^2 compares, but it should be sufficient for our purposes
 		 */
-		for(int i = 0; i < actors.size(); i++) {
-			Actor a = actors.get(i);
+		for(int i = 0; i < Actor.actors.size(); i++) {
+			Actor a = Actor.actors.get(i);
 			
-			for (int j = i + 1; j < actors.size(); j++) {
-				Actor b = actors.get(j);
+			for (int j = i + 1; j < Actor.actors.size(); j++) {
+				Actor b = Actor.actors.get(j);
 				float totalSize = a.getSize() + b.getSize();
 				
 				/* Here we compare the distance squared rather than the distance to avoid 
@@ -99,7 +96,7 @@ public class Asteroids {
 		case(KeyEvent.KEY_PRESSED):
 			switch(e.getKeyCode()){
 			case(KeyEvent.VK_SPACE):
-			    actors.add(playerShip.shoot());
+			    Actor.actors.add(playerShip.shoot());
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class Bullet extends Actor {
 		// We can't shoot ourself
 		if(other == owner)
 			return;
-		Asteroids.actors.remove(this);
+		Actor.actors.remove(this);
 	}
 
 	public void update() {

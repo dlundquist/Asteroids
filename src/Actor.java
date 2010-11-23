@@ -1,6 +1,18 @@
+import java.util.ArrayList;
 import java.util.Random;
+
 abstract class Actor {
+	/**
+	 * Common random number generator object
+	 */
 	static protected Random gen = new Random();
+
+	/**
+	 *  All the actors currently in play
+	 */
+	static public ArrayList<Actor> actors = new ArrayList<Actor>();
+
+	
 	// These fields are protected so that our descendants can modify them
 	protected Vector position;
 	protected Vector velocity;
@@ -8,6 +20,7 @@ abstract class Actor {
 	protected float omega; // Angular velocity
 	protected Sprite sprite; // This is the texture of this object
 	protected float size; // the radius of the object
+
 	/**
 	 * Call back before render loop for update to update it's position and do any housekeeping
 	 */
@@ -25,7 +38,7 @@ abstract class Actor {
 	  */
 	 protected void delete(){
 		 synchronized (this){
-			 Asteroids.actors.remove(this);
+			 Actor.actors.remove(this);
 		 }
 	 }
 

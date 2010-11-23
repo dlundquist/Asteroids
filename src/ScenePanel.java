@@ -84,9 +84,9 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 		/* Loop through all our actors in reverse order rendering them
 		 * so the PlayerShip gets drawn last.
 		 */
-		for (int i = Asteroids.actors.size() - 1; i >= 0; i--) {
+		for (int i = Actor.actors.size() - 1; i >= 0; i--) {
 			// Get the ith Actor
-			Actor actor = Asteroids.actors.get(i);
+			Actor actor = Actor.actors.get(i);
 
 			// Clear the Current matrix from the GL Stack to Identity so we aren't
 			// working with left over data from someone else
