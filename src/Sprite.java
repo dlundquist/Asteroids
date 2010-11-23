@@ -22,7 +22,7 @@ public class Sprite {
 		"ship.png",
 		"bullet.png",
 	};
-	private static final String texture_dir = "data";
+	private static final String TEXTURE_DIR = "data";
 	
 	// a list of all the textures loaded so far
 	private static ArrayList<Sprite> sprites;
@@ -41,12 +41,16 @@ public class Sprite {
 	 * @param filename - texture image filename
 	 */
 	public Sprite(GL gl, String filename) {
+		this(gl, new File(TEXTURE_DIR, filename));
+	}
+	
+	public Sprite(GL gl, File texture) {
 		BufferedImage image;
 		try {
-			image = ImageIO.read(new File(texture_dir, filename));
+			image = ImageIO.read(texture);
 		} catch (IOException ie) {
 			ie.printStackTrace();
-			throw new RuntimeException("unable to open " + filename);
+			throw new RuntimeException("unable to open " + texture.getAbsolutePath());
 		}
 
 		// Java really wanted to modify an array pointer
