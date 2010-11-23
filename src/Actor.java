@@ -37,7 +37,9 @@ abstract class Actor {
 	  *      implementation to handle the problem.
 	  */
 	 protected void delete(){
-		 synchronized (this){
+		 synchronized (Actor.actors){
+			 // FIXME causes an IndexOutOfBoundsException because this call
+			 // is asynchronous and changes the array under other people's noses.
 			 Actor.actors.remove(this);
 		 }
 	 }
