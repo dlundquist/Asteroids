@@ -6,29 +6,33 @@
  *************************************************************************/
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
-
 import javazoom.jl.player.advanced.*;
 
-
 public class Sound {
-	private String filePath;
-	private /* javazoom */AdvancedPlayer player; 
+	static public final String SOUND_DIR = "data";
+	
+	private File soundFile;
+	private AdvancedPlayer player; /* javazoom */
 
 	// Constructor takes the filePath
-	public Sound(String path) {
-		filePath = path;
+	public Sound(String filename) {
+		this(new File(SOUND_DIR, filename));
+	}
+	
+	public Sound(File file) {
+		soundFile = file;
 		open();
 	}
 
 	public void open() {
 		try {
-			FileInputStream fis     = new FileInputStream(filePath);
+			FileInputStream fis     = new FileInputStream(soundFile);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			player = new AdvancedPlayer(bis);
-		}
-		catch (Exception e) {
-			System.err.println("Problem playing file " + filePath);
+		} catch (Exception e) {
+			System.err.println("Problem playing file " + soundFile);
 			System.err.println(e);
 		}
 	}
@@ -45,14 +49,22 @@ public class Sound {
 		// or a block in Ruby
 		new Thread() {
 			public void run() {
-				try { 
-					player.play(); 
-				}
-				catch (Exception e) { 
+				try {
+					player.play();
+				} catch (Exception e) {
 					System.out.println(e); 
 				}
 			}
 		}.start();
+	}
+	
+	/**
+	 * Main method for testing this module.
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Sound test = new Sound("test.mp3");
+		test.play();
 	}
 }
 
