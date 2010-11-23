@@ -46,9 +46,13 @@ public class Asteroids {
 	public static void update() {
 		// Update each actor
 		for(int i = 0; i < Actor.actors.size(); i++) {
-			Actor.actors.get(i).update();
+			// We get the actor only once in case we the actor is removed
+			// during the update phase. E.G. Bullets FramesToLive reaches 0
+			Actor a = Actor.actors.get(i);
+			
+			a.update();
 			// Bounds checks to keep thing in the screen
-			checkBounds(Actor.actors.get(i).getPosition());
+			checkBounds(a.getPosition());
 		}
 		
 		/*

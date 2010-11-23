@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Random;
 
 abstract class Actor {
@@ -9,9 +8,11 @@ abstract class Actor {
 
 	/**
 	 *  All the actors currently in play
+	 *  We use the fully qualified named space for the Vector container so 
+	 *  it doesn't clash with our name space. Vectors work like ArrayLists,
+	 *  but are synchronized.
 	 */
-	static public ArrayList<Actor> actors = new ArrayList<Actor>();
-
+	static public java.util.Vector<Actor> actors = new java.util.Vector<Actor>();
 	
 	// These fields are protected so that our descendants can modify them
 	protected Vector position;
