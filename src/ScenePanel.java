@@ -1,8 +1,5 @@
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLJPanel;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import com.jogamp.opengl.util.*;
 import java.awt.Dimension;
 
@@ -11,60 +8,65 @@ import java.awt.Dimension;
  * Description: This class handles the interface to OpenGL and delegates KeyListener to Asteroids.
  *              it loops through the actor array rendering each actor with its respective location, rotation, and texture.
  */
-public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener {
+public class ScenePanel extends GLJPanel {
 	private static final long serialVersionUID = 702382815287044105L;
+	private FPSAnimator animator;
 
 	public ScenePanel() {
 		setPreferredSize(new Dimension(500, 500));
 
-		addGLEventListener(this);
-
-		FPSAnimator animator = new FPSAnimator(this, 60); // 60 fps
-		animator.add(this);
-		animator.start();
-	}
-
-	/*
-	 * Description: This is a callback in the interface we implement. It is where we should initialize
-	 *              various OpenGL features.
-	 */
-	@Override
-	public void init(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();
-
-		// Enable Textures
-		gl.glEnable(GL.GL_TEXTURE_2D);
-		// Enable alpha blending
-		gl.glEnable (GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-		// Create sprite and load the texture files
-		Sprite.loadSprites(gl);
+		addGLEventListener(new GLEventHandler());
+		// Register our keyboard listener
+		addKeyListener(new InputHandler());
 		
-		Asteroids.init();
-		// We have to have focus for our KeyListener to get messages
-		requestFocus();
-		// Register ourself as the listener
-		addKeyListener(this);
+		animator = new FPSAnimator(this, 60); // 60 fps
 	}
 
-	@Override
-	public void display(GLAutoDrawable drawable) {
-		Asteroids.update();
-		render(drawable);
-	}
+	/**
+	 * This private inner class implements the OpenGL calls backs.
+	 */
+	private class GLEventHandler implements GLEventListener {
+		@Override
+		public void init(GLAutoDrawable drawable) {
+			/*  It is where we should initialize various OpenGL features. */
+			GL2 gl = drawable.getGL().getGL2();
 
-	@Override
-	public void dispose(GLAutoDrawable drawable) {
-		Asteroids.dispose();
-	}
+			// Enable Textures
+			gl.glEnable(GL.GL_TEXTURE_2D);
+			// Enable alpha blending
+			gl.glEnable (GL.GL_BLEND);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
+			// Create sprite and load the texture files
+			Sprite.loadSprites(gl);
+
+			Asteroids.init();
+			// We have to have focus for our KeyListener to get messages
+			requestFocus();
+
+			animator.start();
+		}
+
+		@Override
+		public void display(GLAutoDrawable drawable) {
+			Asteroids.update();
+			
+			render(drawable);
+		}
+
+		@Override
+		public void dispose(GLAutoDrawable drawable) {
+			Asteroids.dispose();
+		}
+
+		@Override
+		public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
+		}
 	}
-/*
- * Description: This is the main render loop where we draw each actor onto the frame buffer.
- */
+	
+	/*
+	 * Description: This is the main render loop where we draw each actor onto the frame buffer.
+	 */
 	private void render(GLAutoDrawable drawable) {
 		/* Fetch the OpenGL context */
 		GL2 gl = drawable.getGL().getGL2();
@@ -146,20 +148,5 @@ public class ScenePanel extends GLJPanel implements GLEventListener, KeyListener
 			gl.glTexCoord2f(0, 0);
 			gl.glVertex2d(-0.5f, 0.5f);
 		gl.glEnd();
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		Asteroids.keyEvent(KeyEvent.KEY_PRESSED, e);
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		Asteroids.keyEvent(KeyEvent.KEY_RELEASED, e);
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		Asteroids.keyEvent(KeyEvent.KEY_TYPED, e);
 	}
 }
