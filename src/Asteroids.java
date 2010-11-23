@@ -62,12 +62,14 @@ public class Asteroids {
 			
 			for (int j = i + 1; j < Actor.actors.size(); j++) {
 				Actor b = Actor.actors.get(j);
-				float totalSize = a.getSize() + b.getSize();
+				
+				/* Our sizes are the diameter of each object and we want the distance between their centers */				
+				float minDistanceBetweenCenters = a.getSize() / 2 + b.getSize() / 2;
 				
 				/* Here we compare the distance squared rather than the distance to avoid 
 				 * the computationally expensive square root operation.
 				 */			
-				if (a.getPosition().distance2(b.getPosition()) < totalSize * totalSize) {
+				if (a.getPosition().distance2(b.getPosition()) < minDistanceBetweenCenters * minDistanceBetweenCenters) {
 					a.handleCollision(b);
 					b.handleCollision(a);
 				}
