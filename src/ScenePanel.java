@@ -2,6 +2,8 @@ import javax.media.opengl.*;
 import javax.media.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.*;
 import java.awt.Dimension;
+import javax.media.opengl.glu.GLU;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 /*
  * Author: Chris Lundquist
@@ -11,6 +13,7 @@ import java.awt.Dimension;
 public class ScenePanel extends GLJPanel {
 	private static final long serialVersionUID = 702382815287044105L;
 	private FPSAnimator animator;
+    private GLU glu;
 
 	public ScenePanel() {
 		setPreferredSize(new Dimension(500, 500));
@@ -18,7 +21,7 @@ public class ScenePanel extends GLJPanel {
 		addGLEventListener(new GLEventHandler());
 		// Register our keyboard listener
 		addKeyListener(new InputHandler());
-		
+		glu = new GLU();
 		animator = new FPSAnimator(this, 60); // 60 fps
 	}
 
@@ -60,7 +63,17 @@ public class ScenePanel extends GLJPanel {
 		}
 
 		@Override
-		public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
+		public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	        GL2 gl = drawable.getGL().getGL2();
+	        if (height <= 0) {
+	            height = 1;
+	        }
+	        float aspectRatio = (float) width / (float) height;
+	        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+	        gl.glLoadIdentity();
+	        glu.gluPerspective(90.0f, aspectRatio, 1.0, 1000.0);
+	        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+	        gl.glLoadIdentity();
 		}
 	}
 	
@@ -78,8 +91,8 @@ public class ScenePanel extends GLJPanel {
 		// Render background
 		gl.glLoadIdentity();
 		gl.glBindTexture(GL.GL_TEXTURE_2D, Sprite.background().getTextureId());
-		gl.glTranslatef(0, 0, -1);
-		gl.glScalef(2, 2, 1);
+		gl.glTranslatef(0, 0, -2);
+		gl.glScalef(4, 4, 1);
 		// The Polygon for our background image to map a texture to
 		drawNormalSquare(gl);
 
@@ -103,7 +116,7 @@ public class ScenePanel extends GLJPanel {
 			// OpenGL uses a +Y-axis up and +Z-axis out coordinate system.
 
 			// Translate our object to its position
-			gl.glTranslatef(actor.getPosition().x(), actor.getPosition().y(), 0.0f);
+			gl.glTranslatef(actor.getPosition().x(), actor.getPosition().y(), -1.0f);
 			// Rotate it by its rotation about the Z axis
 			/* NOTE OpenGL expects rotations to be in degrees */
 			gl.glRotatef(actor.getThetaDegrees(),0,0,1);
