@@ -1,5 +1,5 @@
 import javax.media.opengl.*;
-import javax.media.opengl.awt.GLJPanel;
+import javax.media.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.*;
 import java.awt.Dimension;
 import javax.media.opengl.glu.GLU;
@@ -10,7 +10,7 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
  * Description: This class handles the interface to OpenGL and delegates KeyListener to Asteroids.
  *              it loops through the actor array rendering each actor with its respective location, rotation, and texture.
  */
-public class ScenePanel extends GLJPanel {
+public class ScenePanel extends GLCanvas {
 	private static final long serialVersionUID = 702382815287044105L;
 	private FPSAnimator animator;
     private GLU glu;
@@ -21,6 +21,7 @@ public class ScenePanel extends GLJPanel {
 		addGLEventListener(new GLEventHandler());
 		// Register our keyboard listener
 		addKeyListener(new InputHandler());
+		
 		glu = new GLU();
 		animator = new FPSAnimator(this, 60); // 60 fps
 	}
@@ -59,6 +60,7 @@ public class ScenePanel extends GLJPanel {
 
 		@Override
 		public void dispose(GLAutoDrawable drawable) {
+			animator.stop();
 			Asteroids.dispose();
 		}
 

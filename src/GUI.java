@@ -1,3 +1,4 @@
+import javax.media.opengl.awt.GLCanvas;
 import javax.swing.*;
 import java.awt.*;
 
@@ -5,7 +6,7 @@ public class GUI extends JFrame {
 	// Not sure why Eclipse wanted to generate this, but it can't hurt anything
 	private static final long serialVersionUID = -934931618056969704L;
 	
-	private JPanel scene;
+	private GLCanvas scene;
 	private JPanel score;
 	private JPanel banner;
 
