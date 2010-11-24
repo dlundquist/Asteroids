@@ -78,6 +78,14 @@ abstract class Actor {
 	
 	/**
 	 * 
+	 * @return the actors current rotational position in degrees
+	 */
+	public float getThetaDegrees() {
+		return theta * 180 / (float)Math.PI;
+	}
+	
+	/**
+	 * 
 	 * @return the actors current angular velocity
 	 */
 	public float getOmega() {

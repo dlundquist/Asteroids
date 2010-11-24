@@ -3,7 +3,7 @@ public class Asteroid extends Actor {
 		position = new Vector(gen.nextFloat() * 2 - 1, gen.nextFloat() * 2 - 1);
 		velocity = new Vector(gen.nextFloat()/20, gen.nextFloat()/20);
 		sprite = Sprite.asteroid();
-		omega = gen.nextFloat();
+		omega = gen.nextFloat() / 60;
 		size = gen.nextFloat() / 3;
 	}
 	

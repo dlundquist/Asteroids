@@ -105,7 +105,8 @@ public class ScenePanel extends GLJPanel {
 			// Translate our object to its position
 			gl.glTranslatef(actor.getPosition().x(), actor.getPosition().y(), 0.0f);
 			// Rotate it by its rotation about the Z axis
-			gl.glRotatef(actor.getTheta(),0,0,1);
+			/* NOTE OpenGL expects rotations to be in degrees */
+			gl.glRotatef(actor.getThetaDegrees(),0,0,1);
 			// Scale our image by its size in the X and Y dimension
 			gl.glScalef(actor.getSize(), actor.getSize(), 1);
 			// Draw a Normal Square at the origin at will be transformed as
