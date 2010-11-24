@@ -65,14 +65,19 @@ public class ScenePanel extends GLJPanel {
 		@Override
 		public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 	        GL2 gl = drawable.getGL().getGL2();
+	        // Make the height at least one so we don't divide by zero
 	        if (height <= 0) {
 	            height = 1;
 	        }
 	        float aspectRatio = (float) width / (float) height;
+	        // Reset the projection matrix to the identity
 	        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 	        gl.glLoadIdentity();
+	        // Tell the perspective matrix the Field of view, aspectRatio, ZNEAR, ZFAR
 	        glu.gluPerspective(90.0f, aspectRatio, 1.0, 1000.0);
+	        // Go back to ModelView matrix mode now that we are done
 	        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+	        // Be nice and load the Identity
 	        gl.glLoadIdentity();
 		}
 	}
