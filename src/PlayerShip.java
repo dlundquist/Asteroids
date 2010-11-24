@@ -20,11 +20,27 @@ public class PlayerShip extends Actor {
 	}
 
 	public void handleCollision(Actor other) {
-		// TODO
+		// Is the other guy a Bullet?
+		if(other instanceof Bullet) {
+			Bullet bullet = (Bullet) other;
+			if(bullet.owner == this)
+				return;
+		}
+		// Is the other guy an Asteroid?
+		else if ( other instanceof Asteroid) {
+			
+		}
+		// Play the sound effect for player death
+		if(SoundEffect.isEnabled())
+		    SoundEffect.forPlayerDeath().play();
 	}
 	
 	public void shoot() {
 		Bullet bullet = new Bullet(this);
+		
+		// Play our awesome explosion if sound is enabled
+		if(SoundEffect.isEnabled())
+			SoundEffect.forBulletShot().play();
 		
 	    Actor.actors.add(bullet);
 	}

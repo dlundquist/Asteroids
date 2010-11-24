@@ -10,6 +10,8 @@ public class Asteroids {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		// Load our sounds and enable them.
+		SoundEffect.init(false);
 		new GUI();
 	}
 	
@@ -71,7 +73,7 @@ public class Asteroids {
 				 * the computationally expensive square root operation.
 				 */			
 				if (a.getPosition().distance2(b.getPosition()) < minDistanceBetweenCenters * minDistanceBetweenCenters) {
-					System.err.println("DEBUG: detected collision between " + a + " and " + b);
+					//System.err.println("DEBUG: detected collision between " + a + " and " + b);
 					a.handleCollision(b);
 					b.handleCollision(a);
 				}

@@ -6,7 +6,7 @@ public class Asteroid extends Actor {
 		omega = gen.nextFloat() / 60;
 		size = gen.nextFloat() / 3;
 	}
-	
+
 	public Asteroid(float px, float py, float vx, float vy) {
 		position = new Vector(px, py);
 		velocity = new Vector(vx, vy);
@@ -16,6 +16,11 @@ public class Asteroid extends Actor {
 
 	public void handleCollision(Actor other) {
 		// TODO
+		
+		// Play our awesome explosion if sound is enabled
+		if(SoundEffect.isEnabled())
+			SoundEffect.forAsteroidDeath().play();
+		// Remove ourself from the game since we blew up
 		delete();
 	}
 }

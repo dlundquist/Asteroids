@@ -14,7 +14,6 @@ public class Sound {
 	static public final String SOUND_DIR = "data";
 	
 	private File soundFile;
-	private AdvancedPlayer player; /* javazoom */
 
 	// Constructor takes the filePath
 	public Sound(String filename) {
@@ -26,23 +25,19 @@ public class Sound {
 		open();
 	}
 
-	public void open() {
+	public AdvancedPlayer open() {
 		try {
 			FileInputStream fis     = new FileInputStream(soundFile);
 			BufferedInputStream bis = new BufferedInputStream(fis);
-			player = new AdvancedPlayer(bis);
+			return new AdvancedPlayer(bis);
 		} catch (Exception e) {
-			System.err.println("Problem playing file " + soundFile);
+			System.err.println("Problem opening file " + soundFile);
 			System.err.println(e);
 		}
+		return null;
 	}
 
-	public void close() { 
-		if (player != null) 
-			player.close(); 
-	}
-
-	// Play the file
+	/* FIXME: There must be a cleaner way to do the playing of sounds in threads. */
 	public void play() {
 		// Run in new thread to play in background
 		// by creating an anonymous class like a Functor in C++
@@ -50,7 +45,9 @@ public class Sound {
 		new Thread() {
 			public void run() {
 				try {
+					AdvancedPlayer player = open();
 					player.play();
+					player.close();
 				} catch (Exception e) {
 					System.out.println(e); 
 				}
@@ -63,8 +60,9 @@ public class Sound {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Sound test = new Sound("test.mp3");
+		Sound test = new Sound("player_death.mp3");
 		test.play();
+		System.err.println("Success");
 	}
 }
 

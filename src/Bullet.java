@@ -9,7 +9,7 @@ public class Bullet extends Actor {
 	private static final float BULLET_SPIN = 0.05f;
 	private static final int BULLET_LIFETIME = 120; // 2 seconds
 	
-	private Actor owner;      // The ship that shot this so we can check if we shot our self or limit the number of shots
+	public Actor owner;      // The ship that shot this so we can check if we shot our self or limit the number of shots
 	private int framesToLive; // Number of frames to live;
 
 	public Bullet(Actor ship) {
@@ -32,6 +32,12 @@ public class Bullet extends Actor {
 		// We can't shoot ourself
 		if(other == owner)
 			return;
+		
+		// Play our awesome sound
+		if(SoundEffect.isEnabled())
+    		SoundEffect.forBulletHit().play();
+		
+		// Remove ourself form the game
 		delete();
 	}
 
