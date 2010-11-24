@@ -1,5 +1,8 @@
 public class PlayerShip extends Actor {
-	private final float PLAYER_SIZE = 0.1f;
+	private static final float PLAYER_SIZE = 0.1f;
+	private static final double FORWARD_THRUST = 0.001f;
+	private static final double REVERSE_THRUST = -0.0003f;
+	private static final double ROTATION_INCREMENT = 0.05f;
 	
 	public PlayerShip() {
 		position = new Vector(gen.nextFloat() * 2 - 1, gen.nextFloat() * 2 - 1);
@@ -20,8 +23,37 @@ public class PlayerShip extends Actor {
 		// TODO
 	}
 	
-	public Bullet shoot() {
-		return new Bullet(this);
+	public void shoot() {
+		Bullet bullet = new Bullet(this);
+		
+	    Actor.actors.add(bullet);
+	}
+
+	
+	public void forwardThrust() {
+		/* Get a unit vector in the direction the ship is pointed */
+		Vector thrust = new Vector(theta);
+		/* Scale it by our thrust increment */
+		thrust.scaleBy(FORWARD_THRUST);
+		/* Add it to our current velocity */
+		velocity.incrementBy(thrust);
+	}
+	
+	public void reverseThrust() {
+		/* Get a unit vector in the direction the ship is pointed */
+		Vector thrust = new Vector(theta);
+		/* Scale it by our thrust by a negative amount to slow our ship */
+		thrust.scaleBy(REVERSE_THRUST);
+		/* And add it to our current velocity */
+		velocity.incrementBy(thrust);
+	}
+	
+	public void turnLeft() {
+		theta += ROTATION_INCREMENT;
+	}
+	
+	public void turnRight() {
+		theta -= ROTATION_INCREMENT;	
 	}
 }
 
