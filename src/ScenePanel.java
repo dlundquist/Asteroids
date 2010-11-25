@@ -14,13 +14,16 @@ public class ScenePanel extends GLCanvas {
 	private static final long serialVersionUID = 702382815287044105L;
 	private FPSAnimator animator;
     private GLU glu;
+    private InputHandler input;
 
 	public ScenePanel() {
+		input = new InputHandler();
+		
 		setPreferredSize(new Dimension(500, 500));
 
 		addGLEventListener(new GLEventHandler());
 		// Register our keyboard listener
-		addKeyListener(new InputHandler());
+		addKeyListener(input);
 		
 		glu = new GLU();
 		animator = new FPSAnimator(this, 60); // 60 fps
@@ -53,6 +56,8 @@ public class ScenePanel extends GLCanvas {
 
 		@Override
 		public void display(GLAutoDrawable drawable) {
+			input.update();
+			
 			Asteroids.update();
 			
 			render(drawable);
@@ -60,7 +65,12 @@ public class ScenePanel extends GLCanvas {
 
 		@Override
 		public void dispose(GLAutoDrawable drawable) {
-			animator.stop();
+			/*
+			 Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+				at com.jogamp.opengl.util.FPSAnimator.stop(FPSAnimator.java:140)
+				at ScenePanel$GLEventHandler.dispose(ScenePanel.java:68)
+			 * animator.stop();
+			 */
 			Asteroids.dispose();
 		}
 
