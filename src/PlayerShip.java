@@ -3,6 +3,9 @@ public class PlayerShip extends Actor {
 	private static final double FORWARD_THRUST = 0.001f;
 	private static final double REVERSE_THRUST = -0.0003f;
 	private static final double ROTATION_INCREMENT = 0.05f;
+	private static final int SHOOT_DELAY = 10; // 10 frame delay between shots
+	
+	public int shootDelay;
 	
 	public PlayerShip() {
 		position = new Vector(gen.nextFloat() * 2 - 1, gen.nextFloat() * 2 - 1);
@@ -17,6 +20,15 @@ public class PlayerShip extends Actor {
 		velocity = new Vector(vx, vy);
 		sprite = Sprite.playerShip();
 		size = PLAYER_SIZE;
+	}
+	
+	public void update() {
+		/* Update our rotation and velocity */
+		super.update();
+		
+		// decrement our shoot delay
+		if (shootDelay > 0)
+			shootDelay--;
 	}
 
 	public void handleCollision(Actor other) {
@@ -36,6 +48,10 @@ public class PlayerShip extends Actor {
 	}
 	
 	public void shoot() {
+		/* Limit rate of fire */
+		if (shootDelay > 0)
+			return;
+		
 		Bullet bullet = new Bullet(this);
 		
 		// Play our awesome explosion if sound is enabled
@@ -43,6 +59,9 @@ public class PlayerShip extends Actor {
 			SoundEffect.forBulletShot().play();
 		
 	    Actor.actors.add(bullet);
+	    
+	    /* reset our shoot delay */
+	    shootDelay = SHOOT_DELAY;
 	}
 
 	
