@@ -9,17 +9,35 @@ public class NetworkClientThread extends Thread {
 	}
 
 	public void run() {
+		ObjectOutputStream out = null;
+		ObjectInputStream in = null;
+		
 		try {
-			ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
-			ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+			out = new ObjectOutputStream(client.getOutputStream());
+			in = new ObjectInputStream(client.getInputStream());
 	
+			NetworkUpdate inboundUpdate;
+	
+			while ((inboundUpdate = (NetworkUpdate)in.readObject()) != null) {
+				inboundUpdate.applyClientUpdate();
+				out.writeObject(new NetworkUpdate());
+			}
 			
 			
-			in.close();
-			out.close();
-			client.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+				if (out != null)
+					out.close();
+				client.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

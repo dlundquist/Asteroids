@@ -4,6 +4,7 @@
  *
  */
 public class Bullet extends Actor {
+	private static final long serialVersionUID = -6745335968576285239L;
 	private static final float BULLET_VELOCTIY = 0.035f;
 	private static final float BULLET_SIZE = 0.05f;
 	private static final float BULLET_SPIN = 0.05f;

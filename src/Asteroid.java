@@ -1,4 +1,6 @@
-public class Asteroid extends Actor {
+public class Asteroid extends Actor  {
+	private static final long serialVersionUID = 8547862796786070732L;
+
 	public Asteroid() {
 		position = new Vector(gen.nextFloat() * 2 - 1, gen.nextFloat() * 2 - 1);
 		velocity = new Vector(gen.nextFloat()/20, gen.nextFloat()/20);

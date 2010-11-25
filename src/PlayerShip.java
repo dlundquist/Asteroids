@@ -1,4 +1,5 @@
 public class PlayerShip extends Actor {
+	private static final long serialVersionUID = -5348807415668521319L;
 	private static final float PLAYER_SIZE = 0.1f;
 	private static final double FORWARD_THRUST = 0.001f;
 	private static final double REVERSE_THRUST = -0.0003f;

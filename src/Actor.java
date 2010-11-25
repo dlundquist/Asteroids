@@ -1,6 +1,8 @@
+import java.io.Serializable;
 import java.util.Random;
 
-abstract class Actor {
+abstract class Actor implements Serializable {
+	private static final long serialVersionUID = 744085604446096658L;
 	static private final double MAX_VELOCITY = 0.1;
 	static private final float MAX_OMEGA = 0.5f;
 	

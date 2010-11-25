@@ -1,4 +1,7 @@
-public class Vector {
+import java.io.Serializable;
+
+public class Vector implements Serializable {
+	private static final long serialVersionUID = -8675559022498950246L;
 	/*
 	 * our vectors are stored in floats since that's what OpenGL works with
 	 */

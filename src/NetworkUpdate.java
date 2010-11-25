@@ -11,7 +11,13 @@ public class NetworkUpdate implements Serializable {
 	}
 	
 	public void applyClientUpdate() {
-		
+		for (Actor a : actors) {
+			if (a instanceof PlayerShip) {
+				
+			} else if (a instanceof Bullet) {
+				
+			}
+		}
 	}
 
 	public void applyServerUpdate() {
