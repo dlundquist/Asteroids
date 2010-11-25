@@ -1,6 +1,9 @@
 import java.util.Random;
 
 abstract class Actor {
+	static private final double MAX_VELOCITY = 0.1;
+	static private final float MAX_OMEGA = 0.5f;
+	
 	/**
 	 * Common random number generator object
 	 */
@@ -26,6 +29,13 @@ abstract class Actor {
 	 * Call back before render loop for update to update it's position and do any housekeeping
 	 */
 	 public void update() {
+		 /* Limit maximum speed */
+		 if (omega > MAX_OMEGA)
+			 omega = MAX_OMEGA;
+		 if (velocity.magnitude() > MAX_VELOCITY)
+			 velocity.normalizeTo(MAX_VELOCITY);
+		 
+		 /* Update position and angle of rotation */
 		 theta += omega;
 		 position.incrementBy(velocity);
 	 }

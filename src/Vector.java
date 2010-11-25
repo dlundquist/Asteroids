@@ -87,6 +87,14 @@ public class Vector {
 		return unitVector;
 	}
 	
+	/**
+	 * Scale the vector such that it's magnitude is newMagnitude
+	 * @param newMagnitude
+	 */
+	public void normalizeTo(double newMagnitude) {
+		scaleBy(newMagnitude / magnitude());
+	}
+	
 	public double distance(Vector there) {
 		return Math.sqrt(distance2(there));
 	}
