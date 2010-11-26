@@ -26,3 +26,23 @@ Classes
 		PlayerShip - the player's ship
 		Bullet - a projectile shot by the player's ship.
 	
+
+Installing Java OpenGL
+1. Download the latest build of JoGL for your architecture from
+	http://jogamp.org/deployment/autobuilds/master/
+2. Extract the zip file to a sensable location, I recommend
+	C:\lib\jogl-2.0 or ~/lib/jogl-2.0.
+3. In Eclipse add JoGL as a user library:
+	i.	Window->Preferences (Eclipse->Preferences on MacOS)
+	ii.	Java->Build Path->User Libraries
+	iii.	New, name the library "jogl-2.0", click OK
+	iv.	Click Add JARs
+	v.	Navigate to the location you chose in step 2,
+			then jar, choose 'jogl.all.jar'
+	vi.	Select Native library location for 'jogl.all.jar'
+	vii.	Click Edit, External Folder
+	viii.	Navigate ot the location you chose in step 2,
+			then lib, click OK
+	ix.	Repeate steps iii through viii for 'gluegen-rt.jar',
+			'nativewindow.all.jar', and 'newt.all.jar'
+	x.	Click OK to close the prefernces panel
