@@ -6,8 +6,8 @@ Since there are a limited number of students with OpenGL experience, we have
 kept all the OpenGL related code in two classes ScenePanel and Sprite.  We used
 two other advanced concepts that we have not yet covered in class to keep the
 code uncluttered. All the game entities (asteroids, the player's ship, bullets,
-etc.) implement the Actor interface, and we store all the actors currently in
-the game in an ArrayList so we can have a single code path to update, render,
+etc.) inherit from the Actor base class, and we store all the actors currently
+in the game in a Vector so we can have a single code path to update, render,
 and handle collision detection for all entities currently in play.
 
 Classes
@@ -19,9 +19,10 @@ Classes
 			game entity. It includes a number of static methods to
 			load all the required textures and provide textures for
 			each type of entity.
-	Actor - the interface for game entities that will move around and be
-			drawn on the screen. The following classes implement
-			this interface:
+	Actor - the base class for game entities that will move around and be
+			drawn on the screen. The following classes inherit
+			from this class.
 		Asteroid - the Asteroids in the game
 		PlayerShip - the player's ship
 		Bullet - a projectile shot by the player's ship.
+	
