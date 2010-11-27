@@ -15,7 +15,15 @@ public class Asteroid extends Actor {
 
 
 	public void handleCollision(Actor other) {
-		// TODO
+		// TODO handle collions
+		/*
+		 * If asteroids is very small
+		 * 		asteroids.delete();
+		 * else
+		 * 		reduce the size of this asteroid
+		 * 		add two new asteroids as this location
+		 * 			Actor.actors.add(new Asteroid(...));
+		 */
 		
 		// Play our awesome explosion if sound is enabled
 		if(SoundEffect.isEnabled())

@@ -4,6 +4,7 @@
  */
 public class Asteroids {
 	private static PlayerShip playerShip;
+	private static boolean isPaused;
 
 	/**
 	 * Our main function
@@ -21,6 +22,8 @@ public class Asteroids {
 	 * put any game initialization code here.
 	 */
 	public static void init() {
+		/* Start the game paused */
+		isPaused = true;
 		/* 
 		 * Put the player ship first, so when we we add additional actors
 		 * the players ship is always in the same position. This way
@@ -44,6 +47,9 @@ public class Asteroids {
 	 *  put game code here
 	 */
 	public static void update() {
+		if (isPaused)
+			return;
+		
 		// Update each actor
 		for(int i = 0; i < Actor.actors.size(); i++) {
 			// We get the actor only once in case we the actor is removed
@@ -109,5 +115,12 @@ public class Asteroids {
 			position.incrementYBy(-2);
 		else if (position.y() < -1)
 			position.incrementYBy(2);		
+	}
+
+	public static void togglePause() {
+		if (isPaused)
+			isPaused = false;
+		else
+			isPaused = true;
 	}
 }

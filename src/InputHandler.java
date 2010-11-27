@@ -19,7 +19,10 @@ public class InputHandler implements KeyListener {
 		KeyEvent.VK_LEFT,
 		KeyEvent.VK_RIGHT,
 		KeyEvent.VK_ESCAPE,
+		KeyEvent.VK_PAUSE,
+		KeyEvent.VK_P,
 	};
+	private int lastPause;
 
 
 	public InputHandler() {
@@ -53,6 +56,11 @@ public class InputHandler implements KeyListener {
 	}
 
 	public void update() {
+		/* decrement our lastPause debounce timer */
+		if (lastPause > 0)
+			lastPause --;
+		
+		
 		for (int i = 0; i < KEYS_IN_USE.length; i++) {
 			/* Skip keys that are up */
 			if (keyState[i] == false)
@@ -77,6 +85,15 @@ public class InputHandler implements KeyListener {
 			case(KeyEvent.VK_ESCAPE):
 				// TODO quit
 				break;
+			case(KeyEvent.VK_P):
+				// Fall through
+			case(KeyEvent.VK_PAUSE):
+				/* Debounce our pause key so it doesn't pause unpause pause ... */
+				if (lastPause == 0){
+					lastPause = 10;
+					Asteroids.togglePause();
+				}
+			break;
 			default:
 				// Do nothing	
 			}
