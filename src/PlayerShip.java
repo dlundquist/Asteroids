@@ -4,6 +4,8 @@ public class PlayerShip extends Actor {
 	private static final double REVERSE_THRUST = -0.0003f;
 	private static final double ROTATION_INCREMENT = 0.05f;
 	private static final int SHOOT_DELAY = 10; // 10 frame delay between shots
+	private static final double MAX_SPEED = 0.03f;
+	private static final double BRAKE_AMOUNT = .93;
 	
 	public int shootDelay;
 	
@@ -68,12 +70,17 @@ public class PlayerShip extends Actor {
 	public void forwardThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
+		if (this.velocity.magnitude()>=MAX_SPEED){
+			thrust.scaleBy(0);
+			velocity.incrementBy(thrust);
+		}
 		/* Scale it by our thrust increment */
-		thrust.scaleBy(FORWARD_THRUST);
+		else thrust.scaleBy(FORWARD_THRUST);
 		/* Add it to our current velocity */
 		velocity.incrementBy(thrust);
 		Particle.addParticle(this);
-	}
+		}
+	
 	
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
@@ -90,6 +97,11 @@ public class PlayerShip extends Actor {
 	
 	public void turnRight() {
 		theta -= ROTATION_INCREMENT;	
+	}
+
+	public void brakeShip() {
+		double velocityDecrement = BRAKE_AMOUNT;
+		this.velocity.scaleBy(velocityDecrement);
 	}
 }
 
