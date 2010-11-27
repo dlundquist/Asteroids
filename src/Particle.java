@@ -14,6 +14,7 @@ public class Particle extends Actor{
 	public float colorR;
 	public float colorG;
 	public float colorB;
+	public float colorA;
 
 	public static void init(boolean enable){
 		System.err.println("Initializing Particles");
@@ -50,6 +51,7 @@ public class Particle extends Actor{
 		colorR = 1.0f;
 		colorG = 1.0f;
 		colorB = 1.0f;
+		colorA = 1.0f;
 	}
 	
 	public void update(){

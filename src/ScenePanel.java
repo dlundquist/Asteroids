@@ -162,7 +162,7 @@ public class ScenePanel extends GLCanvas {
 			gl.glTranslatef(p.getPosition().x(), p.getPosition().y(), -1.0f);
 			gl.glRotatef(p.getThetaDegrees(),0,0,1);
 			gl.glScalef(p.getSize(), p.getSize(), 1);
-			gl.glColor3f(p.colorR, p.colorG, p.colorB);
+			gl.glColor4f(p.colorR, p.colorG, p.colorB,p.colorA);
 			//System.err.println(p.colorR +" " + p.colorG+ " " +p.colorB);
 			gl.glBegin(7 /* GL.GL_QUADS*/);
 				gl.glVertex2d(-0.5f, -0.5f);
