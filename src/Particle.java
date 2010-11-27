@@ -5,6 +5,7 @@ public class Particle extends Actor{
 	private static final float PARTICLE_SIZE = 0.02f;
 	private static final float PARTICLE_SPIN = 0.01f;
 	private static final float SHRINK_RATE = 0.00005f;
+	public static final int DENSITY = 5;
 
 	public static java.util.Vector<Particle> particles;
 	public static boolean isEnabled;

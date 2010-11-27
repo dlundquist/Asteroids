@@ -1,6 +1,6 @@
 public class PlayerShip extends Actor {
 	private static final float PLAYER_SIZE = 0.1f;
-	private static final double FORWARD_THRUST = 0.001f;
+	private static final double FORWARD_THRUST = 0.00001f;
 	private static final double REVERSE_THRUST = -0.0003f;
 	private static final double ROTATION_INCREMENT = 0.05f;
 	private static final int SHOOT_DELAY = 10; // 10 frame delay between shots
@@ -79,8 +79,11 @@ public class PlayerShip extends Actor {
 		/* Add it to our current velocity */
 		velocity.incrementBy(thrust);
 		Particle.addParticle(this);
-		}
+		
 	
+		for(int i = 0; i < Particle.DENSITY; i++)
+			Particle.addParticle(this);
+	}
 	
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
