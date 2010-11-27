@@ -7,7 +7,7 @@ public class Bullet extends Actor {
 	private static final float BULLET_VELOCTIY = 0.035f;
 	private static final float BULLET_SIZE = 0.05f;
 	private static final float BULLET_SPIN = 0.05f;
-	private static final int BULLET_LIFETIME = 120; // 2 seconds
+	private static final int BULLET_LIFETIME = 60; // 1 second
 	
 	public Actor owner;      // The ship that shot this so we can check if we shot our self or limit the number of shots
 	private int framesToLive; // Number of frames to live;
