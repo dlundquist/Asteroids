@@ -57,10 +57,16 @@ public class InputHandler implements KeyListener {
 	}
 
 	public void update() {
+		boolean ignoreUpDown = false; //used to ignore up and down keys for brakeShip()
+		
 		/* decrement our lastPause debounce timer */
 		if (lastPause > 0)
 			lastPause --;
-		
+		//fires if up and down are pressed
+		if (keyState[1] && keyState[2]){
+			ignoreUpDown = true;
+			Asteroids.getPlayer().brakeShip();
+		}
 		
 		for (int i = 0; i < KEYS_IN_USE.length; i++) {
 			/* Skip keys that are up */
@@ -72,9 +78,13 @@ public class InputHandler implements KeyListener {
 				Asteroids.getPlayer().shoot();
 			break;
 			case(KeyEvent.VK_UP):
+				if (ignoreUpDown)
+				break;
 				Asteroids.getPlayer().forwardThrust();
 			break;
 			case(KeyEvent.VK_DOWN):
+				if (ignoreUpDown)
+					break;
 				Asteroids.getPlayer().reverseThrust();
 			break;
 			case(KeyEvent.VK_LEFT):
