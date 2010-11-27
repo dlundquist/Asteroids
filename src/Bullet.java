@@ -13,7 +13,7 @@ public class Bullet extends Actor {
 	private int framesToLive; // Number of frames to live;
 
 	public Bullet(Actor ship) {
-		position = new Vector(ship.getPosition());
+		position = new Vector(ship.getNosePosition());
 		// Relative to the ship
 		velocity = new Vector(ship.getVelocity());
 		// Add the speed of the shot

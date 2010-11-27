@@ -48,6 +48,14 @@ abstract class Actor {
 		 return tail;
 	 }
 	 
+	 public Vector getNosePosition(){
+		 Vector nose = new Vector(position);
+		 nose.incrementXBy(Math.cos(theta) * size / 2);
+		 nose.incrementYBy(Math.sin(theta) * size / 2);
+		 
+		 return nose;
+	 }
+	 
 	 /**
 	  * CL - We need to synchronize removing actors so we don't have threads
 	  *      stepping on eachother's toes.
