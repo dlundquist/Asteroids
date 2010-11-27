@@ -19,6 +19,7 @@ public class InputHandler implements KeyListener {
 		KeyEvent.VK_LEFT,
 		KeyEvent.VK_RIGHT,
 		KeyEvent.VK_ESCAPE,
+		KeyEvent.VK_Q,
 		KeyEvent.VK_PAUSE,
 		KeyEvent.VK_P,
 	};
@@ -82,6 +83,7 @@ public class InputHandler implements KeyListener {
 			case(KeyEvent.VK_RIGHT):
 				Asteroids.getPlayer().turnRight();
 			break;
+			case(KeyEvent.VK_Q):
 			case(KeyEvent.VK_ESCAPE):
 				// TODO quit
 				break;
