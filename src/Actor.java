@@ -38,6 +38,8 @@ abstract class Actor {
 		 /* Update position and angle of rotation */
 		 theta += omega;
 		 position.incrementBy(velocity);
+		 
+		 checkBounds();
 	 }
 	 
 	 public Vector getTailPosition(){
@@ -132,5 +134,21 @@ abstract class Actor {
 	 */
 	public float getSize(){
 		return size;
+	}
+	
+	/**
+	 * This checks that the position vector is in bounds (the on screen region)
+	 * and if it passes one side it moves it to the opposite edge.
+	 */
+	private void checkBounds() {
+		if (position.x() > 1)
+			position.incrementXBy(-2);
+		else if (position.x() < -1)
+			position.incrementXBy(2);
+		
+		if (position.y() > 1)
+			position.incrementYBy(-2);
+		else if (position.y() < -1)
+			position.incrementYBy(2);		
 	}
 }

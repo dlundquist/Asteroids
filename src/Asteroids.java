@@ -57,8 +57,6 @@ public class Asteroids {
 			Actor a = Actor.actors.get(i);
 			
 			a.update();
-			// Bounds checks to keep thing in the screen
-			checkBounds(a.getPosition());
 		}
 		
 		if(Particle.isEnabled)
@@ -97,24 +95,6 @@ public class Asteroids {
 	 */
 	public static void dispose() {
 		
-	}
-	
-	
-	/**
-	 * This checks that a position vector is in bounds (the on screen region) and if it
-	 * passes one side it moves it to the opposite edge.
-	 * @param a position vector which is modified if it exceeds the bounds
-	 */
-	private static void checkBounds(Vector position) {
-		if (position.x() > 1)
-			position.incrementXBy(-2);
-		else if (position.x() < -1)
-			position.incrementXBy(2);
-		
-		if (position.y() > 1)
-			position.incrementYBy(-2);
-		else if (position.y() < -1)
-			position.incrementYBy(2);		
 	}
 
 	public static void togglePause() {
