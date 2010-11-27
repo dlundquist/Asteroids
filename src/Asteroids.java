@@ -12,6 +12,7 @@ public class Asteroids {
 	public static void main(String[] args) {
 		// Load our sounds and enable them.
 		SoundEffect.init(false);
+		Particle.init(true);
 		new GUI();
 	}
 	
@@ -53,6 +54,9 @@ public class Asteroids {
 			// Bounds checks to keep thing in the screen
 			checkBounds(a.getPosition());
 		}
+		
+		if(Particle.isEnabled)
+			Particle.updateParticles();
 		
 		/*
 		 * Collision detection

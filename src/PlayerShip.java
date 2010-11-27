@@ -72,6 +72,7 @@ public class PlayerShip extends Actor {
 		thrust.scaleBy(FORWARD_THRUST);
 		/* Add it to our current velocity */
 		velocity.incrementBy(thrust);
+		Particle.addParticle(this);
 	}
 	
 	public void reverseThrust() {

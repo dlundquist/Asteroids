@@ -40,6 +40,14 @@ abstract class Actor {
 		 position.incrementBy(velocity);
 	 }
 	 
+	 public Vector getTailPosition(){
+		 Vector tail = new Vector(position);
+		 tail.incrementXBy(-Math.cos(theta) * size / 2);
+		 tail.incrementYBy(-Math.sin(theta) * size / 2);
+		 
+		 return tail;
+	 }
+	 
 	 /**
 	  * CL - We need to synchronize removing actors so we don't have threads
 	  *      stepping on eachother's toes.

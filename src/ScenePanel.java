@@ -38,6 +38,8 @@ public class ScenePanel extends GLCanvas {
 			/*  It is where we should initialize various OpenGL features. */
 			GL2 gl = drawable.getGL().getGL2();
 
+			gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+			gl.glClearDepthf(1.0f);
 			// Enable Textures
 			gl.glEnable(GL.GL_TEXTURE_2D);
 			// Enable alpha blending
@@ -103,15 +105,19 @@ public class ScenePanel extends GLCanvas {
 		
 		// Clear the buffer in case we don't draw in every position
 		// we won't have ghosting
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		
 		// Render background
+		// FIXME gl.glClear(GL.GL_COLOR_BUFFER_BIT) should reset the color but doesn't seem to
+		gl.glColor3f(1.0f, 1.0f, 1.0f);
 		gl.glLoadIdentity();
 		gl.glBindTexture(GL.GL_TEXTURE_2D, Sprite.background().getTextureId());
 		gl.glTranslatef(0, 0, -2);
 		gl.glScalef(4, 4, 1);
 		// The Polygon for our background image to map a texture to
 		drawNormalSquare(gl);
+		
+
 
 		/* Loop through all our actors in reverse order rendering them
 		 * so the PlayerShip gets drawn last.
@@ -142,8 +148,36 @@ public class ScenePanel extends GLCanvas {
 			// Draw a Normal Square at the origin at will be transformed as
 			// described above in glScale,glRotate,glTranslate
 			// For our actor to map a texture to
-			drawNormalSquare(gl);  	
+			drawNormalSquare(gl);  
+			}
+		if(Particle.isEnabled)
+			renderParticles(gl);
+	}
+	
+	private void renderParticles(GL2 gl){
+		gl.glDisable(GL.GL_TEXTURE_2D);
+		for(int i = 0; i < Particle.particles.size(); i++){
+			Particle p = Particle.particles.get(i);
+			gl.glLoadIdentity();
+			gl.glTranslatef(p.getPosition().x(), p.getPosition().y(), -1.0f);
+			gl.glRotatef(p.getThetaDegrees(),0,0,1);
+			gl.glScalef(p.getSize(), p.getSize(), 1);
+			gl.glColor3f(p.colorR, p.colorG, p.colorB);
+			//System.err.println(p.colorR +" " + p.colorG+ " " +p.colorB);
+			gl.glBegin(7 /* GL.GL_QUADS*/);
+				gl.glVertex2d(-0.5f, -0.5f);
+				// Bottom Right
+				//gl.glTexCoord2f(1, 1);
+				gl.glVertex2d(0.5f, -0.5f);
+				// Top Right
+				//gl.glTexCoord2f(1, 0);
+				gl.glVertex2d(0.5f, 0.5f);
+				// Top Left
+				//gl.glTexCoord2f(0, 0);
+				gl.glVertex2d(-0.5f, 0.5f);
+			gl.glEnd();
 		}
+		gl.glEnable(GL.GL_TEXTURE_2D);
 	}
 	
 	/**
