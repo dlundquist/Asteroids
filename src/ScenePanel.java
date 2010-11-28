@@ -191,26 +191,17 @@ public class ScenePanel extends GLCanvas {
 		    // Points must be counter clockwise defined or they will
 		    // be removed by back face culling
 		
-			/* Java loads our textures upside down,
-			 * we suspect this is a legacy artifact
-			 * of the BMP format which stores images
-			 * upside down which was commonly used for
-			 * GUI widgets during the time Java was
-			 * originally written. So we flip the 
-			 * Y-coordinates of our texture space.
-			 */
-		
 			// Bottom Left
-			gl.glTexCoord2f(0, 1);
+			gl.glTexCoord2f(0, 0);
 			gl.glVertex2d(-0.5f, -0.5f);
 			// Bottom Right
-			gl.glTexCoord2f(1, 1);
+			gl.glTexCoord2f(1, 0);
 			gl.glVertex2d(0.5f, -0.5f);
 			// Top Right
-			gl.glTexCoord2f(1, 0);
+			gl.glTexCoord2f(1, 1);
 			gl.glVertex2d(0.5f, 0.5f);
 			// Top Left
-			gl.glTexCoord2f(0, 0);
+			gl.glTexCoord2f(0, 1);
 			gl.glVertex2d(-0.5f, 0.5f);
 		gl.glEnd();
 	}
