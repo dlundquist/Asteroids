@@ -1,10 +1,10 @@
 public class Asteroid extends Actor {
 	public Asteroid() {
 		position = new Vector(gen.nextFloat() * 2 - 1, gen.nextFloat() * 2 - 1);
-		velocity = new Vector(gen.nextFloat()/20, gen.nextFloat()/20);
+		velocity = new Vector(gen.nextFloat()/40, gen.nextFloat()/40);
 		sprite = Sprite.asteroid();
 		omega = gen.nextFloat() / 60;
-		size = gen.nextFloat() / 3;
+		size = gen.nextFloat() / 8.0f + 0.1f;
 	}
 
 	public Asteroid(float px, float py, float vx, float vy) {
@@ -28,6 +28,9 @@ public class Asteroid extends Actor {
 		// Play our awesome explosion if sound is enabled
 		if(SoundEffect.isEnabled())
 			SoundEffect.forAsteroidDeath().play();
+		
+		ParticleSystem.addDebrisParticle(this);
+		
 		// Remove ourself from the game since we blew up
 		delete();
 	}

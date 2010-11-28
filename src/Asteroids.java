@@ -13,7 +13,7 @@ public class Asteroids {
 	public static void main(String[] args) {
 		// Load our sounds and enable them.
 		SoundEffect.init(false);
-		Particle.init(true);
+		ParticleSystem.init(true);
 		new GUI();
 	}
 	
@@ -59,8 +59,8 @@ public class Asteroids {
 			a.update();
 		}
 		
-		if(Particle.isEnabled)
-			Particle.updateParticles();
+		if(ParticleSystem.isEnabled)
+			ParticleSystem.updateParticles();
 		
 		/*
 		 * Collision detection

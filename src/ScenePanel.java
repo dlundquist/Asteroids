@@ -150,14 +150,14 @@ public class ScenePanel extends GLCanvas {
 			// For our actor to map a texture to
 			drawNormalSquare(gl);  
 			}
-		if(Particle.isEnabled)
+		if(ParticleSystem.isEnabled)
 			renderParticles(gl);
 	}
 	
 	private void renderParticles(GL2 gl){
 		gl.glDisable(GL.GL_TEXTURE_2D);
-		for(int i = 0; i < Particle.particles.size(); i++){
-			Particle p = Particle.particles.get(i);
+		for(int i = 0; i < ParticleSystem.particles.size(); i++){
+			Particle p = ParticleSystem.particles.get(i);
 			gl.glLoadIdentity();
 			gl.glTranslatef(p.getPosition().x(), p.getPosition().y(), -1.0f);
 			gl.glRotatef(p.getThetaDegrees(),0,0,1);
