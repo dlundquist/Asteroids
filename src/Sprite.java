@@ -18,15 +18,17 @@ public class Sprite {
 	public static final int ASTEROID_ID = 1;
 	public static final int PLAYERSHIP_ID = 2;
 	public static final int BULLET_ID = 3;
-	public static final int TRIPPLE_SHOT_POWER_UP_ID = 4;
+	public static final int POWER_UP_ID = 4;
+	public static final int TRIPLE_SHOT_POWER_UP_ID = 5;
 
 	/* The order here must match the indexes above */
 	private static final String[] TEXTURE_FILES = {
-		"background.jpg",
-		"asteroid.png",
-		"ship.png",
-		"bullet.png",
-		"ship2.png"
+		"background.jpg", /* BACKGROUND            */
+		"asteroid.png",   /* ASTEROID              */
+		"ship.png",       /* PLAYER_SHIP           */
+		"bullet.png",     /* BULLET                */
+		"ship2.png",      /* POWER_UP              */
+		"ship2.png"       /* TRIPLE_SHOT_POWER_UP  */
 	};
 	private static final String TEXTURE_DIR = "data";
 	
@@ -101,6 +103,14 @@ public class Sprite {
 		return sprites.get(BULLET_ID);
 	}
 
+	public static Sprite tripleShotPowerUp() {
+		return sprites.get(TRIPLE_SHOT_POWER_UP_ID);
+	}
+	
+	public static Sprite powerUp() {
+		return sprites.get(POWER_UP_ID);
+	}
+
 	/* Switched texture loading method, to method from
 	 * http://today.java.net/pub/a/today/2003/09/11/jogl2d.html
 	 * 
@@ -148,9 +158,5 @@ public class Sprite {
 		dest.rewind();
 
 		gl.glTexImage2D(target, 0, GL.GL_RGBA, img.getWidth(), img.getHeight(), 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, dest);
-	}
-
-	public static Sprite trippleShotPowerUp() {
-		return sprites.get(TRIPPLE_SHOT_POWER_UP_ID);
 	}
 }

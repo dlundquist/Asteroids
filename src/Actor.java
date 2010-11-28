@@ -136,6 +136,12 @@ abstract class Actor {
 		return size;
 	}
 	
+	// Lets you reference chain
+	public Actor setSize(float newSize){
+		size = newSize;
+		return this;
+	}
+	
 	/**
 	 * This checks that the position vector is in bounds (the on screen region)
 	 * and if it passes one side it moves it to the opposite edge.

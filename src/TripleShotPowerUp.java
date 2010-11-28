@@ -1,27 +1,29 @@
 
-/*
+/**
  * Author: Chris Lundquist
+ * Description: When a PlayerShip collides, we replace the PlayerShip Weapon with
+ *              a TripleShotWeapon
  */
-public class TrippleShotPowerUp extends PowerUp{
+public class TripleShotPowerUp extends PowerUp{
 
-	TrippleShotPowerUp(Vector pos) {
+	TripleShotPowerUp(Vector pos) {
 		super(pos);
 		init();
 	}
 
-	public TrippleShotPowerUp(float x, float y) {
+	public TripleShotPowerUp(float x, float y) {
 		super(x,y);
 		init();
 	}
 	
 	private void init(){
-		sprite = Sprite.trippleShotPowerUp();
+		sprite = Sprite.tripleShotPowerUp();
 	}
 
 	@Override
 	void applyTo(PlayerShip player) {
-		// Give the player the tripple shot weapon
-		player.weapon = new TrippleShotWeapon(player);
+		// Give the player the triple shot weapon
+		player.weapon = new TripleShotWeapon(player);
 		// After the player gets it, delete it
 		delete();
 	}

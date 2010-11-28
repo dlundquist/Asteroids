@@ -36,7 +36,7 @@ public class Asteroids {
 		for (int i = 0; i < 5; i++)
 			Actor.actors.add(new Asteroid());
 		
-		Actor.actors.add(new TrippleShotPowerUp(0.5f,0.4f));
+		Actor.actors.add(new TripleShotPowerUp(0.5f,0.4f));
 		
 	}
 	

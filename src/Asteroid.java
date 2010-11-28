@@ -15,7 +15,12 @@ public class Asteroid extends Actor {
 
 
 	public void handleCollision(Actor other) {
-		// TODO handle collions
+		// We don't want to blow up on PowerUps
+		if(other instanceof PowerUp){
+			return;
+		}
+		
+		// TODO handle collisions
 		/*
 		 * If asteroids is very small
 		 * 		asteroids.delete();
@@ -29,9 +34,7 @@ public class Asteroid extends Actor {
 		if(SoundEffect.isEnabled())
 			SoundEffect.forAsteroidDeath().play();
 		
-		if(other instanceof PowerUp){
-			return;
-		}
+		// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
 		ParticleSystem.addDebrisParticle(this);
 		
 		// Remove ourself from the game since we blew up

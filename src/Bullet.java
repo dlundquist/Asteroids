@@ -47,6 +47,7 @@ public class Bullet extends Actor {
 		// We can't shoot ourself
 		if(other == owner)
 			return;
+		// We don't want to disappear when we hit a PowerUp
 		if(other instanceof PowerUp){
 			return;
 		}
