@@ -27,17 +27,35 @@ public class Bullet extends Actor {
 		omega = BULLET_SPIN;
 		size = BULLET_SIZE;
 	}
+	
+	public Bullet(Actor ship, float deflection_angle) {
+		position = new Vector(ship.getNosePosition());
+		// Relative to the ship
+		velocity = new Vector(ship.getVelocity());
+		// Add the speed of the shot
+		velocity.incrementXBy(BULLET_VELOCTIY * Math.cos(ship.getTheta() - deflection_angle));
+		velocity.incrementYBy(BULLET_VELOCTIY * Math.sin(ship.getTheta() - deflection_angle));
+		framesToLive = BULLET_LIFETIME;
+		owner = ship;
+		theta = 0;
+		sprite = Sprite.bullet();
+		omega = BULLET_SPIN;
+		size = BULLET_SIZE;
+	}
 
 	public void handleCollision(Actor other) {
 		// We can't shoot ourself
 		if(other == owner)
 			return;
+		if(other instanceof PowerUp){
+			return;
+		}
 		
 		// Play our awesome sound
 		if(SoundEffect.isEnabled())
     		SoundEffect.forBulletHit().play();
 		
-		// Remove ourself form the game
+		// Remove ourself from the game
 		delete();
 	}
 

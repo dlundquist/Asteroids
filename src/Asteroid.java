@@ -29,6 +29,9 @@ public class Asteroid extends Actor {
 		if(SoundEffect.isEnabled())
 			SoundEffect.forAsteroidDeath().play();
 		
+		if(other instanceof PowerUp){
+			return;
+		}
 		ParticleSystem.addDebrisParticle(this);
 		
 		// Remove ourself from the game since we blew up
