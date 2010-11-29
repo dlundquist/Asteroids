@@ -4,6 +4,7 @@ public class PlayerShip extends Actor {
 	private static final double REVERSE_THRUST = -0.0003f;
 	private static final double ROTATION_INCREMENT = 0.05f;
 	private static final double MAX_SPEED = 0.03f;
+	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
 	
 	protected Weapon weapon;
@@ -56,6 +57,7 @@ public class PlayerShip extends Actor {
 	public void forwardThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
+		//Setting max speed
 		if (this.velocity.magnitude()>=MAX_SPEED){
 			thrust.scaleBy(0);
 			velocity.incrementBy(thrust);
@@ -71,8 +73,13 @@ public class PlayerShip extends Actor {
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
+		// setting max reverse speed
+		if (this.velocity.magnitude()>=MAX_REVERSE_SPEED){
+			thrust.scaleBy(0);
+			velocity.incrementBy(thrust);
+		}
 		/* Scale it by our thrust by a negative amount to slow our ship */
-		thrust.scaleBy(REVERSE_THRUST);
+		else thrust.scaleBy(REVERSE_THRUST);
 		/* And add it to our current velocity */
 		velocity.incrementBy(thrust);
 	}
