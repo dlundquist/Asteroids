@@ -57,8 +57,8 @@ Installing Java OpenGL
           then jar, choose 'jogl.all.jar'
     vi.   Select Native library location for 'jogl.all.jar'
     vii.  Click Edit, External Folder
-    viii. Navigate ot the location you chose in step 2,
+    viii. Navigate to the location you chose in step 2,
           then lib, click OK
-    ix.   Repeate steps iii through viii for 'gluegen-rt.jar',
+    ix.   Repeat steps iii through viii for 'gluegen-rt.jar',
           'nativewindow.all.jar', and 'newt.all.jar'
-    x.    Click OK to close the prefernces panel
+    x.    Click OK to close the preferences panel
