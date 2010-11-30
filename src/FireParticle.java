@@ -11,8 +11,8 @@ public class FireParticle extends Particle{
 		// Relative to the ship
 		velocity = new Vector(ship.getVelocity());
 		// Add the speed of the shot
-		velocity.incrementXBy(-PARTICLE_VELOCTIY * (Math.cos(ship.getTheta()) + gen.nextFloat() - 0.5f));
-		velocity.incrementYBy(-PARTICLE_VELOCTIY * (Math.sin(ship.getTheta()) + gen.nextFloat() - 0.5f));
+		velocity.incrementXBy(-PARTICLE_VELOCTIY * (Math.cos(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
+		velocity.incrementYBy(-PARTICLE_VELOCTIY * (Math.sin(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
 
 		framesToLive = PARTICLE_LIFETIME;
 		theta = 0;
