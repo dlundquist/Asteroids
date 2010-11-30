@@ -22,8 +22,12 @@ public class InputHandler implements KeyListener {
 		KeyEvent.VK_Q,
 		KeyEvent.VK_PAUSE,
 		KeyEvent.VK_P,
+		KeyEvent.VK_W,
+		KeyEvent.VK_S,
 	};
 	private int lastPause;
+	private int warpDebounce;
+	private int flipDebounce;
 
 
 	public InputHandler() {
@@ -58,34 +62,37 @@ public class InputHandler implements KeyListener {
 
 	public void update() {
 		boolean ignoreUpDown = false; //used to ignore up and down keys for brakeShip()
-		
 		/* decrement our lastPause debounce timer */
 		if (lastPause > 0)
 			lastPause --;
+		//decrement the warpDebounce timer
+		if (warpDebounce > 0)
+			warpDebounce--;
+		if (flipDebounce > 0)
+			flipDebounce--;
 		//fires if up and down are pressed
 		if (keyState[1] && keyState[2]){
 			ignoreUpDown = true;
 			Asteroids.getPlayer().brakeShip();
 		}
-		
+
 		for (int i = 0; i < KEYS_IN_USE.length; i++) {
 			/* Skip keys that are up */
 			if (keyState[i] == false)
 				continue;
-
 			switch(KEYS_IN_USE[i]){
 			case(KeyEvent.VK_SPACE):
 				Asteroids.getPlayer().shoot();
 			break;
 			case(KeyEvent.VK_UP):
 				if (ignoreUpDown)
-				break;
-				Asteroids.getPlayer().forwardThrust();
+					break;
+			Asteroids.getPlayer().forwardThrust();
 			break;
 			case(KeyEvent.VK_DOWN):
 				if (ignoreUpDown)
 					break;
-				Asteroids.getPlayer().reverseThrust();
+			Asteroids.getPlayer().reverseThrust();
 			break;
 			case(KeyEvent.VK_LEFT):
 				Asteroids.getPlayer().turnLeft();
@@ -106,10 +113,25 @@ public class InputHandler implements KeyListener {
 					Asteroids.togglePause();
 				}
 			break;
+			//Warp ship
+			case(KeyEvent.VK_W):
+				System.err.println(warpDebounce);
+				if(warpDebounce == 0){
+					Asteroids.getPlayer().warpShip();
+					warpDebounce=20;
+					break;
+				}
+			break; 
+			//Flip Ship 180
+			case(KeyEvent.VK_S):
+				if(flipDebounce == 0){
+				Asteroids.getPlayer().flipShip();
+				flipDebounce = 10;
+				}
+			break;
 			default:
-				// Do nothing	
+				//do nothing
 			}
 		}
-
 	}
 }
