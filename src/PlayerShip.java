@@ -1,7 +1,9 @@
+import java.util.Random;
+
 public class PlayerShip extends Actor {
 	private static final float PLAYER_SIZE = 0.1f;
-	private static final double FORWARD_THRUST = 0.0001f;
-	private static final double REVERSE_THRUST = -0.0003f;
+	private static final double FORWARD_THRUST = 0.0003f;
+	private static final double REVERSE_THRUST = -0.0002f;
 	private static final double ROTATION_INCREMENT = 0.05f;
 	private static final double MAX_SPEED = 0.03f;
 	private static final double MAX_REVERSE_SPEED = 0.02f;
@@ -95,6 +97,16 @@ public class PlayerShip extends Actor {
 	public void brakeShip() {
 		double velocityDecrement = BRAKE_AMOUNT;
 		this.velocity.scaleBy(velocityDecrement);
+	}
+	public void warpShip(){
+		Random rand = new Random();
+		float randomX = rand.nextFloat()-rand.nextFloat();
+		float randomY = rand.nextFloat()-rand.nextFloat();
+		position = new Vector(randomX,randomY);
+	}
+
+	public void flipShip() {
+		theta -= 3.14;
 	}
 }
 
