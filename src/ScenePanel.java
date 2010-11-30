@@ -21,7 +21,7 @@ public class ScenePanel extends GLCanvas {
 		
 		setPreferredSize(new Dimension(500, 500));
 
-		addGLEventListener(new GLEventHandler());
+		addGLEventListener(new GLEventHandler(this));
 		// Register our keyboard listener
 		addKeyListener(input);
 		
@@ -33,6 +33,12 @@ public class ScenePanel extends GLCanvas {
 	 * This private inner class implements the OpenGL calls backs.
 	 */
 	private class GLEventHandler implements GLEventListener {
+		private GLCanvas canvas;
+		
+		public GLEventHandler(GLCanvas canvas) {
+			this.canvas = canvas;
+		}
+		
 		@Override
 		public void init(GLAutoDrawable drawable) {
 			/*  It is where we should initialize various OpenGL features. */
@@ -58,6 +64,10 @@ public class ScenePanel extends GLCanvas {
 
 		@Override
 		public void display(GLAutoDrawable drawable) {
+			/* Only update if the canvas is in focus */
+			if (canvas.hasFocus() == false)
+				return;
+			
 			input.update();
 			
 			Asteroids.update();
