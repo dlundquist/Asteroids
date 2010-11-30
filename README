@@ -25,6 +25,22 @@ Classes
 		Asteroid - the Asteroids in the game
 		PlayerShip - the player's ship
 		Bullet - a projectile shot by the player's ship.
+		PowerUp - See Below
+		Particle - See Below
+	InputHandler - Handles Keyboard inputs.
+	SoundEffect - Manages Sounds. E.G. SoundEffect.forPlayerDeath().play();
+	Sound - Plays a wav or mp3 file in a new separate thread.
+	ParticleSystem - Manages the particles in the game.
+		Particle - While it is an Actor, its stored in the ParticleSystem.particles
+		           Vector. This keeps them from being collision detected.
+		    FireParticle - A Particle class to simulate fire. Specifically player thrust.
+		    DebrisPartic - A Particle class to simulate asteroid debris
+    Weapon - Class for the Weapon of the PlayerShip. Weapons implement shoot();
+        BasicWeapon - The weapon that the player starts with. Shoots 1 shot at a time
+        TripleShotWeapon - A player weapon that shoots 3 shots at a time.
+    PowerUp - An Actor that represents a power up that the player can get by running over.
+        TripleShotPowerUp - Replaces the player's ship's weapon with a TripleShotWeapon.
+		      
 	
 
 Installing Java OpenGL
