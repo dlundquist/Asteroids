@@ -20,6 +20,10 @@ public class Asteroid extends Actor {
 			return;
 		}
 		
+		if(other instanceof Bullet){
+			ScorePanel.getScorePanel().asteroidHit(size);
+		}
+		
 		// TODO handle collisions
 		/*
 		 * If asteroids is very small

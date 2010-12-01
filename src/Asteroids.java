@@ -89,6 +89,9 @@ public class Asteroids {
 				}
 			}
 		} /* End Collision Detection */
+		
+		
+		ScorePanel.getScorePanel().updateScores();
 	}
 	
 	/**
