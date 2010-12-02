@@ -5,6 +5,10 @@
 public class Asteroids {
 	private static PlayerShip playerShip;
 	private static boolean isPaused;
+	private static int asteroidsLeft = 100;
+	private static int timeBetween = 110;
+	private static int asteroidTimer = timeBetween;
+	private final static int TIMER_REDUCED_BY = 1;
 
 	/**
 	 * Our main function
@@ -16,7 +20,7 @@ public class Asteroids {
 		ParticleSystem.init(true);
 		new GUI();
 	}
-	
+
 	/**
 	 * This is called by ScenePanel as the beginning of the game
 	 * put any game initialization code here.
@@ -33,17 +37,15 @@ public class Asteroids {
 		playerShip = new PlayerShip(0,0,0,0);
 		Actor.actors.add(playerShip);
 
-		for (int i = 0; i < 5; i++)
-			Actor.actors.add(new Asteroid());
-		
+
 		Actor.actors.add(new TripleShotPowerUp(0.5f,0.4f));
-		
+
 	}
-	
+
 	public static PlayerShip getPlayer() {
-	    return playerShip;
+		return playerShip;
 	}
-	
+
 	/**
 	 *  This is called every frame by the ScenePanel
 	 *  put game code here
@@ -51,19 +53,32 @@ public class Asteroids {
 	public static void update() {
 		if (isPaused)
 			return;
-		
+
+		asteroidTimer--;
+
+		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
+		 * subtract 1 from the asteroids left total
+		 */
+		if (asteroidTimer == 0 && asteroidsLeft >= 0){
+			Actor.actors.add(new Asteroid());
+			asteroidsLeft--;
+			timeBetween -= TIMER_REDUCED_BY;
+			asteroidTimer = timeBetween;
+			System.out.println("asteroidsLeft = "+asteroidsLeft);
+		}
+
 		// Update each actor
 		for(int i = 0; i < Actor.actors.size(); i++) {
 			// We get the actor only once in case we the actor is removed
 			// during the update phase. E.G. Bullets FramesToLive reaches 0
 			Actor a = Actor.actors.get(i);
-			
+
 			a.update();
 		}
-		
+
 		if(ParticleSystem.isEnabled)
 			ParticleSystem.updateParticles();
-		
+
 		/*
 		 * Collision detection
 		 * For each actor, check for collisions with the remaining actors
@@ -72,13 +87,13 @@ public class Asteroids {
 		 */
 		for(int i = 0; i < Actor.actors.size(); i++) {
 			Actor a = Actor.actors.get(i);
-			
+
 			for (int j = i + 1; j < Actor.actors.size(); j++) {
 				Actor b = Actor.actors.get(j);
-				
+
 				/* Our sizes are the diameter of each object and we want the distance between their centers */				
 				float minDistanceBetweenCenters = a.getSize() / 2 + b.getSize() / 2;
-				
+
 				/* Here we compare the distance squared rather than the distance to avoid 
 				 * the computationally expensive square root operation.
 				 */			
@@ -89,17 +104,17 @@ public class Asteroids {
 				}
 			}
 		} /* End Collision Detection */
-		
-		
+
+
 		ScorePanel.getScorePanel().updateScores();
 	}
-	
+
 	/**
 	 * This is called by ScenePanel at the end of the game
 	 * any cleanup code should go here
 	 */
 	public static void dispose() {
-		
+
 	}
 
 	public static void togglePause() {
