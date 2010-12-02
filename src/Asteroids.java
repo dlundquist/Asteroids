@@ -59,7 +59,7 @@ public class Asteroids {
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
 		 */
-		if (asteroidTimer == 0 && asteroidsLeft >= 0){
+		if (asteroidTimer == 0 && asteroidsLeft > 0){
 			Actor.actors.add(new Asteroid());
 			asteroidsLeft--;
 			timeBetween -= TIMER_REDUCED_BY;
@@ -115,6 +115,9 @@ public class Asteroids {
 	 */
 	public static void dispose() {
 
+	}
+	public static boolean getPauseState(){
+		return isPaused;
 	}
 
 	public static void togglePause() {
