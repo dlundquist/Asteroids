@@ -44,7 +44,7 @@ public class PlayerShip extends Actor {
 		}
 		// Is the other guy an Asteroid?
 		else if ( other instanceof Asteroid) {
-			
+			ScorePanel.getScorePanel().playerHit();
 		}
 		// Play the sound effect for player death
 		if(SoundEffect.isEnabled())

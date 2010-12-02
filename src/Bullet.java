@@ -70,6 +70,7 @@ public class Bullet extends Actor {
 		/* and remove the bullet when it reaches zero */
 		if(framesToLive == 0) {
 			delete();
+			ScorePanel.getScorePanel().bulletMissed();
 		}	
 	}
 }
