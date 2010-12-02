@@ -1,6 +1,28 @@
 public class Asteroid extends Actor {
 	public Asteroid() {
-		position = new Vector(gen.nextFloat() * 2 - 1, gen.nextFloat() * 2 - 1);
+		int randSide = gen.nextInt(3);
+		float px = 0,py = 0;
+		
+		//have the asteroids first appear off screen at a random spot
+		switch(randSide){
+		case(0):
+			px = -1f;
+			py = gen.nextFloat()*2-1;
+			break;
+		case(1):
+			px = 1f;
+			py = gen.nextFloat()*2-1;
+			break;
+		case(2):
+			px = gen.nextFloat()*2-1;
+			py = -1f;
+			break;
+		case(3):
+			px = gen.nextFloat()*2-1;
+			py = 1f;
+			break;
+		}
+		position = new Vector(px, py);
 		velocity = new Vector(gen.nextFloat()/40, gen.nextFloat()/40);
 		sprite = Sprite.asteroid();
 		omega = gen.nextFloat() / 60;
