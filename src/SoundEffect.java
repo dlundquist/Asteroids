@@ -6,7 +6,8 @@ public class SoundEffect {
 	// TODO make this sexy. This looks like copy pasta.
 	private static final String BULLET_SHOT_FILE = "explode.mp3";
 	private static final String BULLET_HIT_FILE = "explode.mp3";
-	private static final String ASTEROID_DEATH_FILE = "explode.mp3";
+	private static final String LARGE_ASTEROID_DEATH_FILE = "large_asteroid_explosion.mp3";
+	private static final String SMALL_ASTEROID_DEATH_FILE = "small_asteroid_explosion.mp3";
 	private static final String PLAYER_DEATH_FILE = "explode.mp3";
 
 
@@ -14,18 +15,19 @@ public class SoundEffect {
 	// same sound multiple times. So we have them as static members/fields
 	private static Sound bulletShot;
 	private static Sound bulletHit;
-	private static Sound asteroidDeath;
+	private static Sound largeAsteroidDeath;
+	private static Sound smallAsteroidDeath;
 	private static Sound playerDeath;
 
 	// Initializes our sound effects
 	public static void init(boolean isEnabled) {
-		if(isEnabled)
-		{
+		if(isEnabled){
 			System.err.println("Initializing Sound");
 			enabled = true;
 			bulletShot = new Sound(BULLET_SHOT_FILE);
 			bulletHit = new Sound(BULLET_HIT_FILE);
-			asteroidDeath = new Sound(ASTEROID_DEATH_FILE);
+			largeAsteroidDeath = new Sound(LARGE_ASTEROID_DEATH_FILE);
+			smallAsteroidDeath = new Sound(SMALL_ASTEROID_DEATH_FILE);
 			playerDeath = new Sound(PLAYER_DEATH_FILE);
 		}
 		else {
@@ -49,10 +51,14 @@ public class SoundEffect {
 	}
 
 	// Returns our sound for when Asteroids blow up / die
-	static public Sound forAsteroidDeath(){
-		return asteroidDeath;
+	static public Sound forLargeAsteroidDeath(){
+		return largeAsteroidDeath;
 	}
 
+	// Returns our sound for when Asteroids blow up / die
+	static public Sound forSmallAsteroidDeath(){
+		return smallAsteroidDeath;
+	}
 	// Returns our sound for when players blow up /die
 	static public Sound forPlayerDeath(){
 		return playerDeath;
@@ -61,7 +67,7 @@ public class SoundEffect {
 	static public void main(String[] args) {
 		SoundEffect.init(false);
 		SoundEffect.init(true);
-		SoundEffect.forAsteroidDeath().play();
+		SoundEffect.forSmallAsteroidDeath().play();
 		SoundEffect.forPlayerDeath().play();
 		SoundEffect.forBulletShot().play();
 		SoundEffect.forBulletHit().play();
