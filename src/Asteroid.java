@@ -41,6 +41,9 @@ public class Asteroid extends Actor {
 		if(other instanceof PowerUp){
 			return;
 		}
+		if(other instanceof Asteroid){
+			return;
+		}
 		
 		if(other instanceof Bullet){
 			ScorePanel.getScorePanel().asteroidHit(size);
