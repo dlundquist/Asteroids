@@ -23,9 +23,11 @@ public class Asteroid extends Actor {
 			break;
 		}
 		position = new Vector(px, py);
-		velocity = new Vector(gen.nextFloat()/40, gen.nextFloat()/40);
+		// Make our Asteroids initial velocity random, not always towards the first quadrant
+		velocity = new Vector((gen.nextFloat() - 0.5f )/40, (gen.nextFloat() - 0.5f) /40);
 		sprite = Sprite.asteroid();
 		omega = gen.nextFloat() / 60;
+		theta = gen.nextFloat() * 2.0f * (float)Math.PI;
 		size = gen.nextFloat() / 8.0f + 0.1f;
 	}
 
