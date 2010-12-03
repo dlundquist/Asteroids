@@ -31,12 +31,14 @@ public class Asteroid extends Actor {
 		omega = gen.nextFloat() / 60;
 		theta = gen.nextFloat() * 2.0f * (float)Math.PI;
 		size = gen.nextFloat() / 8.0f + 0.1f;
+		id = generateId();
 	}
 
 	public Asteroid(float px, float py, float vx, float vy) {
 		position = new Vector(px, py);
 		velocity = new Vector(vx, vy);
 		sprite = Sprite.asteroid();
+		id = generateId();
 	}
 
 

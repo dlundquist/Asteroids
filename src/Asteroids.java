@@ -72,7 +72,11 @@ public class Asteroids {
 			// We get the actor only once in case we the actor is removed
 			// during the update phase. E.G. Bullets FramesToLive reaches 0
 			Actor a = Actor.actors.get(i);
-
+			
+			// Track down actors without ids.
+			if (a.id == 0)
+				System.err.println("DEBUG: " + a + " actor without ID set");
+			
 			a.update();
 		}
 
@@ -116,6 +120,7 @@ public class Asteroids {
 	public static void dispose() {
 
 	}
+	
 	public static boolean getPauseState(){
 		return isPaused;
 	}
@@ -125,5 +130,10 @@ public class Asteroids {
 			isPaused = false;
 		else
 			isPaused = true;
+	}
+
+	public static void quitGame() {
+		// TODO Auto-generated method stub
+		
 	}
 }

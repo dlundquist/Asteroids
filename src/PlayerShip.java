@@ -1,5 +1,3 @@
-import java.util.Random;
-
 public class PlayerShip extends Actor {
 	private static final float PLAYER_SIZE = 0.1f;
 	private static final double FORWARD_THRUST = 0.0003f;
@@ -13,12 +11,7 @@ public class PlayerShip extends Actor {
 
 	
 	public PlayerShip() {
-		position = new Vector(gen.nextFloat() * 2 - 1, gen.nextFloat() * 2 - 1);
-		velocity = new Vector();
-		sprite = Sprite.playerShip();
-		omega = gen.nextFloat();
-		size = PLAYER_SIZE;
-		weapon = new BasicWeapon(this);
+		this(0, 0, 0, 0);
 	}
 
 	public PlayerShip(float px, float py, float vx, float vy) {
@@ -27,6 +20,7 @@ public class PlayerShip extends Actor {
 		sprite = Sprite.playerShip();
 		size = PLAYER_SIZE;
 		weapon = new BasicWeapon(this);
+		id = generateId();
 	}
 	
 	public void update() {
@@ -36,12 +30,10 @@ public class PlayerShip extends Actor {
 	}
 
 	public void handleCollision(Actor other) {
-		// Is the other guy a Bullet?
-		if(other instanceof Bullet) {
-			Bullet bullet = (Bullet) other;
-			if(bullet.owner == this)
-				return;
-		}
+		// Ignore things we spawned e.g. our bullets
+		if(other.parentId == id)
+			return;
+		
 		// Is the other guy an Asteroid?
 		else if ( other instanceof Asteroid) {
 			ScorePanel.getScorePanel().playerHit();
@@ -98,15 +90,19 @@ public class PlayerShip extends Actor {
 		double velocityDecrement = BRAKE_AMOUNT;
 		this.velocity.scaleBy(velocityDecrement);
 	}
+	
 	public void warpShip(){
-		Random rand = new Random();
-		float randomX = rand.nextFloat()-rand.nextFloat();
-		float randomY = rand.nextFloat()-rand.nextFloat();
-		position = new Vector(randomX,randomY);
+		/* Would this be better as:
+		 * 2 * gen.nextFloat() - 1
+		 * or does this bias the random warp to the center
+		 * of the screen? 
+		 */
+		position.setX(gen.nextFloat() - gen.nextFloat());
+		position.setY(gen.nextFloat() - gen.nextFloat());
 	}
 
 	public void flipShip() {
-		theta -= 3.14;
+		theta += Math.PI;
 	}
 }
 
