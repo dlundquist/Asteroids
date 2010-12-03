@@ -1,6 +1,6 @@
 public class Asteroid extends Actor {
-	private static final float LARGE_ASTEROID_SIZE = 0.5f;
-	private static final float SMALL_ASTEROID_SIZE = 0.49f;
+	private static final float LARGE_ASTEROID_SIZE = 0.15f;
+	private static final float SMALL_ASTEROID_SIZE = 0.15f;
 	public Asteroid() {
 		int randSide = gen.nextInt(3);
 		float px = 0,py = 0;
