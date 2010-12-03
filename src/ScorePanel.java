@@ -8,10 +8,10 @@ public class ScorePanel extends JPanel {
     private static final float SMALL_ASTEROID = 0.1f + .03125f;
     private static final float MEDIUM_ASTEROID = 0.1f + 2*.03125f;
     private static final float LARGE_ASTEROID = 0.1f + 3*.03125f;
-    private static final int SMALL_ASTEROID_VALUE = 11;
-    private static final int MEDIUM_ASTEROID_VALUE = 13;
-    private static final int LARGE_ASTEROID_VALUE = 15;
-    private static final int LARGEST_ASTEROID_VALUE = 16;
+    private static final int SMALL_ASTEROID_VALUE = 16;
+    private static final int MEDIUM_ASTEROID_VALUE = 15;
+    private static final int LARGE_ASTEROID_VALUE = 13;
+    private static final int LARGEST_ASTEROID_VALUE = 11;
     private static final int STARTING_LIVES = 3;
 
 
@@ -23,13 +23,13 @@ public class ScorePanel extends JPanel {
     private int scoreAmount;
     private int livesAmount = STARTING_LIVES;
     private double hitAmount;
-    private double accuracy;
+    private double accuracy = 0;
     private double shotsMissed;
 
     DecimalFormat decPlaces = new DecimalFormat("0");
 
     public ScorePanel() {
-        setPreferredSize(new Dimension(200, 500));
+        setPreferredSize(new Dimension(100, 500));
 
         accurate = new JLabel("Accuracy % 0" );
         lives = new JLabel("Lives: " + livesAmount);
@@ -62,13 +62,13 @@ public class ScorePanel extends JPanel {
     public void asteroidHit(float size) {
         hitAmount ++;
         if (size < SMALL_ASTEROID) {
-            scoreAmount += SMALL_ASTEROID_VALUE;
+            scoreAmount += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * accuracy * .01);
         } else if (size < MEDIUM_ASTEROID) {
-            scoreAmount += MEDIUM_ASTEROID_VALUE;
+            scoreAmount += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * accuracy * .01);
         } else if(size < LARGE_ASTEROID) {
-            scoreAmount += LARGE_ASTEROID_VALUE;
+            scoreAmount += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * accuracy * .01);
         }else{
-            scoreAmount += LARGEST_ASTEROID_VALUE;
+            scoreAmount += LARGEST_ASTEROID_VALUE + (LARGEST_ASTEROID_VALUE * accuracy * .01);
         }
     }
 
