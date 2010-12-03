@@ -7,8 +7,7 @@ public class HighScoreTester {
 		HighScores hs = new HighScores(); // This will load the high score file and give us a highscore object
 		hs.printScores();
 		
-		int score = 1000000;
-		
+		int score = 9999999;
 
 		hs.newScore(score);
 		
@@ -18,8 +17,6 @@ public class HighScoreTester {
 		hs.displayScoreDialog(); // Show high score list
 		
 		hs.printScores();
-		hs.writeScoreFile();
-
 
 
 	}
