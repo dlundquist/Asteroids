@@ -9,7 +9,8 @@ public class DedicatedServer {
 	private static final long FRAME_RATE = 1000 / 60; /* 60 FPS */
 
 	private ServerSocket serverSocket;
-	private boolean running;	
+	private boolean running;
+	private java.util.Vector<NetworkPlayer> players;
 	
 	public DedicatedServer() {
 		running = true;
@@ -22,7 +23,7 @@ public class DedicatedServer {
 		}
 	
 		/* Start a thread to listen for clients */
-		new ListenThread().start();
+		new ListenThread(this).start();
 		
 		Timer timer = new Timer();
 		
@@ -63,11 +64,17 @@ public class DedicatedServer {
 
 	
 	private class ListenThread extends Thread {
+		private DedicatedServer server;
+		
+		public ListenThread(DedicatedServer dedicatedServer) {
+			server = dedicatedServer;
+		}
+
 		public void run() {
 			while (running) {
 				try {
 					Socket client = serverSocket.accept();
-					new NetworkClientThread(client).start();
+					new ServerClientThread(client, server).start();
 				} catch (SocketException e) {
 					if (e.getMessage().equals("Socket closed") && running == false) {
 						System.err.println("Server socket closed, shutting down.");
@@ -89,5 +96,10 @@ public class DedicatedServer {
 	
 	public static void main(String[] args) {
 		new DedicatedServer();
+	}
+
+	public void addPlayer(NetworkPlayer player) {
+		players.add(player);
+		player.start();
 	}
 }

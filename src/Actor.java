@@ -171,4 +171,10 @@ abstract class Actor implements Serializable {
 	protected int generateId() {
 		return (lastId =+ gen.nextInt(1000) + 1); // Pseudo random increments
 	}
+
+	public static void removeActorId(int idToRemove) {
+		for (Actor a: actors)
+			if (a.id == idToRemove)
+				actors.remove(a);
+	}
 }
