@@ -11,7 +11,7 @@ import java.awt.color.ColorSpace;
  * @author Jeremy Ravet and Dustin Lundquist
  */
 public class ImageConverter {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		File inputFile = null;
 		File outputFile = null;
 		BufferedImage inputImage;
@@ -38,6 +38,8 @@ public class ImageConverter {
 			inputFile = jfc.getSelectedFile();
 		}
 
+		inputImage = ImageIO.read(inputFile);
+
 		if (outputFile == null) {
 			// Prompt for the output file
 			if (jfc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
@@ -47,33 +49,26 @@ public class ImageConverter {
 			outputFile = jfc.getSelectedFile();
 		}
 
-		try {
-			inputImage = ImageIO.read(inputFile);
-		} catch (IOException ie) {
-			ie.printStackTrace();
-			throw new RuntimeException("unable to open " + inputFile.getAbsolutePath());
-		}
-
 		/* Now setup an output image with RGBA color space */
-		WritableRaster raster =	Raster.createInterleavedRaster (DataBuffer.TYPE_BYTE,
+		WritableRaster raster =	Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
 				inputImage.getWidth(),
 				inputImage.getHeight(),
 				4,
 				null);
-		ComponentColorModel colorModel = new ComponentColorModel (ColorSpace.getInstance(ColorSpace.CS_sRGB),
-				new int[] {8,8,8,8},
-				true,
-				false,
+		ComponentColorModel colorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
+				new int[] {8,8,8,8}, // 8 bits in each channel
+				true, // Has alpha channel
+				false, // No alpha premultiplier
 				ComponentColorModel.TRANSLUCENT,
 				DataBuffer.TYPE_BYTE);			
 		BufferedImage outputImage = new BufferedImage (colorModel,
 				raster,
-				false,
-				null);
+				false, // No premultipler
+				null); // Default properties
 
 		/* Setup a Graphic2D context and write our image to it */
 		Graphics2D gfx = outputImage.createGraphics();
-		gfx.drawImage (inputImage, null, null );
+		gfx.drawImage(inputImage, null, null);
 
 		/* Now access the raw image data as a byte array */
 		byte[] imgRGBA = ((DataBufferByte)raster.getDataBuffer()).getData();
@@ -95,11 +90,9 @@ public class ImageConverter {
 				imgRGBA[i + 3] = 0;
 			}
 		}
-
-		try {
-			ImageIO.write(outputImage, "png", outputFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	
+		ImageIO.write(outputImage, "png", outputFile);
+		
+		System.out.println("Image converted successfully.");
 	}
 }
