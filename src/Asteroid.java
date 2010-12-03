@@ -68,7 +68,7 @@ public class Asteroid extends Actor {
 		// Play our awesome explosion if sound is enabled
 		if(SoundEffect.isEnabled()){
 			if(this.isLarge())
-			SoundEffect.forLargeAsteroidDeath().play();
+				SoundEffect.forLargeAsteroidDeath().play();
 			else if (this.isSmall())
 				SoundEffect.forSmallAsteroidDeath().play();
 		}
