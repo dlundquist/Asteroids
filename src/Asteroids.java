@@ -3,12 +3,16 @@
  *
  */
 public class Asteroids {
+	private final static int TIMER_REDUCED_BY = 1;
+
+        private static GUI gui;
 	private static PlayerShip playerShip;
+        private static HighScores highScores;
 	private static boolean isPaused;
 	private static int asteroidsLeft = 100;
 	private static int timeBetween = 110;
 	private static int asteroidTimer = timeBetween;
-	private final static int TIMER_REDUCED_BY = 1;
+
 
 	/**
 	 * Our main function
@@ -18,7 +22,8 @@ public class Asteroids {
 		// Load our sounds and enable them.
 		SoundEffect.init(false);
 		ParticleSystem.init(true);
-		new GUI();
+                highScores = new HighScores();
+		gui = new GUI();
 	}
 
 	/**
@@ -34,10 +39,10 @@ public class Asteroids {
 		 * we can draw the actors in reverse order and the players ship
 		 * will always be on top. 
 		 */
-		playerShip = new PlayerShip(0,0,0,0);
+		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
 
-
+                // TODO spawn power ups randomly as game progresses
 		Actor.actors.add(new TripleShotPowerUp(0.5f,0.4f));
 
 	}
@@ -45,6 +50,10 @@ public class Asteroids {
 	public static PlayerShip getPlayer() {
 		return playerShip;
 	}
+
+        public static HighScores getHighScores() {
+                return highScores;
+        }
 
 	/**
 	 *  This is called every frame by the ScenePanel
