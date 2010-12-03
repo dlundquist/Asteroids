@@ -19,7 +19,31 @@ public class InputHandler implements KeyListener {
 		KeyEvent.VK_LEFT,
 		KeyEvent.VK_RIGHT,
 		KeyEvent.VK_ESCAPE,
+		KeyEvent.VK_Q,
+		KeyEvent.VK_PAUSE,
+		KeyEvent.VK_P,
+		KeyEvent.VK_W,
+		KeyEvent.VK_S,
 	};
+	/**
+	 * This is a mask to indicate if each key is disabled when the game is paused
+	 */
+	private static final boolean[] KEY_PAUSE_MASK = {
+		true, //KeyEvent.VK_SPACE,
+		true, //KeyEvent.VK_UP,
+		true, //KeyEvent.VK_DOWN,
+		true, //KeyEvent.VK_LEFT,
+		true, //KeyEvent.VK_RIGHT,
+		false,//KeyEvent.VK_ESCAPE,
+		false,//KeyEvent.VK_Q,
+		false,//KeyEvent.VK_PAUSE,
+		false,//KeyEvent.VK_P,
+		true, //KeyEvent.VK_W,
+		true, //KeyEvent.VK_S,
+	};
+	private int lastPause;
+	private int warpDebounce;
+	private int flipDebounce;
 
 
 	public InputHandler() {
@@ -53,34 +77,82 @@ public class InputHandler implements KeyListener {
 	}
 
 	public void update() {
+		boolean ignoreUpDown = false; //used to ignore up and down keys for brakeShip()
+		/* decrement our lastPause debounce timer */
+		if (lastPause > 0)
+			lastPause --;
+		//decrement the warpDebounce timer
+		if (warpDebounce > 0)
+			warpDebounce--;
+		
+		if (flipDebounce > 0)
+			flipDebounce--;
+		
+		//fires if up and down are pressed
+		if (keyState[1] && keyState[2]){
+			ignoreUpDown = true;
+			Asteroids.getPlayer().brakeShip();
+		}
 		for (int i = 0; i < KEYS_IN_USE.length; i++) {
 			/* Skip keys that are up */
 			if (keyState[i] == false)
 				continue;
 
+			// Skip keys that are disabled when the game is paused
+			if (Asteroids.getPauseState() && KEY_PAUSE_MASK[i])
+				continue;
+
 			switch(KEYS_IN_USE[i]){
-			case(KeyEvent.VK_SPACE):
-				Asteroids.getPlayer().shoot();
-			break;
-			case(KeyEvent.VK_UP):
-				Asteroids.getPlayer().forwardThrust();
-			break;
-			case(KeyEvent.VK_DOWN):
-				Asteroids.getPlayer().reverseThrust();
-			break;
-			case(KeyEvent.VK_LEFT):
-				Asteroids.getPlayer().turnLeft();
-			break;
-			case(KeyEvent.VK_RIGHT):
-				Asteroids.getPlayer().turnRight();
-			break;
-			case(KeyEvent.VK_ESCAPE):
-				// TODO quit
+				case(KeyEvent.VK_SPACE):
+					Asteroids.getPlayer().shoot();
 				break;
-			default:
-				// Do nothing	
+				case(KeyEvent.VK_UP):
+					if (ignoreUpDown)
+						break;
+					Asteroids.getPlayer().forwardThrust();
+				break;
+				case(KeyEvent.VK_DOWN):
+					if (ignoreUpDown)
+						break;
+					Asteroids.getPlayer().reverseThrust();
+				break;
+				case(KeyEvent.VK_LEFT):
+					Asteroids.getPlayer().turnLeft();
+				break;
+				case(KeyEvent.VK_RIGHT):
+					Asteroids.getPlayer().turnRight();
+				break;
+				case(KeyEvent.VK_Q):
+				case(KeyEvent.VK_ESCAPE):
+					Asteroids.quitGame();
+					break;
+				case(KeyEvent.VK_P): // Fall through
+				case(KeyEvent.VK_PAUSE):
+					/* Debounce our pause key so it doesn't pause unpause pause ... */
+					if (lastPause == 0){
+						lastPause = 10;
+						Asteroids.togglePause();
+					}
+				break;
+				case(KeyEvent.VK_W): //Warp ship
+					System.err.println(warpDebounce);
+					if(warpDebounce == 0){
+						Asteroids.getPlayer().warpShip();
+						warpDebounce=20;
+					}
+				break;
+				case(KeyEvent.VK_S): //Flip Ship 180
+					if(flipDebounce == 0){
+						Asteroids.getPlayer().flipShip();
+						flipDebounce = 10;
+					}
+				break;
+				default:
+					//do nothing
 			}
 		}
-
 	}
 }
+
+
+

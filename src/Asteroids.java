@@ -4,6 +4,11 @@
  */
 public class Asteroids {
 	private static PlayerShip playerShip;
+	private static boolean isPaused;
+	private static int asteroidsLeft = 100;
+	private static int timeBetween = 110;
+	private static int asteroidTimer = timeBetween;
+	private final static int TIMER_REDUCED_BY = 1;
 
 	/**
 	 * Our main function
@@ -12,14 +17,17 @@ public class Asteroids {
 	public static void main(String[] args) {
 		// Load our sounds and enable them.
 		SoundEffect.init(false);
+		ParticleSystem.init(true);
 		new GUI();
 	}
-	
+
 	/**
 	 * This is called by ScenePanel as the beginning of the game
 	 * put any game initialization code here.
 	 */
 	public static void init() {
+		/* Start the game paused */
+		isPaused = true;
 		/* 
 		 * Put the player ship first, so when we we add additional actors
 		 * the players ship is always in the same position. This way
@@ -29,31 +37,52 @@ public class Asteroids {
 		playerShip = new PlayerShip(0,0,0,0);
 		Actor.actors.add(playerShip);
 
-		for (int i = 0; i < 5; i++)
-			Actor.actors.add(new Asteroid());
-		
+
+		Actor.actors.add(new TripleShotPowerUp(0.5f,0.4f));
+
 	}
-	
+
 	public static PlayerShip getPlayer() {
-	    return playerShip;
+		return playerShip;
 	}
-	
+
 	/**
 	 *  This is called every frame by the ScenePanel
 	 *  put game code here
 	 */
 	public static void update() {
+		if (isPaused)
+			return;
+
+		asteroidTimer--;
+
+		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
+		 * subtract 1 from the asteroids left total
+		 */
+		if (asteroidTimer == 0 && asteroidsLeft > 0){
+			Actor.actors.add(new Asteroid());
+			asteroidsLeft--;
+			timeBetween -= TIMER_REDUCED_BY;
+			asteroidTimer = timeBetween;
+			System.out.println("asteroidsLeft = "+asteroidsLeft);
+		}
+
 		// Update each actor
 		for(int i = 0; i < Actor.actors.size(); i++) {
 			// We get the actor only once in case we the actor is removed
 			// during the update phase. E.G. Bullets FramesToLive reaches 0
 			Actor a = Actor.actors.get(i);
 			
+			// Track down actors without ids.
+			if (a.id == 0)
+				System.err.println("DEBUG: " + a + " actor without ID set");
+			
 			a.update();
-			// Bounds checks to keep thing in the screen
-			checkBounds(a.getPosition());
 		}
-		
+
+		if(ParticleSystem.isEnabled)
+			ParticleSystem.updateParticles();
+
 		/*
 		 * Collision detection
 		 * For each actor, check for collisions with the remaining actors
@@ -62,13 +91,13 @@ public class Asteroids {
 		 */
 		for(int i = 0; i < Actor.actors.size(); i++) {
 			Actor a = Actor.actors.get(i);
-			
+
 			for (int j = i + 1; j < Actor.actors.size(); j++) {
 				Actor b = Actor.actors.get(j);
-				
+
 				/* Our sizes are the diameter of each object and we want the distance between their centers */				
 				float minDistanceBetweenCenters = a.getSize() / 2 + b.getSize() / 2;
-				
+
 				/* Here we compare the distance squared rather than the distance to avoid 
 				 * the computationally expensive square root operation.
 				 */			
@@ -79,31 +108,32 @@ public class Asteroids {
 				}
 			}
 		} /* End Collision Detection */
+
+
+		ScorePanel.getScorePanel().updateScorePanel();
 	}
-	
+
 	/**
 	 * This is called by ScenePanel at the end of the game
 	 * any cleanup code should go here
 	 */
 	public static void dispose() {
-		
+
 	}
 	
-	
-	/**
-	 * This checks that a position vector is in bounds (the on screen region) and if it
-	 * passes one side it moves it to the opposite edge.
-	 * @param a position vector which is modified if it exceeds the bounds
-	 */
-	private static void checkBounds(Vector position) {
-		if (position.x() > 1)
-			position.incrementXBy(-2);
-		else if (position.x() < -1)
-			position.incrementXBy(2);
+	public static boolean getPauseState(){
+		return isPaused;
+	}
+
+	public static void togglePause() {
+		if (isPaused)
+			isPaused = false;
+		else
+			isPaused = true;
+	}
+
+	public static void quitGame() {
+		// TODO Auto-generated method stub
 		
-		if (position.y() > 1)
-			position.incrementYBy(-2);
-		else if (position.y() < -1)
-			position.incrementYBy(2);		
 	}
 }

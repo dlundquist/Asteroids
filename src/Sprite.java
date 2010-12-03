@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import javax.media.opengl.*;
 import javax.imageio.*;
+import java.awt.Graphics2D;
+import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -15,12 +18,17 @@ public class Sprite {
 	public static final int ASTEROID_ID = 1;
 	public static final int PLAYERSHIP_ID = 2;
 	public static final int BULLET_ID = 3;
+	public static final int POWER_UP_ID = 4;
+	public static final int TRIPLE_SHOT_POWER_UP_ID = 5;
+
 	/* The order here must match the indexes above */
 	private static final String[] TEXTURE_FILES = {
-		"background.jpg",
-		"asteroid.png",
-		"ship.png",
-		"bullet.png",
+		"background.jpg", /* BACKGROUND            */
+		"asteroid.png",   /* ASTEROID              */
+		"ship.png",       /* PLAYER_SHIP           */
+		"bullet.png",     /* BULLET                */
+		"ship2.png",      /* POWER_UP              */
+		"ship2.png"       /* TRIPLE_SHOT_POWER_UP  */
 	};
 	private static final String TEXTURE_DIR = "data";
 	
@@ -95,86 +103,60 @@ public class Sprite {
 		return sprites.get(BULLET_ID);
 	}
 
-	/* Code to convert a BufferedImage into a Buffer then load it as a GL texture
-	 * adapted (mostly just cut out GLU stuff) from NeHe OpenGL tutorial #6 (JoGL version) by Kevin J. Duling
-	 * http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=07
+	public static Sprite tripleShotPowerUp() {
+		return sprites.get(TRIPLE_SHOT_POWER_UP_ID);
+	}
+	
+	public static Sprite powerUp() {
+		return sprites.get(POWER_UP_ID);
+	}
+
+	/* Switched texture loading method, to method from
+	 * http://today.java.net/pub/a/today/2003/09/11/jogl2d.html
 	 * 
-	 * Added RGBA types
-	 * Fixed byte order issues
+	 * This uses the Java graphics library to convert the color space
+	 * byte order and flip the image vertically so it is suitable for OpenGL.
 	 */
 	private void makeRGBTexture(GL gl, BufferedImage img, int target) {
-		int type;
-		ByteBuffer dest = null;
-		/*
-		 * This loads our textures upside down, see comment in ScenePanel.render()
-		 */
 		
-		switch (img.getType()) {
-		case BufferedImage.TYPE_3BYTE_BGR:
-		case BufferedImage.TYPE_CUSTOM: { 
-			byte[] data = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-			
-			// Swap every first and third byte because this is BGR and we want RGB
-			for (int i = 0; i < data.length; i += 3) {
-				byte tmp =  data[i];
-				data[i] = data[i + 2];
-				data[i + 2] = tmp;
-			}
-			dest = ByteBuffer.allocateDirect(data.length);
-			dest.order(ByteOrder.nativeOrder());
-			dest.put(data, 0, data.length);
-			type = GL.GL_RGB;
-			break;
-		}
-		case BufferedImage.TYPE_4BYTE_ABGR_PRE:
-		case BufferedImage.TYPE_4BYTE_ABGR: {
-			byte[] data = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
+		/* Setup a BufferedImage suitable for OpenGL */
+		WritableRaster raster =	Raster.createInterleavedRaster (DataBuffer.TYPE_BYTE,
+				img.getWidth(),
+				img.getHeight(),
+				4,
+				null);
+		ComponentColorModel colorModel = new ComponentColorModel (ColorSpace.getInstance(ColorSpace.CS_sRGB),
+				new int[] {8,8,8,8},
+				true,
+				false,
+				ComponentColorModel.TRANSLUCENT,
+				DataBuffer.TYPE_BYTE);			
+		BufferedImage bufImg = new BufferedImage (colorModel,
+				raster,
+				false,
+				null);
+
 		
-			// Swap bytes from ABGR to RGBA;
-			for (int i = 0; i < data.length; i += 4) {
-				byte tmp =  data[i];
-				data[i] = data[i + 3];
-				data[i + 3] = tmp;
-				tmp = data[i + 1];
-				data[i + 1] = data[i + 2];
-				data[i + 2] = tmp; 
-			}			
-			dest = ByteBuffer.allocateDirect(data.length);
-			dest.order(ByteOrder.nativeOrder());
-			dest.put(data, 0, data.length);
-			type = GL.GL_RGBA;
-			break;
-		}
-		case BufferedImage.TYPE_INT_RGB: {
-			System.err.println("Loading INT RGB image");
-			int[] data = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
-			
-			// TODO check and see if we need to change byte order
-			dest = ByteBuffer.allocateDirect(data.length * 4);
-			dest.order(ByteOrder.nativeOrder());
-			dest.asIntBuffer().put(data, 0, data.length);
-			type = GL.GL_RGB;
-			break;
-		}
-		case BufferedImage.TYPE_INT_ARGB:
-		case BufferedImage.TYPE_INT_ARGB_PRE: {
-			System.err.println("Loading INT ARGB image");
-			int[] data = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
-			
-			//TODO check and see if we need to change byte order
-			dest = ByteBuffer.allocateDirect(data.length * 4);
-			dest.order(ByteOrder.nativeOrder());
-			dest.asIntBuffer().put(data, 0, data.length);
-			type = GL.GL_RGBA;
-			break;
-		}
-		default:
-			throw new RuntimeException("Unsupported image type " + img.getType());
-		}
+		/* Setup a Graphic2D context that will flip the image vertically along the way */
+		Graphics2D g = bufImg.createGraphics();
+		AffineTransform gt = new AffineTransform();
+		gt.translate (0, img.getHeight());
+		gt.scale (1, -1d);
+		g.transform (gt);
+		g.drawImage (img, null, null );
+		
+		/* Fetch the raw data out of the image and destroy the graphics context */
+		byte[] imgRGBA = ((DataBufferByte)raster.getDataBuffer()).getData();
+		g.dispose();
+		
+		/* Convert the raw data to a buffer for glTexImage2D */
+		ByteBuffer dest = ByteBuffer.allocateDirect(imgRGBA.length);
+		dest.order(ByteOrder.nativeOrder());
+		dest.put(imgRGBA, 0, imgRGBA.length);
 		
 		// Rewind the buffer so we can read it starting and beginning
 		dest.rewind();
 
-		gl.glTexImage2D(target, 0, type, img.getWidth(), img.getHeight(), 0, type, GL.GL_UNSIGNED_BYTE, dest);
+		gl.glTexImage2D(target, 0, GL.GL_RGBA, img.getWidth(), img.getHeight(), 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, dest);
 	}
 }

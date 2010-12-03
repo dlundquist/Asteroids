@@ -110,9 +110,10 @@ public class Vector implements Serializable {
 	 * multiply this vector by scalar
 	 * @param scalar
 	 */
-	public void scaleBy(double scalar) {
+	public Vector scaleBy(double scalar) {
 		x *= scalar;
 		y *= scalar;
+		return this;
 	}
 
 	public void incrementBy(Vector velocity) {
