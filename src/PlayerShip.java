@@ -45,6 +45,7 @@ public class PlayerShip extends Actor {
 		// Is the other guy an Asteroid?
 		else if ( other instanceof Asteroid) {
 			ScorePanel.getScorePanel().playerHit();
+			playerDeath();
 		}
 		// Play the sound effect for player death
 		if(SoundEffect.isEnabled())
@@ -71,7 +72,13 @@ public class PlayerShip extends Actor {
 	
 		ParticleSystem.addFireParticle(this);
 	}
-	
+	private void playerDeath(){
+		regenerate();
+	}
+	private void regenerate(){
+		position = new Vector(0,0);
+		this.velocity.scaleBy(0);
+	}
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);

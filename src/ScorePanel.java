@@ -8,10 +8,10 @@ public class ScorePanel extends JPanel {
     private static final float SMALL_ASTEROID = 0.1f + .03125f;
     private static final float MEDIUM_ASTEROID = 0.1f + 2*.03125f;
     private static final float LARGE_ASTEROID = 0.1f + 3*.03125f;
-    private static final int SMALL_ASTEROID_VALUE = 11;
-    private static final int MEDIUM_ASTEROID_VALUE = 13;
-    private static final int LARGE_ASTEROID_VALUE = 15;
-    private static final int LARGEST_ASTEROID_VALUE = 16;
+    private static final int SMALL_ASTEROID_VALUE = 30;
+    private static final int MEDIUM_ASTEROID_VALUE = 20;
+    private static final int LARGE_ASTEROID_VALUE = 10;
+    private static final int LARGEST_ASTEROID_VALUE = 100;
     private static final int STARTING_LIVES = 3;
 
 

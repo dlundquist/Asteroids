@@ -51,6 +51,9 @@ public class Bullet extends Actor {
 		if(other instanceof PowerUp){
 			return;
 		}
+		else if(other instanceof Bullet){
+			return;
+		}
 		
 		// Play our awesome sound
 		if(SoundEffect.isEnabled())

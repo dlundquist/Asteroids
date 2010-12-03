@@ -4,7 +4,7 @@
  */
 public class TripleShotWeapon extends Weapon{
 	private static final float TRIPLE_BULLET_SIZE = 0.03f;
-	private static final int SHOOT_DELAY = 30; // 30 frame delay between shots
+	private static final int SHOOT_DELAY = 10; // 30 frame delay between shots
 	TripleShotWeapon(Actor owner) {
 		super(owner);
 	}
@@ -15,7 +15,7 @@ public class TripleShotWeapon extends Weapon{
 			return;
 
 		for(int i = -1; i < 2; i++)
-			Actor.actors.add(new Bullet(owner, i * 1.0f).setSize(TRIPLE_BULLET_SIZE));
+			Actor.actors.add(new Bullet(owner, i * .2f).setSize(TRIPLE_BULLET_SIZE));
 
 		/* Expanded form of the Loop above
 		Bullet bullet1 = new Bullet(owner, -1.0f);
