@@ -5,6 +5,7 @@
  *              a TripleShotWeapon
  */
 public class TripleShotPowerUp extends PowerUp{
+	private static final long serialVersionUID = 7120396598193477176L;
 
 	TripleShotPowerUp(Vector pos) {
 		super(pos);

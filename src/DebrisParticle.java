@@ -1,5 +1,6 @@
 
 public class DebrisParticle extends Particle {
+	private static final long serialVersionUID = 3447074213725536147L;
 	private static final float DEBRIS_VELOCTIY = 0.01f;
 	private static final int DEBRIS_LIFETIME = 20;
 	private static final float DEBRIS_SPIN = 0;
