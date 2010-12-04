@@ -1,6 +1,6 @@
 public class Asteroid extends Actor {
 	private static final float LARGE_ASTEROID_SIZE = 0.15f;
-	private static final float SMALL_ASTEROID_SIZE = 0.15f;
+	private static final float SMALL_ASTEROID_SIZE = 0.15f; // If we set this to 0.05f the game is impossible
 	private static final int NEW_FRAGMENTS_PER_COLLISION = 2;
 
 	public Asteroid() {
@@ -49,6 +49,11 @@ public class Asteroid extends Actor {
 
 
 	public void handleCollision(Actor other) {
+
+		// Don't collide w/ other asteroids less than 5 frames old
+		if (other instanceof Asteroid && (age < 5 || other.age < 5))
+			return;
+
 		// We don't want to blow up on PowerUps
 		if(other instanceof PowerUp){
 			return;
@@ -96,8 +101,12 @@ public class Asteroid extends Actor {
 		}
 	}
 
-	public boolean isLarge(){
+	public boolean isLarge() {
 		return size >= LARGE_ASTEROID_SIZE;
+	}
+	
+	public boolean isMedium() {
+		return size > SMALL_ASTEROID_SIZE && size < LARGE_ASTEROID_SIZE:
 	}
 
 	public boolean isSmall() {
