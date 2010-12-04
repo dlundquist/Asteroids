@@ -169,4 +169,100 @@ abstract class Actor {
 	protected int generateId() {
 		return (lastId =+ gen.nextInt(1000) + 1); // Pseudo random increments
 	}
+	
+	public static void updateActors() {
+		// Update each actor
+		for(int i = 0; i < actors.size(); i++) {
+			// We get the actor only once in case we the actor is removed
+			// during the update phase. E.G. Bullets FramesToLive reaches 0
+			Actor a = actors.get(i);
+
+			// Track down actors without ids.
+			if (a.id == 0)
+				System.err.println("DEBUG: " + a + " actor without ID set");
+
+			a.update();
+		}
+	}
+	
+	public static void collisionDetection() {
+		/*
+		 * Collision detection
+		 * For each actor, check for collisions with the remaining actors
+		 * For collision purposes we are modeling each actor as a circle with radius getSize()
+		 * This algorithm is 1/2 n^2 compares, but it should be sufficient for our purposes
+		 */
+		for(int i = 0; i < actors.size(); i++) {
+			Actor a = actors.get(i);
+
+			for (int j = i + 1; j < actors.size(); j++) {
+				Actor b = actors.get(j);
+
+				if (a.checkCollision(b)) {
+					//System.err.println("DEBUG: detected collision between " + a + " and " + b);
+					a.handleCollision(b);
+					b.handleCollision(a);
+				}
+			}
+		} /* End Collision Detection */
+	}
+	
+	/**
+	 * Check for a collision between this actor and another in the next frame
+	 * @param other - another actor
+	 * @return truth if a collision will occur in the next frame
+	 */
+	private boolean checkCollision(Actor other) {
+		float deltaVX = other.velocity.x() - velocity.x();
+		float deltaVY = other.velocity.y() - velocity.y();
+		float deltaPX = position.x() - other.position.x();
+		float deltaPY = position.y() - other.position.y();
+
+		/* Our sizes are the diameter of each object and we want the distance between their centers */                          
+		float minDistance = getSize() / 2 + other.getSize() / 2;
+
+		boolean collideX = isCollision1D(deltaPX, deltaVX, minDistance);
+		boolean collideY = isCollision1D(deltaPY, deltaVY, minDistance);
+
+		return collideX && collideY;
+	}
+
+	/**
+	 * Check for a collision on one dimension
+	 * @param deltaP - delta position
+	 * @param deltaV - delta velocity
+	 * @param minDist - minimum distance between particles for a collision to occur, usually the sum of their radii
+	 * @return truth if a collision will occur in the next frame
+	 */
+	private static boolean isCollision1D(float deltaP, float deltaV, float minDist) {
+		if (deltaV != 0) { // Don't divide by zero
+			// Calculate the extremes of our collision range
+			float a = (deltaP - minDist) / deltaV;
+			float b = (deltaP + minDist) / deltaV;
+
+			/*
+			 * There are six cases
+			 * a--b    a--b    a--b
+			 *     a--b    a--b
+			 *      a--------b
+			 * <-----0------1-----> 
+			 * We only check for the two non collision
+			 * cases, else assume the collision case 
+			 * takes place. 
+			 */		
+			if(a > 1 && b > 1)
+				return false;    
+			if(a <= 0 && b <= 0)
+				return false;
+		} else {
+			/*
+			 * The zero velocity case is actually much simpler
+			 */
+			if (deltaP >= minDist)
+				return false;
+			if (-deltaP >= minDist)
+				return false;
+		}
+		return true;
+	}
 }
