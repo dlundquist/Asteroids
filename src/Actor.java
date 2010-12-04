@@ -231,17 +231,18 @@ abstract class Actor {
 		 * and
 		 * 		P(2) + t * V(2)
 		 * 
-		 * To find there intersection
+		 * To find the intersection we set the two equations
+		 * equal to each other
 		 * 		P(1) + t * V(1) = P(2) + t * V(2)
 		 * 
-		 * Solving for t
+		 * Then solve for t
 		 * 		t * V(1) - t * V(2) = P(2) - P(1)
 		 * 
 		 * 		t * (V(1) - V(2)) = P(2) - P(1)
 		 * 
 		 *		    P(2) - P(1)
 		 *		t = -----------
-		 * 			V(1) - V(2)
+		 *		    V(1) - V(2)
 		 *  
 		 * Since we simply increment the position by the velocity
 		 * each frame, we just just need to check if there is
