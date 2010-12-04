@@ -193,7 +193,7 @@ abstract class Actor {
 		/*
 		 * Collision detection
 		 * For each actor, check for collisions with the remaining actors
-		 * For collision purposes we are modeling each actor as a circle with radius getSize()
+		 * For collision purposes we are modeling each actor as a circle
 		 * This algorithm is 1/2 n^2 compares, but it should be sufficient for our purposes
 		 */
 		for(int i = 0; i < actors.size(); i++) {
