@@ -245,7 +245,10 @@ abstract class Actor {
 			float b = (deltaP + minDist) / deltaV;
 
 			/*
-			 * There are six cases
+			 * There are six cases, excluding the cases
+			 * where a and b are swapped by a negative
+			 * deltaV:
+			 * 
 			 * a--b    a--b    a--b
 			 *     a--b    a--b
 			 *      a--------b
