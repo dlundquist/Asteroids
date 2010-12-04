@@ -1,6 +1,7 @@
 public class Asteroid extends Actor {
 	private static final float LARGE_ASTEROID_SIZE = 0.15f;
 	private static final float SMALL_ASTEROID_SIZE = 0.15f;
+	private static final int NEW_FRAGMENTS_PER_COLLISION = 2;
 
 	public Asteroid() {
 		int randSide = gen.nextInt(3);
@@ -71,27 +72,27 @@ public class Asteroid extends Actor {
 			// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
 			ParticleSystem.addDebrisParticle(this);
 		} else {
-			float original_mass = size * size * size;
-			Vector originalMomemntum = new Vector(velocity).scaleBy(original_mass);
+			float originalMass = size * size * size; // Mass scales with the cube of the linear scaling factor
+			Vector originalMomentum = new Vector(velocity).scaleBy(originalMass);
 
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < NEW_FRAGMENTS_PER_COLLISION; i++) {
 				// pick a new direction of our asteroid	fragment
 				float direction = gen.nextFloat() * 2 * (float)Math.PI;
-				float new_mass = original_mass * (gen.nextFloat() + 1) / 3; // between 1/3 and 2/3
+				float newMass = originalMass * (gen.nextFloat() + 1) / 3; // between 1/3 and 2/3 our original mass
 
 				// TODO fix velocity so energy is conserved pick an energy less than the original energy
 				Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());
-				Vector newMomentum = new Vector(newVelocity).scaleBy(new_mass);
+				Vector newMomentum = new Vector(newVelocity).scaleBy(newMass);
 
-				original_mass -= new_mass;
-				originalMomemntum.incrementBy(newMomentum.scaleBy(-1)); // Subtract the momentum of this fragment from our parent asteroid
+				originalMass -= newMass; // Subtract our new asteroid mass from the original asteroid
+				originalMomentum.incrementBy(newMomentum.scaleBy(-1)); // Subtract the momentum of this fragment from our parent asteroid
 
-				float new_size = (float) Math.pow(new_mass, 1f/3f); // Subtract our new asteroid mass from the original asteroid
+				float newSize = (float)Math.pow(newMass, 1.0 / 3.0); //The size scales with the cube root of the mass 
 
-				Actor.actors.add(new Asteroid(new Vector(position), newVelocity, new_size, id));
+				Actor.actors.add(new Asteroid(new Vector(position), newVelocity, newSize, id));
 			}
-			size = (float) Math.pow(original_mass, 1f/3f);
-			velocity = originalMomemntum.scaleBy(1/original_mass);
+			size = (float)Math.pow(originalMass, 1.0 / 3.0);
+			velocity = originalMomentum.scaleBy(1 / originalMass); // v = p / m
 		}
 	}
 
