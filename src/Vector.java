@@ -57,8 +57,12 @@ public class Vector {
 		return Math.atan2(y, x);
 	}
 	
+	public double magnitude2() {
+		return x * x + y * y;
+	}
+	
 	public double magnitude() {
-		return Math.sqrt(x * x + y * y);
+		return Math.sqrt(magnitude2());
 	}
 	
 	/**

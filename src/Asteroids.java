@@ -5,9 +5,9 @@
 public class Asteroids {
 	private final static int TIMER_REDUCED_BY = 1;
 
-        private static GUI gui;
+	private static GUI gui;
 	private static PlayerShip playerShip;
-        private static HighScores highScores;
+	private static HighScores highScores;
 	private static boolean isPaused;
 	private static int asteroidsLeft = 100;
 	private static int timeBetween = 110;
@@ -22,7 +22,7 @@ public class Asteroids {
 		// Load our sounds and enable them.
 		SoundEffect.init(false);
 		ParticleSystem.init(true);
-                highScores = new HighScores();
+		highScores = new HighScores();
 		gui = new GUI();
 	}
 
@@ -42,7 +42,7 @@ public class Asteroids {
 		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
 
-                // TODO spawn power ups randomly as game progresses
+		// TODO spawn power ups randomly as game progresses
 		Actor.actors.add(new TripleShotPowerUp(0.5f,0.4f));
 
 	}
@@ -51,9 +51,9 @@ public class Asteroids {
 		return playerShip;
 	}
 
-        public static HighScores getHighScores() {
-                return highScores;
-        }
+	public static HighScores getHighScores() {
+		return highScores;
+	}
 
 	/**
 	 *  This is called every frame by the ScenePanel
@@ -81,11 +81,11 @@ public class Asteroids {
 			// We get the actor only once in case we the actor is removed
 			// during the update phase. E.G. Bullets FramesToLive reaches 0
 			Actor a = Actor.actors.get(i);
-			
+
 			// Track down actors without ids.
 			if (a.id == 0)
 				System.err.println("DEBUG: " + a + " actor without ID set");
-			
+
 			a.update();
 		}
 
@@ -104,13 +104,7 @@ public class Asteroids {
 			for (int j = i + 1; j < Actor.actors.size(); j++) {
 				Actor b = Actor.actors.get(j);
 
-				/* Our sizes are the diameter of each object and we want the distance between their centers */				
-				float minDistanceBetweenCenters = a.getSize() / 2 + b.getSize() / 2;
-
-				/* Here we compare the distance squared rather than the distance to avoid 
-				 * the computationally expensive square root operation.
-				 */			
-				if (a.getPosition().distance2(b.getPosition()) < minDistanceBetweenCenters * minDistanceBetweenCenters) {
+				if (isCollision(a, b)) {
 					//System.err.println("DEBUG: detected collision between " + a + " and " + b);
 					a.handleCollision(b);
 					b.handleCollision(a);
@@ -122,6 +116,55 @@ public class Asteroids {
 		ScorePanel.getScorePanel().updateScorePanel();
 	}
 
+	private static boolean isCollision(Actor a, Actor b) {
+		float deltaVX = b.getVelocity().x() - a.getVelocity().x();
+		float deltaVY = b.getVelocity().y() - a.getVelocity().y();
+		float deltaPX = a.getPosition().x() - b.getPosition().x();
+		float deltaPY = a.getPosition().y() - b.getPosition().y();
+
+		/* Our sizes are the diameter of each object and we want the distance between their centers */                          
+		float minDistanceBetweenCenters = a.getSize() / 2 + b.getSize() / 2;
+
+		boolean collideX = checkCollision1D(deltaPX, deltaVX, minDistanceBetweenCenters);
+		boolean collideY = checkCollision1D(deltaPY, deltaVY, minDistanceBetweenCenters);
+
+		return collideX && collideY;
+	}
+
+	// collision detector Method
+	private static boolean checkCollision1D(float deltaP, float deltaV, float minDist) {
+		float a = (deltaP - minDist);
+		float b = (deltaP + minDist);
+
+		// this is the collision when deltaV is not 0
+		if (deltaV != 0) {
+			a = a / deltaV;
+			b = b / deltaV;
+
+			// this gives an area > a particle
+			if(a > 1 && b > 1){
+				return false;
+			}       
+			if(a <= 0 && b <= 0){
+				return false;
+			}
+			return true;
+
+			/*
+			 * Working point collision model
+			 *
+                        t = deltaP / deltaV;
+                        if (t > 0 && t <= 1)
+                                return true;
+			 */
+		} else {
+			if (Math.abs(deltaP) < minDist)
+				return true;
+		}
+		return false;
+	}
+
+
 	/**
 	 * This is called by ScenePanel at the end of the game
 	 * any cleanup code should go here
@@ -129,7 +172,7 @@ public class Asteroids {
 	public static void dispose() {
 
 	}
-	
+
 	public static boolean getPauseState(){
 		return isPaused;
 	}
@@ -143,6 +186,6 @@ public class Asteroids {
 
 	public static void quitGame() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
