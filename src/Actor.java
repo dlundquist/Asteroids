@@ -208,7 +208,7 @@ abstract class Actor {
 					b.handleCollision(a);
 				}
 			}
-		} /* End Collision Detection */
+		}
 	}
 	
 	/**
@@ -217,6 +217,37 @@ abstract class Actor {
 	 * @return truth if a collision will occur in the next frame
 	 */
 	private boolean checkCollision(Actor other) {
+		/*
+		 * To check for a collision in the next frame we use
+		 * parametric equations for the position of each object
+		 * and find where there paths will intersect, and
+		 * check if it's in the next frame.
+		 * 
+		 * We model each objects motion with the vector equation
+		 * 		P + t * V
+		 * 
+		 * So for two objects we have
+		 * 		P(1) + t * V(1)
+		 * and
+		 * 		P(2) + t * V(2)
+		 * 
+		 * To find there intersection
+		 * 		P(1) + t * V(1) = P(2) + t * V(2)
+		 * 
+		 * Solving for t
+		 * 		t * V(1) - t * V(2) = P(2) - P(1)
+		 * 
+		 * 		t * (V(1) - V(2)) = P(2) - P(1)
+		 * 
+		 *		    P(2) - P(1)
+		 *		t = -----------
+		 * 			V(1) - V(2)
+		 *  
+		 * Since we simply increment the position by the velocity
+		 * each frame, we just just need to check if there is
+		 * an intersection in t = 0..1.
+		 */
+		
 		float deltaVX = other.velocity.x() - velocity.x();
 		float deltaVY = other.velocity.y() - velocity.y();
 		float deltaPX = position.x() - other.position.x();
@@ -224,7 +255,12 @@ abstract class Actor {
 
 		/* Our sizes are the diameter of each object and we want the distance between their centers */                          
 		float minDistance = getRadius() + other.getRadius();
-
+		
+		/*
+		 * Since we are looking for an intersection in two dimensions
+		 * we check for a collision in each dimension and return
+		 * true only if both are true.
+		 */
 		boolean collideX = isCollision1D(deltaPX, deltaVX, minDistance);
 		boolean collideY = isCollision1D(deltaPY, deltaVY, minDistance);
 
@@ -239,6 +275,18 @@ abstract class Actor {
 	 * @return truth if a collision will occur in the next frame
 	 */
 	private static boolean isCollision1D(float deltaP, float deltaV, float minDist) {
+		/* Since we want to detect collision of objects, rather than just
+		 * point like particles, we check for collisions our minimum
+		 * collision distance each side of the point of collision if our
+		 * our objects where both just points.
+		 * 
+		 * The code for point collisions is:
+		 * 		float t = deltaP / deltaV;
+		 * 		return t >= 0 && t < 1;
+		 * 
+		 * Note: this doesn't protect against dividing by zero
+		 */
+		
 		if (deltaV != 0) { // Don't divide by zero
 			// Calculate the extremes of our collision range
 			float a = (deltaP - minDist) / deltaV;
@@ -272,4 +320,5 @@ abstract class Actor {
 		}
 		return true;
 	}
+	/* End Collision Detection */
 }
