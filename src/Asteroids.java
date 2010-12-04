@@ -75,95 +75,16 @@ public class Asteroids {
 			asteroidTimer = timeBetween;
 			System.out.println("asteroidsLeft = "+asteroidsLeft);
 		}
+		
+		Actor.collisionDetection();
+		
+		Actor.updateActors();
 
-		// Update each actor
-		for(int i = 0; i < Actor.actors.size(); i++) {
-			// We get the actor only once in case we the actor is removed
-			// during the update phase. E.G. Bullets FramesToLive reaches 0
-			Actor a = Actor.actors.get(i);
-
-			// Track down actors without ids.
-			if (a.id == 0)
-				System.err.println("DEBUG: " + a + " actor without ID set");
-
-			a.update();
-		}
-
-		if(ParticleSystem.isEnabled)
+		if (ParticleSystem.isEnabled)
 			ParticleSystem.updateParticles();
-
-		/*
-		 * Collision detection
-		 * For each actor, check for collisions with the remaining actors
-		 * For collision purposes we are modeling each actor as a circle with radius getSize()
-		 * This algorithm is 1/2 n^2 compares, but it should be sufficient for our purposes
-		 */
-		for(int i = 0; i < Actor.actors.size(); i++) {
-			Actor a = Actor.actors.get(i);
-
-			for (int j = i + 1; j < Actor.actors.size(); j++) {
-				Actor b = Actor.actors.get(j);
-
-				if (isCollision(a, b)) {
-					//System.err.println("DEBUG: detected collision between " + a + " and " + b);
-					a.handleCollision(b);
-					b.handleCollision(a);
-				}
-			}
-		} /* End Collision Detection */
-
 
 		ScorePanel.getScorePanel().updateScorePanel();
 	}
-
-	private static boolean isCollision(Actor a, Actor b) {
-		float deltaVX = b.getVelocity().x() - a.getVelocity().x();
-		float deltaVY = b.getVelocity().y() - a.getVelocity().y();
-		float deltaPX = a.getPosition().x() - b.getPosition().x();
-		float deltaPY = a.getPosition().y() - b.getPosition().y();
-
-		/* Our sizes are the diameter of each object and we want the distance between their centers */                          
-		float minDistanceBetweenCenters = a.getSize() / 2 + b.getSize() / 2;
-
-		boolean collideX = checkCollision1D(deltaPX, deltaVX, minDistanceBetweenCenters);
-		boolean collideY = checkCollision1D(deltaPY, deltaVY, minDistanceBetweenCenters);
-
-		return collideX && collideY;
-	}
-
-	// collision detector Method
-	private static boolean checkCollision1D(float deltaP, float deltaV, float minDist) {
-		float a = (deltaP - minDist);
-		float b = (deltaP + minDist);
-
-		// this is the collision when deltaV is not 0
-		if (deltaV != 0) {
-			a = a / deltaV;
-			b = b / deltaV;
-
-			// this gives an area > a particle
-			if(a > 1 && b > 1){
-				return false;
-			}       
-			if(a <= 0 && b <= 0){
-				return false;
-			}
-			return true;
-
-			/*
-			 * Working point collision model
-			 *
-                        t = deltaP / deltaV;
-                        if (t > 0 && t <= 1)
-                                return true;
-			 */
-		} else {
-			if (Math.abs(deltaP) < minDist)
-				return true;
-		}
-		return false;
-	}
-
 
 	/**
 	 * This is called by ScenePanel at the end of the game

@@ -106,7 +106,7 @@ public class Asteroid extends Actor {
 	}
 	
 	public boolean isMedium() {
-		return size > SMALL_ASTEROID_SIZE && size < LARGE_ASTEROID_SIZE:
+		return size > SMALL_ASTEROID_SIZE && size < LARGE_ASTEROID_SIZE;
 	}
 
 	public boolean isSmall() {
