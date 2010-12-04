@@ -6,9 +6,12 @@ public class PlayerShip extends Actor {
 	private static final double MAX_SPEED = 0.03f;
 	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
-	
+    private static final int STARTING_LIVES = 3;
+    
+    
 	protected Weapon weapon;
-
+	private int lives;
+	
 	
 	public PlayerShip() {
 		this(0, 0, 0, 0);
@@ -21,6 +24,7 @@ public class PlayerShip extends Actor {
 		size = PLAYER_SIZE;
 		weapon = new BasicWeapon(this);
 		id = generateId();
+		lives = STARTING_LIVES;
 	}
 	
 	public void update() {
@@ -43,11 +47,21 @@ public class PlayerShip extends Actor {
 		    SoundEffect.forPlayerDeath().play();
 	}
 	
+	public void incrementLives() {
+		lives ++;
+	}
+	
+	public void decrementLives() {
+		lives --;
+	}
+	public int getLives() {
+		return lives;
+	}
+
 	public void shoot() {
 		weapon.shoot();
 	}
 
-	
 	public void forwardThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
@@ -68,12 +82,12 @@ public class PlayerShip extends Actor {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
 		// setting max reverse speed
-		if (this.velocity.magnitude()>=MAX_REVERSE_SPEED){
+		if (velocity.magnitude() >= MAX_REVERSE_SPEED){
 			thrust.scaleBy(0);
-			velocity.incrementBy(thrust);
+		} else {
+			/* Scale it by our thrust by a negative amount to slow our ship */
+			thrust.scaleBy(REVERSE_THRUST);
 		}
-		/* Scale it by our thrust by a negative amount to slow our ship */
-		else thrust.scaleBy(REVERSE_THRUST);
 		/* And add it to our current velocity */
 		velocity.incrementBy(thrust);
 	}
@@ -87,8 +101,7 @@ public class PlayerShip extends Actor {
 	}
 
 	public void brakeShip() {
-		double velocityDecrement = BRAKE_AMOUNT;
-		this.velocity.scaleBy(velocityDecrement);
+		velocity.scaleBy(BRAKE_AMOUNT);
 	}
 	
 	public void warpShip(){
@@ -105,4 +118,3 @@ public class PlayerShip extends Actor {
 		theta += Math.PI;
 	}
 }
-

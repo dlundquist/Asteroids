@@ -5,34 +5,27 @@ import javax.swing.*;
 public class ScorePanel extends JPanel {
     private static final long serialVersionUID = -3919165149509621102L;
 
-    private static final float SMALL_ASTEROID = 0.1f + .03125f;
-    private static final float MEDIUM_ASTEROID = 0.1f + 2*.03125f;
-    private static final float LARGE_ASTEROID = 0.1f + 3*.03125f;
     private static final int SMALL_ASTEROID_VALUE = 16;
     private static final int MEDIUM_ASTEROID_VALUE = 15;
     private static final int LARGE_ASTEROID_VALUE = 13;
-    private static final int LARGEST_ASTEROID_VALUE = 11;
-    private static final int STARTING_LIVES = 3;
 
+    private static ScorePanel scorePanel; // TODO there should be a better way to do this
+    private static DecimalFormat decPlaces = new DecimalFormat("0");
 
-    private static ScorePanel scorePanel;
     private int frameCounter;
     private JLabel score;
     private JLabel lives;
     private JLabel accurate;
     private int scoreAmount;
-    private int livesAmount = STARTING_LIVES;
     private double hitAmount;
     private double accuracy = 0;
     private double shotsMissed;
 
-    DecimalFormat decPlaces = new DecimalFormat("0");
-
     public ScorePanel() {
         setPreferredSize(new Dimension(100, 500));
 
-        accurate = new JLabel("Accuracy % 0" );
-        lives = new JLabel("Lives: " + livesAmount);
+        accurate = new JLabel("Accuracy % 0");
+        lives = new JLabel("Lives: " + getLives());
         score = new JLabel("Score: " + scoreAmount);
         add(score);
         add(lives);
@@ -48,27 +41,26 @@ public class ScorePanel extends JPanel {
     }
 
     public boolean playerHit() {
-        if (livesAmount == 0){
+        if (getLives() == 0) {
             return false;
-
-        }else{
-            livesAmount -- ;
+        } else {
+        	Asteroids.getPlayer().decrementLives();
             return true;
         }		
         // TODO end game when boolean returns false
-
     }
     // points per size asteroid
-    public void asteroidHit(float size) {
+    public void asteroidHit(Asteroid asteroid) {
         hitAmount ++;
-        if (size < SMALL_ASTEROID) {
+        
+        if (asteroid.isSmall()) {
             scoreAmount += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * accuracy * .01);
-        } else if (size < MEDIUM_ASTEROID) {
+        } else if (asteroid.isMedium()) {
             scoreAmount += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * accuracy * .01);
-        } else if(size < LARGE_ASTEROID) {
+        } else if (asteroid.isLarge()) {
             scoreAmount += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * accuracy * .01);
-        }else{
-            scoreAmount += LARGEST_ASTEROID_VALUE + (LARGEST_ASTEROID_VALUE * accuracy * .01);
+        } else {
+            System.err.println("DEBUG: unknown asteroid size.");
         }
     }
 
@@ -80,25 +72,36 @@ public class ScorePanel extends JPanel {
      * Update is called by Asteroids.update() every frame to redraw the scores
      */
     public void updateScorePanel() {
-
-        // avoiding divide by zero error
-        if (hitAmount + shotsMissed !=0){
-            // accuracy formula
-            accuracy = (hitAmount / (hitAmount + shotsMissed)) * 100;
-        }
-
         // Update every 30 frames
         if (frameCounter > 0) {
             frameCounter --;
         } else {
             frameCounter = 30;
+       	
+            // avoiding divide by zero error
+            if (hitAmount + shotsMissed !=0) {
+                // accuracy formula
+                accuracy = (hitAmount / (hitAmount + shotsMissed)) * 100;
+            }
+
             score.setText("Score: " + scoreAmount);
-            lives.setText("Extra Lives:" + livesAmount);
+            lives.setText("Extra Lives:" + getLives());
             // avoiding divide by zero error
             if (hitAmount + shotsMissed != 0){
                 accurate.setText("Accuracy: %  " + decPlaces.format(accuracy) );
             }
         }
     }
-
+    
+    /*
+     * helper method to get player lives and handle if player ship has not yet been initialized.
+     */
+    private int getLives() {
+    	PlayerShip player = Asteroids.getPlayer();
+    	
+    	if (player == null)
+    		return 0;
+    	else 
+    		return player.getLives();
+    }
 }

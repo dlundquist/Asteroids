@@ -1,6 +1,7 @@
 public class Asteroid extends Actor {
-	private static final float LARGE_ASTEROID_SIZE = 0.15f;
-	private static final float SMALL_ASTEROID_SIZE = 0.15f; // If we set this to 0.05f the game is impossible
+	public static final float LARGE_SIZE = 0.15f;
+	public static final float MEDIUM_SIZE = 0.10f;
+	public static final float SMALL_SIZE = 0.15f; // If we set this to 0.05f the game is impossible
 	private static final int NEW_FRAGMENTS_PER_COLLISION = 2;
 
 	public Asteroid() {
@@ -58,7 +59,7 @@ public class Asteroid extends Actor {
 		if(other instanceof PowerUp){
 			return;
 		} else if(other instanceof Bullet){
-			ScorePanel.getScorePanel().asteroidHit(size);
+			ScorePanel.getScorePanel().asteroidHit(this);
 		}
 
 		// Play our awesome explosion if sound is enabled
@@ -71,7 +72,7 @@ public class Asteroid extends Actor {
 
 
 		//If asteroids is very small
-		if (size < SMALL_ASTEROID_SIZE){
+		if (size < SMALL_SIZE){
 			// Remove ourself from the game since we blew up
 			delete();
 			// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
@@ -102,14 +103,14 @@ public class Asteroid extends Actor {
 	}
 
 	public boolean isLarge() {
-		return size >= LARGE_ASTEROID_SIZE;
+		return size >= LARGE_SIZE;
 	}
 	
 	public boolean isMedium() {
-		return size > SMALL_ASTEROID_SIZE && size < LARGE_ASTEROID_SIZE;
+		return size > SMALL_SIZE && size < LARGE_SIZE;
 	}
 
 	public boolean isSmall() {
-		return size <= SMALL_ASTEROID_SIZE;
+		return size <= SMALL_SIZE;
 	}
 }
