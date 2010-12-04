@@ -8,7 +8,6 @@
  *              it is easy to create lots of functionality
  */
 abstract public class PowerUp extends Actor {
-
 	private static final float POWERUP_SIZE = 0.1f;
 
 	PowerUp(Vector pos){
@@ -17,8 +16,7 @@ abstract public class PowerUp extends Actor {
 	}
 	
 	PowerUp(float x, float y){
-		position = new Vector(x,y);
-		init();
+		this(new Vector(x, y));
 	}
 	
 	private void init() {
@@ -27,6 +25,7 @@ abstract public class PowerUp extends Actor {
 		omega = 0;
 		velocity = new Vector();
 		sprite = Sprite.powerUp();
+		id = generateId();
 	}
 	// What Happens when we hit with the Player
 	abstract void applyTo(PlayerShip player);
@@ -42,13 +41,11 @@ abstract public class PowerUp extends Actor {
 	// derived classes.
 	@Override
 	public void handleCollision(Actor other) {
-		if( other instanceof PlayerShip){
+		if (other instanceof PlayerShip) {
 			applyTo((PlayerShip) other);
-		}
-		else if(other instanceof Asteroid){
+		} else if (other instanceof Asteroid) {
 			applyTo((Asteroid) other);
-
-		} else if(other instanceof Bullet){
+		} else if (other instanceof Bullet) {
 			applyTo((Bullet) other);
 		} else /* Actor */{
 			System.err.println("DEBUG:Poorly Handled powerup applied to Actor class");

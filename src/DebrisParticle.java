@@ -6,7 +6,6 @@ public class DebrisParticle extends Particle {
 	private final float DEBRIS_SIZE = 0.02f;
 	
 	DebrisParticle(Actor ship) {
-		super(ship);
 		position = new Vector(ship.getTailPosition());
 		// Relative to the ship
 		velocity = new Vector(ship.getVelocity());
@@ -14,7 +13,6 @@ public class DebrisParticle extends Particle {
 		velocity.incrementXBy(DEBRIS_VELOCTIY * (Math.cos(gen.nextFloat() * 2 * Math.PI)));
 		velocity.incrementYBy(DEBRIS_VELOCTIY * (Math.sin(gen.nextFloat() * 2 * Math.PI)));
 
-		framesToLive = DEBRIS_LIFETIME;
 		theta = 0;
 		//TODO textures for our DEBRISs
 		//sprite = Sprite.DEBRIS();
@@ -25,6 +23,13 @@ public class DebrisParticle extends Particle {
 		colorG = 0.4607843137254902f;
 		colorB = 0.4607843137254902f;
 		colorA = 1.0f;
+	}
+
+	public void update() {
+		super.update();
+		
+		if (age > DEBRIS_LIFETIME)
+			delete();
 	}
 	
 	protected void updateColor() {

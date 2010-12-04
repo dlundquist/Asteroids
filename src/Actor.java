@@ -17,6 +17,9 @@ abstract class Actor {
 	 */
 	static public java.util.Vector<Actor> actors = new java.util.Vector<Actor>();
 	
+	// Used by generateId();
+	public static int lastId;
+	
 	// These fields are protected so that our descendants can modify them
 	protected Vector position;
 	protected Vector velocity;
@@ -24,6 +27,9 @@ abstract class Actor {
 	protected float omega; // Angular velocity
 	protected Sprite sprite; // This is the texture of this object
 	protected float size; // the radius of the object
+	protected int id; // unique ID for each Actor 
+	protected int parentId;
+	protected int age; // Actor age in frames
 
 	/**
 	 * Call back before render loop for update to update it's position and do any housekeeping
@@ -38,6 +44,8 @@ abstract class Actor {
 		 /* Update position and angle of rotation */
 		 theta += omega;
 		 position.incrementBy(velocity);
+		 
+		 age ++;
 		 
 		 checkBounds();
 	 }
@@ -156,5 +164,9 @@ abstract class Actor {
 			position.incrementYBy(-2);
 		else if (position.y() < -1)
 			position.incrementYBy(2);		
+	}
+	
+	protected int generateId() {
+		return (lastId =+ gen.nextInt(1000) + 1); // Pseudo random increments
 	}
 }

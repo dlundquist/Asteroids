@@ -1,26 +1,27 @@
 public class Asteroid extends Actor {
-	private static final float LARGE_ASTEROID_SIZE = 0.5f;
-	private static final float SMALL_ASTEROID_SIZE = 0.49f;
+	private static final float LARGE_ASTEROID_SIZE = 0.15f;
+	private static final float SMALL_ASTEROID_SIZE = 0.15f;
+
 	public Asteroid() {
 		int randSide = gen.nextInt(3);
-		float px = 0,py = 0;
+		float px = 0, py = 0;
 		
 		//have the asteroids first appear off screen at a random spot
 		switch(randSide){
 		case(0):
 			px = -1f;
-			py = gen.nextFloat()*2-1;
+			py = gen.nextFloat() * 2 - 1;
 			break;
 		case(1):
 			px = 1f;
-			py = gen.nextFloat()*2-1;
+			py = gen.nextFloat() * 2 - 1;
 			break;
 		case(2):
-			px = gen.nextFloat()*2-1;
+			px = gen.nextFloat() * 2 - 1;
 			py = -1f;
 			break;
 		case(3):
-			px = gen.nextFloat()*2-1;
+			px = gen.nextFloat() * 2 - 1;
 			py = 1f;
 			break;
 		}
@@ -31,12 +32,17 @@ public class Asteroid extends Actor {
 		omega = gen.nextFloat() / 60;
 		theta = gen.nextFloat() * 2.0f * (float)Math.PI;
 		size = gen.nextFloat() / 8.0f + 0.1f;
+		id = generateId();
 	}
 
 	public Asteroid(float px, float py, float vx, float vy) {
 		position = new Vector(px, py);
 		velocity = new Vector(vx, vy);
 		sprite = Sprite.asteroid();
+		omega = gen.nextFloat() / 60;
+		theta = gen.nextFloat() * 2.0f * (float)Math.PI;
+		size = gen.nextFloat() / 8.0f + 0.1f;
+		id = generateId();
 	}
 
 
@@ -44,12 +50,9 @@ public class Asteroid extends Actor {
 		// We don't want to blow up on PowerUps
 		if(other instanceof PowerUp){
 			return;
-		}
-		if(other instanceof Asteroid){
+		} else if(other instanceof Asteroid){
 			return;
-		}
-
-		else if(other instanceof Bullet){
+		} else if(other instanceof Bullet){
 			ScorePanel.getScorePanel().asteroidHit(size);
 		}
 		
@@ -64,9 +67,9 @@ public class Asteroid extends Actor {
 		 */
 		
 		// Play our awesome explosion if sound is enabled
-		if(SoundEffect.isEnabled()){
-			if(this.isLarge())
-			SoundEffect.forLargeAsteroidDeath().play();
+		if (SoundEffect.isEnabled()){
+			if (this.isLarge())
+				SoundEffect.forLargeAsteroidDeath().play();
 			else if (this.isSmall())
 				SoundEffect.forSmallAsteroidDeath().play();
 		}
@@ -78,6 +81,7 @@ public class Asteroid extends Actor {
 		// Remove ourself from the game since we blew up
 		delete();
 	}
+
 	public boolean isLarge(){
 		return size >= LARGE_ASTEROID_SIZE;
 	}

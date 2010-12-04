@@ -9,23 +9,8 @@ public class Bullet extends Actor {
 	private static final float BULLET_SPIN = 0.05f;
 	private static final int BULLET_LIFETIME = 60; // 1 second
 	
-	public Actor owner;      // The ship that shot this so we can check if we shot our self or limit the number of shots
-	private int framesToLive; // Number of frames to live;
-
 	public Bullet(Actor ship) {
-		position = new Vector(ship.getNosePosition());
-		// Relative to the ship
-		velocity = new Vector(ship.getVelocity());
-		// Add the speed of the shot
-		velocity.incrementXBy(BULLET_VELOCTIY * Math.cos(ship.getTheta()));
-		velocity.incrementYBy(BULLET_VELOCTIY * Math.sin(ship.getTheta()));
-		
-		framesToLive = BULLET_LIFETIME;
-		owner = ship;
-		theta = 0;
-		sprite = Sprite.bullet();
-		omega = BULLET_SPIN;
-		size = BULLET_SIZE;
+		this(ship, 0); // Call our other constructor with a zero deflection angle
 	}
 	
 	public Bullet(Actor ship, float deflection_angle) {
@@ -35,25 +20,33 @@ public class Bullet extends Actor {
 		// Add the speed of the shot
 		velocity.incrementXBy(BULLET_VELOCTIY * Math.cos(ship.getTheta() - deflection_angle));
 		velocity.incrementYBy(BULLET_VELOCTIY * Math.sin(ship.getTheta() - deflection_angle));
-		framesToLive = BULLET_LIFETIME;
-		owner = ship;
 		theta = 0;
 		sprite = Sprite.bullet();
 		omega = BULLET_SPIN;
 		size = BULLET_SIZE;
+		
+		id = generateId();
+		parentId = ship.id;
 	}
 
 	public void handleCollision(Actor other) {
 		// We can't shoot ourself
-		if(other == owner)
+		if(other.id == parentId)
+			return;
+		// Or our siblings
+		if(other.parentId == parentId)
 			return;
 		// We don't want to disappear when we hit a PowerUp
-		if(other instanceof PowerUp){
+		if(other instanceof PowerUp)
 			return;
+<<<<<<< HEAD
 		}
 		else if(other instanceof Bullet){
 			return;
 		}
+=======
+		
+>>>>>>> 59e969e777db906cccd994d428c135238c79781c
 		
 		// Play our awesome sound
 		if(SoundEffect.isEnabled())
@@ -67,11 +60,8 @@ public class Bullet extends Actor {
 		// CL - Update our rotation and position as defined in Actor.update()
 		super.update();
 		
-		/* Decrement famesToLive counter */
-		framesToLive--;
-		
-		/* and remove the bullet when it reaches zero */
-		if(framesToLive == 0) {
+		/* Remove the bullet if it exceeds it's life span */
+		if(age > BULLET_LIFETIME) {
 			delete();
 			ScorePanel.getScorePanel().bulletMissed();
 		}	

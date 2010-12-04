@@ -5,8 +5,8 @@ public class FireParticle extends Particle{
 	private static final float PARTICLE_SIZE = 0.02f;
 	private static final float PARTICLE_SPIN = 0.01f;
 	private static final float SHRINK_RATE = 0.00005f;
+	
 	FireParticle(Actor ship) {
-		super(ship);
 		position = new Vector(ship.getTailPosition());
 		// Relative to the ship
 		velocity = new Vector(ship.getVelocity());
@@ -14,7 +14,6 @@ public class FireParticle extends Particle{
 		velocity.incrementXBy(-PARTICLE_VELOCTIY * (Math.cos(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
 		velocity.incrementYBy(-PARTICLE_VELOCTIY * (Math.sin(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
 
-		framesToLive = PARTICLE_LIFETIME;
 		theta = 0;
 		//TODO textures for our particles
 		//sprite = Sprite.particle();
@@ -30,7 +29,10 @@ public class FireParticle extends Particle{
 	public void update() {
 		super.update();
 		// Shrink the particles
-		size -= particleAge * SHRINK_RATE;
+		size -= age * SHRINK_RATE;
+		
+		if (age > PARTICLE_LIFETIME)
+			delete();
 	}
 	
 	protected void updateColor() {
