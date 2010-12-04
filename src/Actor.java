@@ -50,18 +50,18 @@ abstract class Actor {
 		 checkBounds();
 	 }
 	 
-	 public Vector getTailPosition(){
+	 public Vector getTailPosition() {
 		 Vector tail = new Vector(position);
-		 tail.incrementXBy(-Math.cos(theta) * size / 2);
-		 tail.incrementYBy(-Math.sin(theta) * size / 2);
+		 tail.incrementXBy(-Math.cos(theta) * getRadius());
+		 tail.incrementYBy(-Math.sin(theta) * getRadius());
 		 
 		 return tail;
 	 }
 	 
-	 public Vector getNosePosition(){
+	 public Vector getNosePosition() {
 		 Vector nose = new Vector(position);
-		 nose.incrementXBy(Math.cos(theta) * size / 2);
-		 nose.incrementYBy(Math.sin(theta) * size / 2);
+		 nose.incrementXBy(Math.cos(theta) * getRadius());
+		 nose.incrementYBy(Math.sin(theta) * getRadius());
 		 
 		 return nose;
 	 }
@@ -73,7 +73,7 @@ abstract class Actor {
 	  *      NOTE: thread concurrency is an advanced topic. This is a base
 	  *      implementation to handle the problem.
 	  */
-	 protected void delete(){
+	 protected void delete() {
 		 // NOTE: This needs to be thread safe.
 		 Actor.actors.remove(this);
 	 }
@@ -142,6 +142,10 @@ abstract class Actor {
 	 */
 	public float getSize(){
 		return size;
+	}
+	
+	public float getRadius() {
+		return size / 2;
 	}
 	
 	// Lets you reference chain
@@ -219,7 +223,7 @@ abstract class Actor {
 		float deltaPY = position.y() - other.position.y();
 
 		/* Our sizes are the diameter of each object and we want the distance between their centers */                          
-		float minDistance = getSize() / 2 + other.getSize() / 2;
+		float minDistance = getRadius() + other.getRadius();
 
 		boolean collideX = isCollision1D(deltaPX, deltaVX, minDistance);
 		boolean collideY = isCollision1D(deltaPY, deltaVY, minDistance);
