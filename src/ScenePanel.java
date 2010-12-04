@@ -13,8 +13,8 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 public class ScenePanel extends GLCanvas {
 	private static final long serialVersionUID = 702382815287044105L;
 	private FPSAnimator animator;
-    private GLU glu;
-    private InputHandler input;
+	private GLU glu;
+	private InputHandler input;
 
 	public ScenePanel() {
 		input = new InputHandler();
@@ -88,21 +88,21 @@ public class ScenePanel extends GLCanvas {
 
 		@Override
 		public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-	        GL2 gl = drawable.getGL().getGL2();
-	        // Make the height at least one so we don't divide by zero
-	        if (height <= 0) {
-	            height = 1;
-	        }
-	        float aspectRatio = (float) width / (float) height;
-	        // Reset the projection matrix to the identity
-	        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
-	        gl.glLoadIdentity();
-	        // Tell the perspective matrix the Field of view, aspectRatio, ZNEAR, ZFAR
-	        glu.gluPerspective(90.0f, aspectRatio, 1.0, 1000.0);
-	        // Go back to ModelView matrix mode now that we are done
-	        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-	        // Be nice and load the Identity
-	        gl.glLoadIdentity();
+			GL2 gl = drawable.getGL().getGL2();
+			// Make the height at least one so we don't divide by zero
+			if (height <= 0) {
+				height = 1;
+			}
+			float aspectRatio = (float) width / (float) height;
+			// Reset the projection matrix to the identity
+			gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+			gl.glLoadIdentity();
+			// Tell the perspective matrix the Field of view, aspectRatio, ZNEAR, ZFAR
+			glu.gluPerspective(90.0f, aspectRatio, 1.0, 1000.0);
+			// Go back to ModelView matrix mode now that we are done
+			gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+			// Be nice and load the Identity
+			gl.glLoadIdentity();
 		}
 	}
 	
@@ -159,14 +159,17 @@ public class ScenePanel extends GLCanvas {
 			// described above in glScale,glRotate,glTranslate
 			// For our actor to map a texture to
 			drawNormalSquare(gl);  
-			}
-		if(ParticleSystem.isEnabled)
-			renderParticles(gl);
+		}
+
+		renderParticles(gl);
 	}
 	
-	private void renderParticles(GL2 gl){
+	private void renderParticles(GL2 gl) {
+		if (ParticleSystem.isEnabled == false)
+			return false;
+
 		gl.glDisable(GL.GL_TEXTURE_2D);
-		for(int i = 0; i < ParticleSystem.particles.size(); i++){
+		for(int i = 0; i < ParticleSystem.particles.size(); i++) {
 			Particle p = ParticleSystem.particles.get(i);
 			gl.glLoadIdentity();
 			gl.glTranslatef(p.getPosition().x(), p.getPosition().y(), -1.0f);
@@ -194,7 +197,7 @@ public class ScenePanel extends GLCanvas {
 	 * Draw a normalized square at the origin
 	 * @param gl - the OpenGL context
 	 */
-	private void drawNormalSquare(GL2 gl){
+	private void drawNormalSquare(GL2 gl) {
 		// These points will be multiplied by the transformations above
 		// to produce the desired and described transformations.
 		gl.glBegin(/* GL.GL_QUADS */ 7);//GL_QUADS isn't defined in the JOGL
