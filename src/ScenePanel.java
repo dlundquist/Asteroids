@@ -177,14 +177,14 @@ public class ScenePanel extends GLCanvas {
 			renderText(gl, "Paused", -0.25f, 0.25f);
 	}
 	
-	private void renderText(GL2 gl, String string, float g, float f) {
+	private void renderText(GL2 gl, String string, float x, float y) {
 		gl.glDisable(GL.GL_TEXTURE_2D);
 		GLUT glut = new GLUT();
 		
         gl.glLoadIdentity();
         gl.glTranslatef(0, 0, -1.5f);
 		gl.glColor3f(0.1328125f, 0.69140625f, 0.296875f); // GUI Title color
-		gl.glRasterPos2f(-0.25f, 0.25f);
+		gl.glRasterPos2f(x, y);
 		
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, string);
 		gl.glEnable(GL.GL_TEXTURE_2D);
