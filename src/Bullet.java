@@ -8,11 +8,11 @@ public class Bullet extends Actor {
 	private static final float BULLET_SIZE = 0.05f;
 	private static final float BULLET_SPIN = 0.05f;
 	private static final int BULLET_LIFETIME = 60; // 1 second
-	
+
 	public Bullet(Actor ship) {
 		this(ship, 0); // Call our other constructor with a zero deflection angle
 	}
-	
+
 	public Bullet(Actor ship, float deflection_angle) {
 		position = new Vector(ship.getNosePosition());
 		// Relative to the ship
@@ -24,7 +24,7 @@ public class Bullet extends Actor {
 		sprite = Sprite.bullet();
 		omega = BULLET_SPIN;
 		size = BULLET_SIZE;
-		
+
 		id = generateId();
 		parentId = ship.id;
 	}
@@ -39,19 +39,12 @@ public class Bullet extends Actor {
 		// We don't want to disappear when we hit a PowerUp
 		if(other instanceof PowerUp)
 			return;
-<<<<<<< HEAD
-		}
-		else if(other instanceof Bullet){
-			return;
-		}
-=======
-		
->>>>>>> 59e969e777db906cccd994d428c135238c79781c
-		
+
+
 		// Play our awesome sound
 		if(SoundEffect.isEnabled())
     		SoundEffect.forBulletHit().play();
-		
+
 		// Remove ourself from the game
 		delete();
 	}
@@ -59,7 +52,7 @@ public class Bullet extends Actor {
 	public void update() {
 		// CL - Update our rotation and position as defined in Actor.update()
 		super.update();
-		
+
 		/* Remove the bullet if it exceeds it's life span */
 		if(age > BULLET_LIFETIME) {
 			delete();
