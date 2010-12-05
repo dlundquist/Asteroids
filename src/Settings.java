@@ -26,21 +26,22 @@ public class Settings extends JFrame {
 	}
 
 	private JPanel settingsPanel() {
-		JPanel panel = new BlackPanel();
+		JPanel panel = new JPanel();
+		GUI.colorize(panel);
 		panel.setLayout(new GridLayout(3, 1));
 
 		sound = new JCheckBox("Enabled Sound");
-		sound.setBackground(Color.BLACK);
+		GUI.colorize(sound);
 		sound.setSelected(SoundEffect.isEnabled());
 		panel.add(sound);
 		
 		particles = new JCheckBox("Enabled Particle Effects");
-		particles.setBackground(Color.BLACK);
+		GUI.colorize(particles);
 		particles.setSelected(ParticleSystem.isEnabled());
 		panel.add(particles);
 		
 		asteroidsCollide = new JCheckBox("Enabled Asteroid Collisions");
-		asteroidsCollide.setBackground(Color.BLACK);
+		GUI.colorize(asteroidsCollide);
 		asteroidsCollide.setSelected(Asteroid.isAsteroidCollisionOn());
 		panel.add(asteroidsCollide);		
 		
@@ -48,14 +49,17 @@ public class Settings extends JFrame {
 	}
 
 	private JPanel buttonPanel() {
-		JPanel panel = new BlackPanel();
+		JPanel panel = new JPanel();
+		GUI.colorize(panel);
 		
-		apply = new BlackButton("Apply");
+		apply = new JButton("Apply");
 		apply.addActionListener(new ButtonHandler(this));
+		GUI.colorize(apply);
 		panel.add(apply);
 		
-		close = new BlackButton("Close");
+		close = new JButton("Close");
 		close.addActionListener(new ButtonHandler(this));
+		GUI.colorize(close);
 		panel.add(close);
 		
 		return panel;

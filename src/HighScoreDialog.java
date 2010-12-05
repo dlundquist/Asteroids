@@ -21,10 +21,12 @@ public class HighScoreDialog extends JFrame {
 		setSize(200,300);
 		setResizable(false);
 		
-		JPanel panel = new BlackPanel();
+		JPanel panel = new JPanel();
+		GUI.colorize(panel);
 		panel.setLayout(null);
 
-		close_button = new BlackButton("Close");
+		close_button = new JButton("Close");
+		GUI.colorize(close_button);
 		close_button.addActionListener(new CloseButtonHandler(this));
 
 		score_area = textAreaBuilder();
@@ -32,8 +34,6 @@ public class HighScoreDialog extends JFrame {
 		close_button.setBounds(50, 220, 100, 20);
 
 		
-		
-		//TODO make pretty - suggestion - colors - black background - check w/ GUI team
 		panel.add(close_button);
 		panel.add(score_area);
 
@@ -56,7 +56,8 @@ public class HighScoreDialog extends JFrame {
 		score_area.setText(toPrint);
 		
 		score_area.setBackground(Color.BLACK);
-		
+	
+		GUI.colorize(score_area);
 		return score_area;
 	}
 

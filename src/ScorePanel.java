@@ -2,7 +2,7 @@ import java.awt.Dimension;
 import java.text.DecimalFormat;
 import javax.swing.*;
 
-public class ScorePanel extends BlackPanel {
+public class ScorePanel extends JPanel {
     private static final long serialVersionUID = -3919165149509621102L;
 
     private static final int SMALL_ASTEROID_VALUE = 16;
@@ -23,10 +23,13 @@ public class ScorePanel extends BlackPanel {
 
     public ScorePanel() {
         setPreferredSize(new Dimension(100, 500));
-
+        
         accurate = new JLabel("Accuracy % 0");
+        GUI.colorize(accurate);
         lives = new JLabel("Lives: " + getLives());
+        GUI.colorize(lives);
         score = new JLabel("Score: " + scoreAmount);
+        GUI.colorize(score);
         add(score);
         add(lives);
         add(accurate);
@@ -34,6 +37,8 @@ public class ScorePanel extends BlackPanel {
         /* If this is the first ScorePanel register it as our ScorePanel - there should only be one */
         if (scorePanel == null)
             scorePanel = this;
+        
+        GUI.colorize(this);
     }
 
     public static ScorePanel getScorePanel() {

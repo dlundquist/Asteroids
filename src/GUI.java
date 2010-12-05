@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 
 
@@ -23,7 +24,8 @@ public class GUI extends JFrame {
 		scene = new ScenePanel();
 		score = new ScorePanel();
 		banner = new BannerPanel();
-		JPanel blackSpace = new BlackPanel();
+		JPanel blackSpace = new JPanel();
+		GUI.colorize(blackSpace);
 
 
 		// Add them to the content pane and put where you want them.
@@ -37,5 +39,21 @@ public class GUI extends JFrame {
 		pack();
 		//Initially it is not going to be visible
 		setVisible(false);
+	}
+
+	/* Applies our could scheme to a swing component */
+	public static void colorize(JComponent component) {
+		if (component instanceof JButton) {
+			component.setBackground(Color.DARK_GRAY);
+			component.setForeground(Color.WHITE);
+		} else {
+			component.setBackground(Color.BLACK);
+			component.setForeground(GUI.titleColor());
+		}
+	}
+	
+	/* Returns the color used in the title image */
+	public static Color titleColor() {
+		return new Color(0x22, 0xb1, 0x4c);
 	}
 }
