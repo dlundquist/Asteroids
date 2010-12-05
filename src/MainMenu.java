@@ -10,13 +10,15 @@ import java.awt.event.ActionListener;
  */
 public class MainMenu extends JFrame {
 	private static final long serialVersionUID = -6930053717837454204L;
+	
 	//These are the fields
 	private JPanel titlePanel;
 	private JPanel buttonsPanel;
 	private JButton highScores;
-
 	private JButton startGame;
+	private JButton settings;
 	private JButton howToPlay;
+	private JButton quitButton;
 	private JLabel title;
 	private JLabel imageLabel;
 
@@ -28,41 +30,49 @@ public class MainMenu extends JFrame {
 		imageLabel = new JLabel();
 		imageLabel.setIcon(titleImage);
 
-		buttonsPanel = new BlackPanel();
-		buttonsPanel.setBackground(Color.BLACK);
-
+		buttonsPanel = new JPanel();
 		titlePanel = new JPanel();
+		
+		GUI.colorize(buttonsPanel);
+		GUI.colorize(titlePanel);
 
-		titlePanel.setBackground(Color.BLACK);
 		title = new JLabel();
 		title.setIcon(titleImage);
 		
 		JPanel blackSpace = new JPanel();
-		blackSpace.setBackground(Color.BLACK);
-
+		GUI.colorize(blackSpace);
+		
 		add(titlePanel, BorderLayout.NORTH);
 		add(blackSpace, BorderLayout.WEST);
 		add(buttonsPanel, BorderLayout.CENTER);
 		add(blackSpace, BorderLayout.SOUTH);
 		add(blackSpace, BorderLayout.AFTER_LAST_LINE);
 
-		if (Asteroids.isStarted())
-			startGame = new BlackButton("Resume Game");
-		else
-			startGame = new BlackButton("Start Game");
-		howToPlay = new BlackButton("How to play");
-		highScores = new BlackButton("High scores");
 
-
+		startGame = new JButton(Asteroids.isStarted() ? "Resume Game" : "Start Game");
+		GUI.colorize(startGame);
+		howToPlay = new JButton("How to play");
+		GUI.colorize(howToPlay);
+		settings = new JButton("Settings");
+		GUI.colorize(settings);
+		highScores = new JButton("High scores");
+		GUI.colorize(highScores);
+		quitButton = new JButton("Quit");
+		GUI.colorize(quitButton);
 
 		startGame.addActionListener(new StartGameListener());
 		howToPlay.addActionListener(new HowToPlayListener());
+		settings.addActionListener(new SettingsListener());
 		highScores.addActionListener(new HighScoresListener());
+		quitButton.addActionListener(new QuitButtonListener());
 
 		titlePanel.add(title);
 		buttonsPanel.add(startGame);
 		buttonsPanel.add(howToPlay);
+		buttonsPanel.add(settings);
 		buttonsPanel.add(highScores);
+		buttonsPanel.add(quitButton);
+
 
 		pack();
 		setVisible(true);
@@ -76,14 +86,41 @@ public class MainMenu extends JFrame {
 
 	private class HowToPlayListener implements ActionListener {
 		public void actionPerformed(ActionEvent f) {
-			String instrustions= ":How to PLAY:\n p= pause \n up= thrusters\n down= backwards \n right= right turn \n left= left turn \n up&down= stop\n W= warp";
-			JOptionPane.showMessageDialog(null, instrustions);		
+			String instructions= "<html>" +
+					"<body>" +
+					"<table>" +
+					"<tr><th colspan=2>How to PLAY</th></tr>" +
+					"<tr><td>pause game</td><td>pause or p</td></tr>" +
+					"<tr><td>menu</td><td>escape or q</td></tr>" +
+					"<tr><td>forward thrusters</td><td>up arrow</td></tr>" +
+					"<tr><td>reverse thrusters</td><td>down arrow</td></tr>" +
+					"<tr><td>turn left</td><td>left arrow</td></tr>" +
+					"<tr><td>turn right</td><td>right arrow</td></tr>" +
+					"<tr><td>emergency stop</td><td>up and down arrows</td></tr>" +
+					"<tr><td>flip 180</td><td>s</td></tr>" +
+					"<tr><td>warp</td><td>w</td></tr>" +
+					"</table>" +
+					"</body>" +
+					"</html>";
+			JOptionPane.showMessageDialog(null, instructions);		
+		}
+	}
+
+	private class SettingsListener implements ActionListener {
+		public void actionPerformed(ActionEvent f) {			
+			new Settings();
 		}
 	}
 
 	private class HighScoresListener implements ActionListener {
 		public void actionPerformed(ActionEvent f) {			
 			Asteroids.showHighScores();
+		}
+	}
+	
+	private class QuitButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent f) {			
+			System.exit(0);
 		}
 	}
 }

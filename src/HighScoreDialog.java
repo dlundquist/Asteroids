@@ -1,6 +1,5 @@
 import javax.swing.*;
-
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,49 +12,50 @@ public class HighScoreDialog extends JFrame {
 	private static final long serialVersionUID = 5636998948623028169L;
 
 	private JButton close_button;
-	private JLabel score_area;
+	private JPanel score_area;
 
 	/* Display high score list */
 	public HighScoreDialog(HighScores scores) {
 		setTitle("High Scores");
-		setSize(200,300);
 		setResizable(false);
-		
-		JPanel panel = new BlackPanel();
-		panel.setLayout(null);
+		setLayout(new BorderLayout());
 
-		close_button = new BlackButton("Close");
+		score_area = textAreaBuilder(scores);
+		add(score_area, BorderLayout.NORTH);
+		
+		JPanel button_area = new JPanel();
+		GUI.colorize(button_area);
+		
+		close_button = new JButton("Close");
+		GUI.colorize(close_button);
 		close_button.addActionListener(new CloseButtonHandler(this));
-
-		score_area = textAreaBuilder();
-		score_area.setBounds(0, 5, 200, 200);
-		close_button.setBounds(50, 220, 100, 20);
-
 		
+		button_area.add(close_button);
 		
-		//TODO make pretty - suggestion - colors - black background - check w/ GUI team
-		panel.add(close_button);
-		panel.add(score_area);
-
-		add(panel);
+		add(button_area, BorderLayout.SOUTH);
+		
+		pack();
 		
 		setVisible(true);
 	}
 
-	private JLabel textAreaBuilder() {
-		JLabel score_area = new JLabel();
+	private JPanel textAreaBuilder(HighScores scores) {
+		JPanel score_area = new JPanel();
+		GUI.colorize(score_area);
 		
 		String toPrint = "<HTML><TABLE>";		
-		for (int i = 0; i < HighScores.score_list.size() && i < 10; i ++) {
+		for (int i = 0; i < scores.getScoreList().size() && i < 10; i ++) {
+			HighScores.HighScore score = scores.getScoreList().get(i);
+			
 			toPrint += "<TR><TD align=left>" + (i + 1) + "." + "</TD><TD align=left>"
-					+ HighScores.score_list.get(i).name + "</TD><TD align=right>"
-					+ HighScores.score_list.get(i).score + "</TD></TR>";
+					+ score.name + "</TD><TD align=right>"
+					+ score.score + "</TD></TR>";
 		}
 		toPrint += "</TABLE></HTML>";
 		
-		score_area.setText(toPrint);
-		
-		score_area.setBackground(Color.BLACK);
+		JLabel score_text = new JLabel(toPrint);
+		GUI.colorize(score_text);
+		score_area.add(score_text);
 		
 		return score_area;
 	}

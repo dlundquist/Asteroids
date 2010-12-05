@@ -4,10 +4,8 @@ public class Asteroid extends Actor {
 	public static final float SMALL_SIZE = 0.10f;//.15f // If we set this to 0.05f the game is impossible
 	public static float mass;
 	public static int largeHp = 4;
-	public static boolean asteroidCollisionOn = false;
 	private static int hitPoints;
-
-
+	private static boolean asteroidCollisionEnabled;
 
 	public Asteroid() {
 		int randSide = gen.nextInt(3);
@@ -58,7 +56,7 @@ public class Asteroid extends Actor {
 
 
 	public void handleCollision(Actor other) {
-		if (getAsteroidCollisionOn()){
+		if (isAsteroidCollisionEnabled()){
 			// Don't collide w/ other asteroids less than 5 frames old
 			if (other instanceof Asteroid && (age < 5 || other.age < 5))
 				return;
@@ -147,9 +145,12 @@ public class Asteroid extends Actor {
 	public boolean isSmall() {
 		return size <= SMALL_SIZE;
 	}
-	public boolean getAsteroidCollisionOn(){
-		if (asteroidCollisionOn) return true;
-		else return false;
+	public static boolean isAsteroidCollisionEnabled() {
+		return asteroidCollisionEnabled;
+	}
 
+	public static boolean isAsteroidCollisionEnabled(boolean toggle) {
+		asteroidCollisionEnabled = toggle;
+		return asteroidCollisionEnabled;
 	}
 }

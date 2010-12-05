@@ -3,11 +3,32 @@ import java.awt.*;
 
 
 public class GUI extends JFrame {
-	//These are the fields for the GUI class
-	// Not sure why Eclipse wanted to generate this, but it can't hurt anything
 	private static final long serialVersionUID = -934931618056969704L;
+	private static Color titleColor;
+	
+	/* Applies our could scheme to a swing component */
+	public static void colorize(JComponent component) {
+		if (component instanceof JButton) {
+			component.setBackground(Color.DARK_GRAY);
+			component.setForeground(Color.WHITE);
+		} else {
+			component.setBackground(Color.BLACK);
+			component.setForeground(GUI.titleColor());
+		}
+	}
+	
+	/* Returns the color used in the title image */
+	public static Color titleColor() {
+		if (titleColor == null)
+			titleColor =  new Color(0x22, 0xb1, 0x4c);
+		
+		return titleColor;
+	}
+	
+	
+	//These are the fields for the GUI class
 	private ScenePanel scene;
-	private JPanel score;
+	private ScorePanel score;
 	private JPanel banner;
 
 	public GUI() {
@@ -23,7 +44,8 @@ public class GUI extends JFrame {
 		scene = new ScenePanel();
 		score = new ScorePanel();
 		banner = new BannerPanel();
-		JPanel blackSpace = new BlackPanel();
+		JPanel blackSpace = new JPanel();
+		GUI.colorize(blackSpace);
 
 
 		// Add them to the content pane and put where you want them.
@@ -37,5 +59,9 @@ public class GUI extends JFrame {
 		pack();
 		//Initially it is not going to be visible
 		setVisible(false);
+	}
+	
+	public ScorePanel getScore() {
+		return score;
 	}
 }

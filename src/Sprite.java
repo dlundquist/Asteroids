@@ -21,6 +21,8 @@ public class Sprite {
 	public static final int BULLET_TYPE = 3;
 	public static final int POWER_UP_TYPE = 4;
 	public static final int TRIPLE_SHOT_POWER_UP_TYPE = 5;
+	public static final int LIFE_POWER_UP_TYPE = 6;
+	public static final int SHIELD_TYPE = 7;
 	private static final String TEXTURE_DIR = "data";
 	private static final String MANIFEST_FILE = "sprite.manifest";
 
@@ -132,6 +134,14 @@ public class Sprite {
 		return getRandomSprite(POWER_UP_TYPE);
 	}
 
+	public static Sprite lifePowerUp() {
+		return getRandomSprite(LIFE_POWER_UP_TYPE);
+	}
+
+	public static Sprite shield() {
+		return getRandomSprite(SHIELD_TYPE);
+	}
+
 	private static ArrayList<Sprite> getAll(int type) {
 		ArrayList<Sprite> list = new ArrayList<Sprite>();
 
@@ -206,4 +216,5 @@ public class Sprite {
 
 		gl.glTexImage2D(target, 0, GL.GL_RGBA, img.getWidth(), img.getHeight(), 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, dest);
 	}
+
 }

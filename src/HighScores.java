@@ -18,7 +18,8 @@ public class HighScores {
 		"Cthulu"
 	};
 
-	public static ArrayList<HighScore> score_list;
+	
+	private ArrayList<HighScore> score_list;
 
 
 	/* Open HIGH_SCORE_FILE and read the scores, names into an array */
@@ -43,12 +44,12 @@ public class HighScores {
 			file.close();
 		} catch (IOException e) {
 			System.err.println("No high score file found, creating new high scores...");
-			//TODO prepopulate high score with dummy scores
-			// logic seems sound, but score_list does not load values
-			int dummy_score = 10;
-			for(int i=0; i<score_list.size(); i++){
-				score_list.add(new HighScore(dummy_score*10, DUMMY_NAMES[i]));
-				dummy_score *=10;
+			// prepopulate high score with dummy scores
+			int dummy_score = 1000;
+			
+			for(int i = 0; i < DUMMY_NAMES.length; i++) {
+				score_list.add(new HighScore(dummy_score, DUMMY_NAMES[i]));
+				dummy_score -= 100;
 			}
 		}
 	}
@@ -125,8 +126,11 @@ public class HighScores {
 			writeScoreFile();
 		}
 	}
+	
+	public ArrayList<HighScore> getScoreList() {
+		return score_list;
+	}
 
-	// If you have trouble w/ HighScoresDialog - change this to public static class ...
 	public static class HighScore {
 		public String name;
 		public int score;
