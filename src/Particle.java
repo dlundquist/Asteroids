@@ -1,4 +1,3 @@
-
 public abstract class Particle extends Actor {
 	public float colorR;
 	public float colorG;

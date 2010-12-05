@@ -51,7 +51,7 @@ public class Asteroid extends Actor {
 
 
 	public void handleCollision(Actor other) {
-		if (getAsteroidCollisionOn()){
+		if (isAsteroidCollisionOn()){
 		// Don't collide w/ other asteroids less than 5 frames old
 		if (other instanceof Asteroid && (age < 5 || other.age < 5))
 			return;
@@ -116,9 +116,13 @@ public class Asteroid extends Actor {
 	public boolean isSmall() {
 		return size <= SMALL_SIZE;
 	}
-	public boolean getAsteroidCollisionOn(){
-		if (asteroidCollisionOn) return true;
-		else return false;
-		
+	
+	public static boolean isAsteroidCollisionOn() {
+		return asteroidCollisionOn;
+	}
+	
+	public static boolean isAsteroidsCollisionOn(boolean toggle) {
+		asteroidCollisionOn = toggle;
+		return asteroidCollisionOn;
 	}
 }

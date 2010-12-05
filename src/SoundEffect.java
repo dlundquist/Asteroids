@@ -14,6 +14,7 @@ public class SoundEffect {
 
 	// We only want to make one copy of each sound effect and play the
 	// same sound multiple times. So we have them as static members/fields
+	private static boolean loaded;
 	private static Sound bulletShot;
 	private static Sound bulletHit;
 	private static Sound largeAsteroidDeath;
@@ -23,23 +24,37 @@ public class SoundEffect {
 
 	// Initializes our sound effects
 	public static void init(boolean isEnabled) {
+		loaded = false;
 		if(isEnabled){
-			System.err.println("Initializing Sound");
-			enabled = true;
-			bulletShot = new Sound(BULLET_SHOT_FILE);
-			bulletHit = new Sound(BULLET_HIT_FILE);
-			largeAsteroidDeath = new Sound(LARGE_ASTEROID_DEATH_FILE);
-			smallAsteroidDeath = new Sound(SMALL_ASTEROID_DEATH_FILE);
-			playerDeath = new Sound(PLAYER_DEATH_FILE);
-			powerUpEffect = new Sound(POWER_UP_EFFECT_FILE);
-		}
-		else {
+			loadSounds();
+		} else {
 			System.err.println("Sound Disabled");
 			enabled = false;
 		}
 	}
 	
+	static private void loadSounds() {
+		System.err.println("Initializing Sound");
+		enabled = true;
+		bulletShot = new Sound(BULLET_SHOT_FILE);
+		bulletHit = new Sound(BULLET_HIT_FILE);
+		largeAsteroidDeath = new Sound(LARGE_ASTEROID_DEATH_FILE);
+		smallAsteroidDeath = new Sound(SMALL_ASTEROID_DEATH_FILE);
+		playerDeath = new Sound(PLAYER_DEATH_FILE);
+		powerUpEffect = new Sound(POWER_UP_EFFECT_FILE);		
+		loaded = true;
+	}
+	
 	static public boolean isEnabled() {
+		return enabled;
+	}
+	
+	static public boolean isEnabled(boolean toggle) {
+		enabled = toggle;
+		
+		if (enabled && !loaded)
+			loadSounds();
+		
 		return enabled;
 	}
 

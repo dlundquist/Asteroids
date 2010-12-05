@@ -9,6 +9,6 @@ public class BlackButton extends JButton {
 		super (s);
 		
 		setBackground(Color.DARK_GRAY);
-		setForeground(Color.white);
+		setForeground(Color.WHITE);
 	}
 }

@@ -70,7 +70,7 @@ public class Asteroids {
 		
 		Actor.updateActors();
 
-		if (ParticleSystem.isEnabled)
+		if (ParticleSystem.enabled)
 			ParticleSystem.updateParticles();
 
 		ScorePanel.getScorePanel().updateScorePanel();

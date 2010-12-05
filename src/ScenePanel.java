@@ -165,7 +165,7 @@ public class ScenePanel extends GLCanvas {
 	}
 	
 	private void renderParticles(GL2 gl) {
-		if (ParticleSystem.isEnabled == false)
+		if (ParticleSystem.enabled == false)
 			return;
 
 		gl.glDisable(GL.GL_TEXTURE_2D);

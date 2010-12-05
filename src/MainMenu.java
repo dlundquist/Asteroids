@@ -10,13 +10,15 @@ import java.awt.event.ActionListener;
  */
 public class MainMenu extends JFrame {
 	private static final long serialVersionUID = -6930053717837454204L;
+	
 	//These are the fields
 	private JPanel titlePanel;
 	private JPanel buttonsPanel;
 	private JButton highScores;
-
 	private JButton startGame;
+	private JButton settings;
 	private JButton howToPlay;
+	private JButton quitButton;
 	private JLabel title;
 	private JLabel imageLabel;
 
@@ -29,40 +31,39 @@ public class MainMenu extends JFrame {
 		imageLabel.setIcon(titleImage);
 
 		buttonsPanel = new BlackPanel();
-		buttonsPanel.setBackground(Color.BLACK);
+		titlePanel = new BlackPanel();
 
-		titlePanel = new JPanel();
-
-		titlePanel.setBackground(Color.BLACK);
 		title = new JLabel();
 		title.setIcon(titleImage);
 		
-		JPanel blackSpace = new JPanel();
-		blackSpace.setBackground(Color.BLACK);
-
+		JPanel blackSpace = new BlackPanel();
+		
 		add(titlePanel, BorderLayout.NORTH);
 		add(blackSpace, BorderLayout.WEST);
 		add(buttonsPanel, BorderLayout.CENTER);
 		add(blackSpace, BorderLayout.SOUTH);
 		add(blackSpace, BorderLayout.AFTER_LAST_LINE);
 
-		if (Asteroids.isStarted())
-			startGame = new BlackButton("Resume Game");
-		else
-			startGame = new BlackButton("Start Game");
+
+		startGame = new BlackButton(Asteroids.isStarted() ? "Resume Game" : "Start Game");
 		howToPlay = new BlackButton("How to play");
+		settings = new BlackButton("Settings");
 		highScores = new BlackButton("High scores");
-
-
+		quitButton = new BlackButton("Quit");
 
 		startGame.addActionListener(new StartGameListener());
 		howToPlay.addActionListener(new HowToPlayListener());
+		settings.addActionListener(new SettingsListener());
 		highScores.addActionListener(new HighScoresListener());
+		quitButton.addActionListener(new QuitButtonListener());
 
 		titlePanel.add(title);
 		buttonsPanel.add(startGame);
 		buttonsPanel.add(howToPlay);
+		buttonsPanel.add(settings);
 		buttonsPanel.add(highScores);
+		buttonsPanel.add(quitButton);
+
 
 		pack();
 		setVisible(true);
@@ -81,9 +82,21 @@ public class MainMenu extends JFrame {
 		}
 	}
 
+	private class SettingsListener implements ActionListener {
+		public void actionPerformed(ActionEvent f) {			
+			new Settings();
+		}
+	}
+
 	private class HighScoresListener implements ActionListener {
 		public void actionPerformed(ActionEvent f) {			
 			Asteroids.showHighScores();
+		}
+	}
+	
+	private class QuitButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent f) {			
+			System.exit(0);
 		}
 	}
 }
