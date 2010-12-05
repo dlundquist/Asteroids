@@ -21,7 +21,7 @@ public class Shield {
 	
 	public void handleCollision(Actor other){
 		// TODO calculate kenetic energy of our owner against the other
-		strength -= 10000.f * other.getKineticEnergy();
+		strength -= 50000.f * other.getKineticEnergy();
 		ParticleSystem.addPlasmaParticle(other);
 		System.err.println("Shield Hit Captain! Down to " + getIntegrity() + "Percent ( " + strength + ")");
 		// Don't put a minimum bound on shield
