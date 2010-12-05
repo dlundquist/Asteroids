@@ -17,15 +17,15 @@ public class Settings extends JFrame {
 		setLayout(new BorderLayout());
 		setTitle("Settings");
 		
-		add(settingsPanel(), BorderLayout.SOUTH);
+		add(settingsPanel(), BorderLayout.NORTH);
 		
-		add(buttonsPanel(), BorderLayout.NORTH);
+		add(buttonPanel(), BorderLayout.SOUTH);
 		
 		pack();
 		setVisible(true);
 	}
 
-	private JPanel buttonsPanel() {
+	private JPanel settingsPanel() {
 		JPanel panel = new BlackPanel();
 		panel.setLayout(new GridLayout(3, 1));
 
@@ -47,7 +47,7 @@ public class Settings extends JFrame {
 		return panel;
 	}
 
-	private JPanel settingsPanel() {
+	private JPanel buttonPanel() {
 		JPanel panel = new BlackPanel();
 		
 		apply = new BlackButton("Apply");
