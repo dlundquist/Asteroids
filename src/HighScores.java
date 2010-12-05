@@ -43,12 +43,12 @@ public class HighScores {
 			file.close();
 		} catch (IOException e) {
 			System.err.println("No high score file found, creating new high scores...");
-			//TODO prepopulate high score with dummy scores
-			// logic seems sound, but score_list does not load values
-			int dummy_score = 10;
-			for(int i=0; i<score_list.size(); i++){
-				score_list.add(new HighScore(dummy_score*10, DUMMY_NAMES[i]));
-				dummy_score *=10;
+			// prepopulate high score with dummy scores
+			int dummy_score = 1000;
+			
+			for(int i = 0; i < DUMMY_NAMES.length; i++) {
+				score_list.add(new HighScore(dummy_score, DUMMY_NAMES[i]));
+				dummy_score -= 100;
 			}
 		}
 	}
