@@ -31,7 +31,7 @@ public class ParticleSystem {
 	
 	public static void addExplosion(Vector pos) {
 		if(enabled){
-			for(int i = 0; i < DENSITY * 1000; i++ ){
+			for(int i = 0; i < DENSITY * 15; i++ ){
 				particles.add(new FireParticle(pos));
 			}
 		}
