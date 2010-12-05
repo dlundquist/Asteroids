@@ -23,14 +23,8 @@ public class GUI extends JFrame {
 		scene = new ScenePanel();
 		score = new ScorePanel();
 		banner = new BannerPanel();
-		JPanel blackSpace = new JPanel();
+		JPanel blackSpace = new BlackPanel();
 
-		//Setting the color for each panel
-		banner.setBackground(Color.BLACK);
-		score.setBackground(Color.BLACK);
-		scene.setBackground(Color.BLACK);
-		scene.setForeground(getBackground());
-		blackSpace.setBackground(Color.BLACK);
 
 		// Add them to the content pane and put where you want them.
 		add(banner, BorderLayout.NORTH);

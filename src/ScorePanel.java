@@ -2,7 +2,7 @@ import java.awt.Dimension;
 import java.text.DecimalFormat;
 import javax.swing.*;
 
-public class ScorePanel extends JPanel {
+public class ScorePanel extends BlackPanel {
     private static final long serialVersionUID = -3919165149509621102L;
 
     private static final int SMALL_ASTEROID_VALUE = 16;

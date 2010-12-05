@@ -28,7 +28,7 @@ public class MainMenu extends JFrame {
 		imageLabel = new JLabel();
 		imageLabel.setIcon(titleImage);
 
-		buttonsPanel = new JPanel();
+		buttonsPanel = new BlackPanel();
 		buttonsPanel.setBackground(Color.BLACK);
 
 		titlePanel = new JPanel();
@@ -47,18 +47,13 @@ public class MainMenu extends JFrame {
 		add(blackSpace, BorderLayout.AFTER_LAST_LINE);
 
 		if (Asteroids.isStarted())
-			startGame = new JButton("Resume Game");
+			startGame = new BlackButton("Resume Game");
 		else
-			startGame = new JButton("Start Game");
-		howToPlay = new JButton("How to play");
-		highScores = new JButton("High scores");
+			startGame = new BlackButton("Start Game");
+		howToPlay = new BlackButton("How to play");
+		highScores = new BlackButton("High scores");
 
-		howToPlay.setBackground(Color.DARK_GRAY);
-		howToPlay.setForeground(Color.white);
-		startGame.setBackground(Color.DARK_GRAY);
-		startGame.setForeground(Color.white);
-		highScores.setBackground(Color.DARK_GRAY);
-		highScores.setForeground(Color.white);
+
 
 		startGame.addActionListener(new StartGameListener());
 		howToPlay.addActionListener(new HowToPlayListener());

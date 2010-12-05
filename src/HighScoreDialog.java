@@ -1,4 +1,6 @@
 import javax.swing.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,19 +20,25 @@ public class HighScoreDialog extends JFrame {
 		setTitle("High Scores");
 		setSize(200,300);
 		setResizable(false);
-		setLayout(null);
+		
+		JPanel panel = new BlackPanel();
+		panel.setLayout(null);
 
-		close_button = new JButton("Close");
+		close_button = new BlackButton("Close");
 		close_button.addActionListener(new CloseButtonHandler(this));
 
 		score_area = textAreaBuilder();
 		score_area.setBounds(0, 5, 200, 200);
 		close_button.setBounds(50, 220, 100, 20);
 
+		
+		
 		//TODO make pretty - suggestion - colors - black background - check w/ GUI team
-		add(close_button);
-		add(score_area);
+		panel.add(close_button);
+		panel.add(score_area);
 
+		add(panel);
+		
 		setVisible(true);
 	}
 
@@ -46,6 +54,8 @@ public class HighScoreDialog extends JFrame {
 		toPrint += "</TABLE></HTML>";
 		
 		score_area.setText(toPrint);
+		
+		score_area.setBackground(Color.BLACK);
 		
 		return score_area;
 	}

@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class BannerPanel extends JPanel {
+public class BannerPanel extends BlackPanel {
 	private static final long serialVersionUID = 4751777519006353657L;
 	
 	public BannerPanel() {
