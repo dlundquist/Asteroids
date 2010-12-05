@@ -62,7 +62,8 @@ public class Asteroid extends Actor {
 		if(other instanceof PowerUp){
 			return;
 		} else if(other instanceof Bullet){
-			ScorePanel.getScorePanel().asteroidHit(this);
+			if (other.parentId == Asteroids.getPlayer().id)  // UFO bullets do not count to player's score
+				ScorePanel.getScorePanel().asteroidHit(this);
 		}
 
 		// Play our awesome explosion if sound is enabled

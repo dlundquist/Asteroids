@@ -56,7 +56,8 @@ public class Bullet extends Actor {
 		/* Remove the bullet if it exceeds it's life span */
 		if(age > BULLET_LIFETIME) {
 			delete();
-			ScorePanel.getScorePanel().bulletMissed();
+			if (parentId == Asteroids.getPlayer().id) // UFO bullets do not count to player's score
+				ScorePanel.getScorePanel().bulletMissed();
 		}	
 	}
 }
