@@ -10,6 +10,7 @@ public class GUI extends JFrame {
 	private ScenePanel scene;
 	private JPanel score;
 	private JPanel banner;
+	private static Color titleColor;
 
 	public GUI() {
 		// This the title that shows in the main window
@@ -54,6 +55,9 @@ public class GUI extends JFrame {
 	
 	/* Returns the color used in the title image */
 	public static Color titleColor() {
-		return new Color(0x22, 0xb1, 0x4c);
+		if (titleColor == null)
+			titleColor =  new Color(0x22, 0xb1, 0x4c);
+		
+		return titleColor;
 	}
 }
