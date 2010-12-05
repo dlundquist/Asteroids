@@ -1,6 +1,5 @@
 import javax.swing.*;
-
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,37 +12,36 @@ public class HighScoreDialog extends JFrame {
 	private static final long serialVersionUID = 5636998948623028169L;
 
 	private JButton close_button;
-	private JLabel score_area;
+	private JPanel score_area;
 
 	/* Display high score list */
 	public HighScoreDialog(HighScores scores) {
 		setTitle("High Scores");
-		setSize(200,300);
 		setResizable(false);
-		
-		JPanel panel = new JPanel();
-		GUI.colorize(panel);
-		panel.setLayout(null);
+		setLayout(new BorderLayout());
 
+		score_area = textAreaBuilder();
+		add(score_area, BorderLayout.NORTH);
+		
+		JPanel button_area = new JPanel();
+		GUI.colorize(button_area);
+		
 		close_button = new JButton("Close");
 		GUI.colorize(close_button);
 		close_button.addActionListener(new CloseButtonHandler(this));
-
-		score_area = textAreaBuilder();
-		score_area.setBounds(0, 5, 200, 200);
-		close_button.setBounds(50, 220, 100, 20);
-
 		
-		panel.add(close_button);
-		panel.add(score_area);
-
-		add(panel);
+		button_area.add(close_button);
+		
+		add(button_area, BorderLayout.SOUTH);
+		
+		pack();
 		
 		setVisible(true);
 	}
 
-	private JLabel textAreaBuilder() {
-		JLabel score_area = new JLabel();
+	private JPanel textAreaBuilder() {
+		JPanel score_area = new JPanel();
+		GUI.colorize(score_area);
 		
 		String toPrint = "<HTML><TABLE>";		
 		for (int i = 0; i < HighScores.score_list.size() && i < 10; i ++) {
@@ -53,11 +51,10 @@ public class HighScoreDialog extends JFrame {
 		}
 		toPrint += "</TABLE></HTML>";
 		
-		score_area.setText(toPrint);
+		JLabel score_text = new JLabel(toPrint);
+		GUI.colorize(score_text);
+		score_area.add(score_text);
 		
-		score_area.setBackground(Color.BLACK);
-	
-		GUI.colorize(score_area);
 		return score_area;
 	}
 
