@@ -23,15 +23,15 @@ public class Sprite {
 	public static final int TRIPLE_SHOT_POWER_UP_TYPE = 5;
 	private static final String TEXTURE_DIR = "data";
 	private static final String MANIFEST_FILE = "sprite.manifest";
-	
+
 	// a list of all the textures loaded so far
 	private static ArrayList<Sprite> sprites;
 	private static Random gen = new Random();
 
-		
+
 	private int texture;
 	private int type;
-	
+
 	/**
 	 * Create a new Sprite (OpenGL Texture)
 	 * 
@@ -45,7 +45,7 @@ public class Sprite {
 	public Sprite(GL gl, String filename, String type) {
 		this(gl, new File(TEXTURE_DIR, filename), Integer.parseInt(type));
 	}
-	
+
 	public Sprite(GL gl, File textureFile, int type) {
 		BufferedImage image;
 		try {
@@ -54,7 +54,7 @@ public class Sprite {
 			ie.printStackTrace();
 			throw new RuntimeException("unable to open " + textureFile.getAbsolutePath());
 		}
-		
+
 		this.type = type;
 
 		// Java really wanted to modify an array pointer
@@ -78,22 +78,22 @@ public class Sprite {
 		String line;
 		BufferedReader manifest;
 		File manifestFile = new File(TEXTURE_DIR, MANIFEST_FILE);
-		
+
 		sprites = new ArrayList<Sprite>();
-		
+
 		try {
 			manifest = new BufferedReader(new FileReader(manifestFile));
-			
+
 			while ((line = manifest.readLine()) != null) {
 				// Skip comments
 				if (line.startsWith("#"))
 					continue;
-				
+
 				String[] parts = line.split("\\s+"); // Split on white space
-				
+
 				if (parts.length < 2)
 					continue;
-				
+
 				if (parts[1].matches("\\A\\d+\\Z") == false) { // Regexp foo to check that our type field is an integer
 					System.err.println("Malformed line in " + manifestFile.getPath() + ": " + line);
 					continue;
@@ -111,15 +111,15 @@ public class Sprite {
 	public static Sprite background() {
 		return getRandomSprite(BACKGROUND_TYPE);
 	}
-	
+
 	public static Sprite asteroid() {
 		return getRandomSprite(ASTEROID_TYPE);
 	}
-	
+
 	public static Sprite playerShip() {
 		return getRandomSprite(PLAYER_SHIP_TYPE);
 	}
-	
+
 	public static Sprite bullet() {
 		return getRandomSprite(BULLET_TYPE);
 	}
@@ -127,27 +127,27 @@ public class Sprite {
 	public static Sprite tripleShotPowerUp() {
 		return getRandomSprite(TRIPLE_SHOT_POWER_UP_TYPE);
 	}
-	
+
 	public static Sprite powerUp() {
 		return getRandomSprite(POWER_UP_TYPE);
 	}
-	
+
 	private static ArrayList<Sprite> getAll(int type) {
 		ArrayList<Sprite> list = new ArrayList<Sprite>();
-		
+
 		for (int i = 0; i < sprites.size(); i ++) {
 			Sprite k = sprites.get(i);
 			if (k.type == type)
 				list.add(k);
 		}
-		
+
 		return list;
 	}
-	
+
 	private static Sprite getRandomSprite(int type) {
 		ArrayList<Sprite> list = getAll(type);
 		int length = list.size();
-		
+
 		switch(length) {
 		case(0):
 			throw new RuntimeException("No sprite of type " + type);
@@ -165,7 +165,7 @@ public class Sprite {
 	 * byte order and flip the image vertically so it is suitable for OpenGL.
 	 */
 	private void makeRGBTexture(GL gl, BufferedImage img, int target) {
-		
+
 		/* Setup a BufferedImage suitable for OpenGL */
 		WritableRaster raster =	Raster.createInterleavedRaster (DataBuffer.TYPE_BYTE,
 				img.getWidth(),
@@ -183,7 +183,7 @@ public class Sprite {
 				false,
 				null);
 
-		
+
 		/* Setup a Graphic2D context that will flip the image vertically along the way */
 		Graphics2D g = bufImg.createGraphics();
 		AffineTransform gt = new AffineTransform();
@@ -191,16 +191,16 @@ public class Sprite {
 		gt.scale (1, -1d);
 		g.transform (gt);
 		g.drawImage (img, null, null );
-		
+
 		/* Fetch the raw data out of the image and destroy the graphics context */
 		byte[] imgRGBA = ((DataBufferByte)raster.getDataBuffer()).getData();
 		g.dispose();
-		
+
 		/* Convert the raw data to a buffer for glTexImage2D */
 		ByteBuffer dest = ByteBuffer.allocateDirect(imgRGBA.length);
 		dest.order(ByteOrder.nativeOrder());
 		dest.put(imgRGBA, 0, imgRGBA.length);
-		
+
 		// Rewind the buffer so we can read it starting and beginning
 		dest.rewind();
 

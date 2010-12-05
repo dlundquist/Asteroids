@@ -30,7 +30,9 @@ abstract class Actor {
 	protected int id; // unique ID for each Actor 
 	protected int parentId;
 	protected int age; // Actor age in frames
-
+	protected int largeHp;
+	protected int mediumHp;
+	protected int bossHp;
 	/**
 	 * Call back before render loop for update to update it's position and do any housekeeping
 	 */

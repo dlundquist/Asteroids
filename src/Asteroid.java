@@ -1,9 +1,13 @@
 public class Asteroid extends Actor {
-	public static final float LARGE_SIZE = 0.15f;
-	public static final float MEDIUM_SIZE = 0.10f;
-	public static final float SMALL_SIZE = 0.15f; // If we set this to 0.05f the game is impossible
-	private static final int NEW_FRAGMENTS_PER_COLLISION = 2;
+	public static final float LARGE_SIZE = 0.30f;//.15f
+	public static final float MEDIUM_SIZE = 0.20f;//.10f
+	public static final float SMALL_SIZE = 0.10f;//.15f // If we set this to 0.05f the game is impossible
+	public static float mass;
+	public static int largeHp = 4;
 	public static boolean asteroidCollisionOn = false;
+	private static int hitPoints;
+
+
 
 	public Asteroid() {
 		int randSide = gen.nextInt(3);
@@ -34,11 +38,13 @@ public class Asteroid extends Actor {
 		sprite = Sprite.asteroid();
 		omega = gen.nextFloat() / 60;
 		theta = gen.nextFloat() * 2.0f * (float)Math.PI;
-		size = 0.1f;//gen.nextFloat() / 8.0f + 0.1f;
+		size = LARGE_SIZE;//gen.nextFloat() / 8.0f + 0.1f;
 		id = generateId();
+		mass = size*size*size;
+		largeHp = 4;
 	}
 
-	public Asteroid(Vector p, Vector v, float s, int parent) {
+	public Asteroid(Vector p, Vector v, float s, int parent, int hp) {
 		position = p;
 		velocity = v;
 		sprite = Sprite.asteroid();
@@ -47,22 +53,52 @@ public class Asteroid extends Actor {
 		size = s;
 		id = generateId();
 		parentId = parent;
+		hitPoints = hp;
 	}
 
 
 	public void handleCollision(Actor other) {
 		if (getAsteroidCollisionOn()){
-		// Don't collide w/ other asteroids less than 5 frames old
-		if (other instanceof Asteroid && (age < 5 || other.age < 5))
-			return;
+			// Don't collide w/ other asteroids less than 5 frames old
+			if (other instanceof Asteroid && (age < 5 || other.age < 5))
+				return;
 		}
 		else if (other instanceof Asteroid) return;
 
 		// We don't want to blow up on PowerUps
-		if(other instanceof PowerUp){
+		 if(other instanceof PowerUp){
 			return;
-		} else if(other instanceof Bullet){
+		}  
+		 if(other instanceof Bullet){
 			ScorePanel.getScorePanel().asteroidHit(this);
+			if (size <= SMALL_SIZE){
+				// Remove ourself from the game since we blew up
+				delete();
+				// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
+				ParticleSystem.addDebrisParticle(this);
+			}  
+			if (size == LARGE_SIZE){
+				largeHp--;
+				if (largeHp == 0){
+					delete();
+					Asteroid m1 = mediumAsteroid();
+					Asteroid m2 = mediumAsteroid();
+					Actor.actors.add(m1);
+					Actor.actors.add(m2);
+				}
+			} else if (size == MEDIUM_SIZE){
+				hitPoints--;
+				if (hitPoints == 0){
+					delete();
+					Asteroid s1 = smallAsteroid();
+					Actor.actors.add(s1);
+					Asteroid s2 = smallAsteroid();
+					Actor.actors.add(s2);
+				}
+			}
+			//Asteroid won't blow up when hitting the ship
+		} else if(other instanceof PlayerShip){
+			return;
 		}
 
 		// Play our awesome explosion if sound is enabled
@@ -72,43 +108,38 @@ public class Asteroid extends Actor {
 			else if (this.isSmall())
 				SoundEffect.forSmallAsteroidDeath().play();
 		}
-
-
-		//If asteroids is very small
-		if (size < SMALL_SIZE){
-			// Remove ourself from the game since we blew up
-			delete();
-			// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
-			ParticleSystem.addDebrisParticle(this);
-		} else {
-			float originalMass = size * size * size; // Mass scales with the cube of the linear scaling factor
-			Vector originalMomentum = new Vector(velocity).scaleBy(originalMass);
-
-			for (int i = 0; i < NEW_FRAGMENTS_PER_COLLISION; i++) {
-				// pick a new direction of our asteroid	fragment
-				float direction = gen.nextFloat() * 2 * (float)Math.PI;
-				float newMass = originalMass * (gen.nextFloat() + 1) / 3; // between 1/3 and 2/3 our original mass
-
-				// TODO fix velocity so energy is conserved pick an energy less than the original energy
-				Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());
-				Vector newMomentum = new Vector(newVelocity).scaleBy(newMass);
-
-				originalMass -= newMass; // Subtract our new asteroid mass from the original asteroid
-				originalMomentum.incrementBy(newMomentum.scaleBy(-1)); // Subtract the momentum of this fragment from our parent asteroid
-
-				float newSize = (float)Math.pow(newMass, 1.0 / 3.0); //The size scales with the cube root of the mass 
-
-				Actor.actors.add(new Asteroid(new Vector(position), newVelocity, newSize, id));
-			}
-			size = (float)Math.pow(originalMass, 1.0 / 3.0);
-			velocity = originalMomentum.scaleBy(1 / originalMass); // v = p / m
-		}
 	}
-
+	public Asteroid mediumAsteroid(){
+		float direction = gen.nextFloat() * 2 * (float)Math.PI;
+		Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());
+		float newMass = mass * (gen.nextFloat() + 1) / 3;
+		mass -= newMass;
+		mediumHp = 2;
+		//Actor.actors.add(new Asteroid(new Vector(position), newVelocity, MEDIUM_SIZE, id));
+		Asteroid medAsteroid = new Asteroid(new Vector(position), newVelocity, MEDIUM_SIZE,id, 2);
+		return medAsteroid;
+	}
+	public Asteroid smallAsteroid(){
+		float direction = gen.nextFloat()*2*(float)Math.PI;
+		Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());
+		float newMass = mass * (gen.nextFloat() + 1) / 3;
+		mass -= newMass;
+		//Actor.actors.add(new Asteroid(new Vector(position), newVelocity, SMALL_SIZE, id));
+		Asteroid smallAsteroid = new Asteroid(new Vector(position), newVelocity, SMALL_SIZE, id, 1);
+		return smallAsteroid;
+	}
+	public void setMomentum(float m, Vector v){
+		mass = m;
+		velocity = v;
+	}
+	public Vector getMomentum(){
+		Vector momentum = new Vector(this.velocity).scaleBy(mass);
+		return momentum;
+	}
 	public boolean isLarge() {
 		return size >= LARGE_SIZE;
 	}
-	
+
 	public boolean isMedium() {
 		return size > SMALL_SIZE && size < LARGE_SIZE;
 	}
@@ -119,6 +150,6 @@ public class Asteroid extends Actor {
 	public boolean getAsteroidCollisionOn(){
 		if (asteroidCollisionOn) return true;
 		else return false;
-		
+
 	}
 }
