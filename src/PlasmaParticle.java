@@ -26,7 +26,7 @@ public class PlasmaParticle extends Particle {
 	}
 	
 	PlasmaParticle(Vector pos){
-		position = pos;
+		position = new Vector(pos);
 		velocity = new Vector();
 		velocity.incrementXBy(Math.cos(gen.nextFloat() * 2 * Math.PI));
 		velocity.incrementYBy(Math.sin(gen.nextFloat() * 2 * Math.PI));
