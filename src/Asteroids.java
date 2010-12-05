@@ -6,6 +6,7 @@ public class Asteroids {
 	private final static int TIMER_REDUCED_BY = 1;
 
 	private static GUI gui;
+	private static MainMenu menu;
 	private static PlayerShip playerShip;
 	private static HighScores highScores;
 	private static boolean isPaused;
@@ -24,7 +25,7 @@ public class Asteroids {
 		ParticleSystem.init(true);
 		highScores = new HighScores();
 		gui = new GUI();
-		new MainMenu();
+		menu = new MainMenu();
 	}
 
 	/**
@@ -110,16 +111,25 @@ public class Asteroids {
 	}
 
 	public static void quitToMenu() {
+		// Don't open the menu multiple times
+		if (menu != null)
+			return;
+		
+		System.err.println("DEBUG: quitToMenu()");
+		
 		isPaused = true;
 		gui.setVisible(false);
-		new MainMenu(); 
+		menu = new MainMenu(); 
+	}
+	
+	public static void showGame() {
+		System.err.println("DEBUG: showGame()");
+		menu.dispose();
+		menu = null;
+		gui.setVisible(true);
 	}
 
 	public static void showHighScores() {	
 		highScores.displayScoreDialog();
-	}
-
-	public static void showGame() {
-		gui.setVisible(true);
 	}
 }

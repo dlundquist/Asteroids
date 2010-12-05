@@ -57,7 +57,7 @@ public class MainMenu extends JFrame {
 		highScores.setBackground(Color.DARK_GRAY);
 		highScores.setForeground(Color.white);
 
-		startGame.addActionListener(new StartGameListener(this));
+		startGame.addActionListener(new StartGameListener());
 		howToPlay.addActionListener(new HowToPlayListener());
 		highScores.addActionListener(new HighScoresListener());
 
@@ -71,14 +71,7 @@ public class MainMenu extends JFrame {
 	}
 
 	private class StartGameListener implements ActionListener {
-		private JFrame frame;
-
-		public StartGameListener(JFrame w) {
-			frame = w;
-		}
-
 		public void actionPerformed(ActionEvent e) {
-			frame.dispose();
 			Asteroids.showGame();
 		}
 	}
