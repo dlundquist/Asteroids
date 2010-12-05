@@ -125,7 +125,7 @@ public class InputHandler implements KeyListener {
 				case(KeyEvent.VK_Q):
 				case(KeyEvent.VK_ESCAPE):
 					Asteroids.quitToMenu();
-					clearKeyState();
+					clearKeyState(); /* Clear key state so we don't find this command in our buffer when we return to the game */
 					break;
 				case(KeyEvent.VK_P): // Fall through
 				case(KeyEvent.VK_PAUSE):

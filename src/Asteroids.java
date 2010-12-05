@@ -115,15 +115,12 @@ public class Asteroids {
 		if (menu != null)
 			return;
 		
-		System.err.println("DEBUG: quitToMenu()");
-		
 		isPaused = true;
 		gui.setVisible(false);
 		menu = new MainMenu(); 
 	}
 	
 	public static void showGame() {
-		System.err.println("DEBUG: showGame()");
 		menu.dispose();
 		menu = null;
 		gui.setVisible(true);
@@ -131,5 +128,12 @@ public class Asteroids {
 
 	public static void showHighScores() {	
 		highScores.displayScoreDialog();
+	}
+
+	public static boolean isStarted() {
+		if (playerShip == null)
+			return false;
+		
+		return playerShip.isAlive();
 	}
 }

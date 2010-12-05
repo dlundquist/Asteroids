@@ -8,7 +8,7 @@ public class PlayerShip extends Actor {
 	private static final double BRAKE_AMOUNT = .93;
     private static final int STARTING_LIVES = 3;
     private static final int INVUL_TIME = 180;
-    private static int NEW_LIFE_INVUL_TIMER = INVUL_TIME;// for invulnerability
+    private static int NEW_LIFE_INVUL_TIMER = INVUL_TIME; // for invulnerability
     
     
 	protected Weapon weapon;
@@ -16,7 +16,7 @@ public class PlayerShip extends Actor {
 	
 	
 	public PlayerShip() {
-		this(0, 0, 0, 0);
+		this (0, 0, 0, 0);
 	}
 
 	public PlayerShip(float px, float py, float vx, float vy) {
@@ -62,6 +62,7 @@ public class PlayerShip extends Actor {
 	public void decrementLives() {
 		lives --;
 	}
+	
 	public int getLives() {
 		return lives;
 	}
@@ -85,14 +86,17 @@ public class PlayerShip extends Actor {
 	
 		ParticleSystem.addFireParticle(this);
 	}
+	
 	private void playerDeath(){
 		regenerate();
 	}
+	
 	private void regenerate(){
 		position = new Vector(0,0);
 		this.velocity.scaleBy(0);
 		NEW_LIFE_INVUL_TIMER = INVUL_TIME;
 	}
+	
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
@@ -131,5 +135,9 @@ public class PlayerShip extends Actor {
 
 	public void flipShip() {
 		theta += Math.PI;
+	}
+
+	public boolean isAlive() {
+		return lives > 0;
 	}
 }

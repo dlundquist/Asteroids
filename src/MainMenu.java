@@ -46,7 +46,10 @@ public class MainMenu extends JFrame {
 		add(blackSpace, BorderLayout.SOUTH);
 		add(blackSpace, BorderLayout.AFTER_LAST_LINE);
 
-		startGame = new JButton("Start Game");
+		if (Asteroids.isStarted())
+			startGame = new JButton("Resume Game");
+		else
+			startGame = new JButton("Start Game");
 		howToPlay = new JButton("How to play");
 		highScores = new JButton("High scores");
 
