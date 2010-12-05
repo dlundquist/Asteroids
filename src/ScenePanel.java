@@ -119,9 +119,9 @@ public class ScenePanel extends GLCanvas {
 		
 		// Render background
 		// FIXME gl.glClear(GL.GL_COLOR_BUFFER_BIT) should reset the color but doesn't seem to
-		gl.glColor3f(1.0f, 1.0f, 1.0f);
 		gl.glLoadIdentity();
 		gl.glBindTexture(GL.GL_TEXTURE_2D, Sprite.background().getTextureId());
+		gl.glColor4f(1.0f, 1.0f, 1.0f,1.0f);
 		gl.glTranslatef(0, 0, -2);
 		gl.glScalef(4, 4, 1);
 		// The Polygon for our background image to map a texture to
@@ -143,6 +143,7 @@ public class ScenePanel extends GLCanvas {
 			// Bind our texture for this actor. This tells OpenGL which texture we want to use
 			// for the next glBegin()
 			gl.glBindTexture(GL.GL_TEXTURE_2D, actor.getSprite().getTextureId());
+			gl.glColor4f(1.0f, 1.0f, 1.0f,1.0f);
 
 			// Transformations are on a Stack so its "First In Last Out"
 			// Meaning we Translate, Rotate, Scale.
@@ -162,8 +163,27 @@ public class ScenePanel extends GLCanvas {
 		}
 
 		renderParticles(gl);
+		// FIXME ugly hack. Shields aren't actors but belong to actors. If Shields were actors,
+		// then you have to deal with lots of collision crap and update their position to their
+		// owners. Its really half a dozen or the other since the render code is centralized.
+		// -CL
+		renderShields(gl);
 	}
 	
+	private void renderShields(GL2 gl){
+		PlayerShip player = Asteroids.getPlayer();
+		gl.glLoadIdentity();
+		// Texture of the player's shield
+		gl.glBindTexture(GL.GL_TEXTURE_2D, player.shield.getSprite().getTextureId());
+		gl.glColor4f(1.0f, 1.0f, 1.0f,player.shield.getIntegrity());
+		// At the Player's position
+		gl.glTranslatef(player.getPosition().x(), player.getPosition().y(), -1.0f);
+		gl.glRotatef(player.getThetaDegrees(),0,0,1);
+		// The Shield's Size
+		gl.glScalef(player.shield.getSize(), player.shield.getSize(), 1);
+		// Fade it with the shield's strength
+		drawNormalSquare(gl);  
+	}
 	private void renderParticles(GL2 gl) {
 		if (ParticleSystem.enabled == false)
 			return;

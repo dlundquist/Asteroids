@@ -12,6 +12,7 @@ public class PlayerShip extends Actor {
     
     
 	protected Weapon weapon;
+	protected Shield shield;
 	private int lives;
 	
 	
@@ -25,6 +26,7 @@ public class PlayerShip extends Actor {
 		sprite = Sprite.playerShip();
 		size = PLAYER_SIZE;
 		weapon = new BasicWeapon(this);
+		shield = new Shield(this);
 		id = generateId();
 		lives = STARTING_LIVES;
 	}
@@ -33,6 +35,7 @@ public class PlayerShip extends Actor {
 		/* Update our rotation and velocity */
 		super.update();
 		weapon.update();
+		shield.update();
 		NEW_LIFE_INVUL_TIMER--;
 	}
 
@@ -40,15 +43,21 @@ public class PlayerShip extends Actor {
 		// Ignore things we spawned e.g. our bullets
 		if(other.parentId == id)
 			return;
+		// Check invuln
+		if (NEW_LIFE_INVUL_TIMER > 0) 
+			return;
 		
 		// Is the other guy an Asteroid?
 		// Player is now invulnerable for 3 sec after dying
-		else if ( other instanceof Asteroid) {
-			if (NEW_LIFE_INVUL_TIMER <= 0){
+		if ( other instanceof Asteroid) {
+			
+			// Take the shield damage
+			shield.handleCollision(other);
+			// If it is still up, we don't die
+			if(shield.isUp())
+				return;
 			ScorePanel.getScorePanel().playerHit();
 			playerDeath();
-			}
-			else if (NEW_LIFE_INVUL_TIMER > 0) return;
 		}
 		// Play the sound effect for player death
 		if(SoundEffect.isEnabled())
@@ -75,7 +84,7 @@ public class PlayerShip extends Actor {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
 		//Setting max speed
-		if (this.velocity.magnitude()>=MAX_SPEED){
+		if (velocity.magnitude()>MAX_SPEED){
 			thrust.scaleBy(0);
 			velocity.incrementBy(thrust);
 		}
@@ -88,12 +97,14 @@ public class PlayerShip extends Actor {
 	}
 	
 	private void playerDeath(){
+		ParticleSystem.addExplosion(position);
 		regenerate();
 	}
 	
 	private void regenerate(){
 		position = new Vector(0,0);
-		this.velocity.scaleBy(0);
+		velocity.scaleBy(0);
+		shield = new Shield(this);
 		NEW_LIFE_INVUL_TIMER = INVUL_TIME;
 	}
 	

@@ -32,7 +32,9 @@ public class GUI extends JFrame {
 		// Add them to the content pane and put where you want them.
 		add(banner, BorderLayout.NORTH);
 		add(scene, BorderLayout.CENTER);
-		add(score, BorderLayout.SOUTH);
+		// FIXME: Mac OSX. using BorderLayout.South makes the game window
+		//       really really small. Unplay-able small.
+		//add(score, BorderLayout.SOUTH);
 		add(blackSpace, BorderLayout.EAST);
 		add(blackSpace, BorderLayout.WEST);
 

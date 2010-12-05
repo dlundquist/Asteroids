@@ -1,6 +1,6 @@
 
 public class FireParticle extends Particle{
-	private static final float PARTICLE_VELOCTIY = 0.01f;
+	private static final float PARTICLE_VELOCITY = 0.01f;
 	private static final int PARTICLE_LIFETIME = 30;
 	private static final float PARTICLE_SIZE = 0.02f;
 	private static final float PARTICLE_SPIN = 0.01f;
@@ -11,9 +11,28 @@ public class FireParticle extends Particle{
 		// Relative to the ship
 		velocity = new Vector(ship.getVelocity());
 		// Add the speed of the shot
-		velocity.incrementXBy(-PARTICLE_VELOCTIY * (Math.cos(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
-		velocity.incrementYBy(-PARTICLE_VELOCTIY * (Math.sin(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
+		velocity.incrementXBy(-PARTICLE_VELOCITY * (Math.cos(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
+		velocity.incrementYBy(-PARTICLE_VELOCITY * (Math.sin(ship.getTheta()) + (gen.nextFloat() - 0.5f) / 2));
 
+		init();
+	}
+	
+	FireParticle(Vector pos, Vector vel){
+		position = pos;
+		velocity = vel.normalize().scaleBy(PARTICLE_VELOCITY);
+		init();
+	}
+	
+	FireParticle(Vector pos){
+		position = pos;
+		velocity = new Vector();
+		velocity.incrementXBy(Math.cos(gen.nextFloat() * 2 * Math.PI));
+		velocity.incrementYBy(Math.sin(gen.nextFloat() * 2 * Math.PI));
+		velocity.scaleBy(PARTICLE_VELOCITY);
+		init();
+	}
+	
+	private void init(){
 		theta = 0;
 		//TODO textures for our particles
 		//sprite = Sprite.particle();

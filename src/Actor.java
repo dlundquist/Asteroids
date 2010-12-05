@@ -50,6 +50,7 @@ abstract class Actor {
 		 checkBounds();
 	 }
 	 
+	 // Returns a position vector at the "back" of the spite
 	 public Vector getTailPosition() {
 		 Vector tail = new Vector(position);
 		 tail.incrementXBy(-Math.cos(theta) * getRadius());
@@ -57,7 +58,7 @@ abstract class Actor {
 		 
 		 return tail;
 	 }
-	 
+	 // Returns a position vector at the "front" of the sprite
 	 public Vector getNosePosition() {
 		 Vector nose = new Vector(position);
 		 nose.incrementXBy(Math.cos(theta) * getRadius());
@@ -152,6 +153,11 @@ abstract class Actor {
 	public Actor setSize(float newSize){
 		size = newSize;
 		return this;
+	}
+	
+	public float getKineticEnergy(){
+		// NOTE: Mass is missing from the equation so we throw in volume and leave out density
+		return size * size * size * (float)velocity.magnitude();
 	}
 	
 	/**
