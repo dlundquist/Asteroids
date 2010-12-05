@@ -124,7 +124,7 @@ public class InputHandler implements KeyListener {
 				break;
 				case(KeyEvent.VK_Q):
 				case(KeyEvent.VK_ESCAPE):
-					Asteroids.quitGame();
+					Asteroids.quitToMenu();
 					break;
 				case(KeyEvent.VK_P): // Fall through
 				case(KeyEvent.VK_PAUSE):
