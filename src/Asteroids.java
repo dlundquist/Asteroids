@@ -24,7 +24,7 @@ public class Asteroids {
 		ParticleSystem.init(true);
 		highScores = new HighScores();
 		gui = new GUI();
-		gui.showMenu();
+		new MainMenu();
 	}
 
 	/**
@@ -108,10 +108,15 @@ public class Asteroids {
 
 	public static void quitToMenu() {
 		isPaused = true;
-		gui.showMenu();
+		gui.setVisible(false);
+		new MainMenu(); 
 	}
 
 	public static void showHighScores() {	
 		highScores.displayScoreDialog();
+	}
+
+	public static void showGame() {
+		gui.setVisible(true);
 	}
 }

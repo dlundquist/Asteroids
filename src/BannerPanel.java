@@ -7,7 +7,7 @@ public class BannerPanel extends JPanel {
 		add(new JLabel("Asteroids"));
 	}
 	
-	public BannerPanel(ImageIcon d){
+	public BannerPanel(ImageIcon d) {
 		add(new JLabel(d));
 	}
 }
