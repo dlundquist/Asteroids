@@ -183,7 +183,9 @@ public class ScenePanel extends GLCanvas {
 		
         gl.glLoadIdentity();
         gl.glTranslatef(0, 0, -1.5f);
-		gl.glColor3f(0.1328125f, 0.69140625f, 0.296875f); // GUI Title color
+        gl.glColor3f((float)GUI.titleColor().getRed() / 256,
+				(float)GUI.titleColor().getGreen() / 256,
+				(float)GUI.titleColor().getBlue() / 256);
 		gl.glRasterPos2f(x, y);
 		
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, string);
