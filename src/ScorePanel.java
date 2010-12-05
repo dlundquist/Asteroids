@@ -1,30 +1,36 @@
-import java.awt.Dimension;
-import java.text.DecimalFormat;
 import javax.swing.*;
+import java.text.DecimalFormat;
 
 public class ScorePanel extends JPanel {
     private static final long serialVersionUID = -3919165149509621102L;
-
     private static final int SMALL_ASTEROID_VALUE = 16;
     private static final int MEDIUM_ASTEROID_VALUE = 15;
     private static final int LARGE_ASTEROID_VALUE = 13;
-
-    private static ScorePanel scorePanel; // TODO there should be a better way to do this
+    private static ScorePanel scorePanel; // there should be a better way to do this
     private static DecimalFormat decPlaces = new DecimalFormat("0");
 
+    /*
+     * There should be a better way to do this, but we need various parts
+     * of the game to be able to access the score panel to update statistics.
+     */
+    public static ScorePanel getScorePanel() {
+        return scorePanel;
+    }
+    
+    
     private int frameCounter;
     private JLabel score;
     private JLabel lives;
     private JLabel accurate;
     private int scoreAmount;
-    private double hitAmount;
-    private double accuracy = 0;
-    private double shotsMissed;
+    private int hitAmount;
+    private int shotsMissed;
 
     public ScorePanel() {
-        setPreferredSize(new Dimension(100, 500));
+    	// Fix issue on MacOS where score panel is huge and ScenePanel is postage stamp sized
+        // setPreferredSize(new Dimension(100, 500));
         
-        accurate = new JLabel("Accuracy % 0");
+        accurate = new JLabel("Accuracy 0%");
         GUI.colorize(accurate);
         lives = new JLabel("Lives: " + getLives());
         GUI.colorize(lives);
@@ -41,10 +47,6 @@ public class ScorePanel extends JPanel {
         GUI.colorize(this);
     }
 
-    public static ScorePanel getScorePanel() {
-        return scorePanel;
-    }
-
     public boolean playerHit() {
         if (getLives() == 0) {
             return false;
@@ -54,16 +56,17 @@ public class ScorePanel extends JPanel {
         }		
         // TODO end game when boolean returns false
     }
-    // points per size asteroid
+    
     public void asteroidHit(Asteroid asteroid) {
         hitAmount ++;
         
+        // points per size asteroid
         if (asteroid.isSmall()) {
-            scoreAmount += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * accuracy * .01);
+            scoreAmount += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * getAccuracy() * .01);
         } else if (asteroid.isMedium()) {
-            scoreAmount += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * accuracy * .01);
+            scoreAmount += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * getAccuracy() * .01);
         } else if (asteroid.isLarge()) {
-            scoreAmount += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * accuracy * .01);
+            scoreAmount += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * getAccuracy() * .01);
         } else {
             System.err.println("DEBUG: unknown asteroid size.");
         }
@@ -82,20 +85,23 @@ public class ScorePanel extends JPanel {
             frameCounter --;
         } else {
             frameCounter = 30;
-       	
-            // avoiding divide by zero error
-            if (hitAmount + shotsMissed !=0) {
-                // accuracy formula
-                accuracy = (hitAmount / (hitAmount + shotsMissed)) * 100;
-            }
 
             score.setText("Score: " + scoreAmount);
             lives.setText("Extra Lives:" + getLives());
-            // avoiding divide by zero error
-            if (hitAmount + shotsMissed != 0){
-                accurate.setText("Accuracy: %  " + decPlaces.format(accuracy) );
-            }
+            accurate.setText("Accuracy: " + decPlaces.format(getAccuracy()) + "%");
         }
+    }
+    
+    /*
+     * helper method to return the accuracy and avoid dividing by zero
+     */
+    private double getAccuracy() {
+        // avoiding divide by zero error
+        if (hitAmount + shotsMissed == 0)
+        	return 0;
+        
+        // accuracy formula
+        return ((double)hitAmount / (hitAmount + shotsMissed)) * 100;
     }
     
     /*

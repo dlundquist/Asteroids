@@ -30,7 +30,9 @@ abstract class Actor {
 	protected int id; // unique ID for each Actor 
 	protected int parentId;
 	protected int age; // Actor age in frames
-
+	protected int largeHp;
+	protected int mediumHp;
+	protected int bossHp;
 	/**
 	 * Call back before render loop for update to update it's position and do any housekeeping
 	 */
@@ -50,6 +52,7 @@ abstract class Actor {
 		 checkBounds();
 	 }
 	 
+	 // Returns a position vector at the "back" of the spite
 	 public Vector getTailPosition() {
 		 Vector tail = new Vector(position);
 		 tail.incrementXBy(-Math.cos(theta) * getRadius());
@@ -57,7 +60,7 @@ abstract class Actor {
 		 
 		 return tail;
 	 }
-	 
+	 // Returns a position vector at the "front" of the sprite
 	 public Vector getNosePosition() {
 		 Vector nose = new Vector(position);
 		 nose.incrementXBy(Math.cos(theta) * getRadius());
@@ -152,6 +155,24 @@ abstract class Actor {
 	public Actor setSize(float newSize){
 		size = newSize;
 		return this;
+	}
+	
+	public float getKineticEnergy() {
+		// NOTE: Mass is missing from the equation so we throw in volume and leave out density
+		float speed = (float)velocity.magnitude();
+		return 0.5f * getMass() * speed * speed;
+	}
+	
+	public float getMass() {
+		// This does not account for different actors having different densities
+		// but the mass should scale with the cube of the linear scale (the volume)
+		return size * size * size;
+	}
+	
+	public Vector getMomentum() {
+		Vector p = new Vector(velocity);
+		p.scaleBy(getMass());
+		return p;
 	}
 	
 	/**

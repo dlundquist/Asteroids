@@ -18,7 +18,8 @@ public class HighScores {
 		"Cthulu"
 	};
 
-	public static ArrayList<HighScore> score_list;
+	
+	private ArrayList<HighScore> score_list;
 
 
 	/* Open HIGH_SCORE_FILE and read the scores, names into an array */
@@ -125,8 +126,11 @@ public class HighScores {
 			writeScoreFile();
 		}
 	}
+	
+	public ArrayList<HighScore> getScoreList() {
+		return score_list;
+	}
 
-	// If you have trouble w/ HighScoresDialog - change this to public static class ...
 	public static class HighScore {
 		public String name;
 		public int score;
