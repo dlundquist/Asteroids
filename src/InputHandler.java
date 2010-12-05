@@ -99,7 +99,7 @@ public class InputHandler implements KeyListener {
 				continue;
 
 			// Skip keys that are disabled when the game is paused
-			if (Asteroids.getPauseState() && KEY_PAUSE_MASK[i])
+			if (Asteroids.isPaused() && KEY_PAUSE_MASK[i])
 				continue;
 
 			switch(KEYS_IN_USE[i]){

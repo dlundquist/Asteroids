@@ -1,6 +1,8 @@
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.*;
+import com.jogamp.opengl.util.gl2.GLUT;
+
 import java.awt.Dimension;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
@@ -121,12 +123,11 @@ public class ScenePanel extends GLCanvas {
 		// FIXME gl.glClear(GL.GL_COLOR_BUFFER_BIT) should reset the color but doesn't seem to
 		gl.glLoadIdentity();
 		gl.glBindTexture(GL.GL_TEXTURE_2D, Sprite.background().getTextureId());
-		gl.glColor4f(1.0f, 1.0f, 1.0f,1.0f);
+		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		gl.glTranslatef(0, 0, -2);
 		gl.glScalef(4, 4, 1);
 		// The Polygon for our background image to map a texture to
 		drawNormalSquare(gl);
-		
 
 
 		/* Loop through all our actors in reverse order rendering them
@@ -168,8 +169,27 @@ public class ScenePanel extends GLCanvas {
 		// owners. Its really half a dozen or the other since the render code is centralized.
 		// -CL
 		renderShields(gl);
+		
+		/*
+		 * Display message if game is paused
+		 */
+		if (Asteroids.isPaused())
+			renderText(gl, "Paused", -0.25f, 0.25f);
 	}
 	
+	private void renderText(GL2 gl, String string, float g, float f) {
+		gl.glDisable(GL.GL_TEXTURE_2D);
+		GLUT glut = new GLUT();
+		
+        gl.glLoadIdentity();
+        gl.glTranslatef(0, 0, -1.5f);
+		gl.glColor3f(0.1328125f, 0.69140625f, 0.296875f); // GUI Title color
+		gl.glRasterPos2f(-0.25f, 0.25f);
+		
+		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, string);
+		gl.glEnable(GL.GL_TEXTURE_2D);
+	}
+
 	private void renderShields(GL2 gl){
 		PlayerShip player = Asteroids.getPlayer();
 		gl.glLoadIdentity();
