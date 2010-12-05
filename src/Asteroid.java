@@ -3,7 +3,7 @@ public class Asteroid extends Actor {
 	public static final float MEDIUM_SIZE = 0.10f;
 	public static final float SMALL_SIZE = 0.15f; // If we set this to 0.05f the game is impossible
 	private static final int NEW_FRAGMENTS_PER_COLLISION = 2;
-	public static boolean asteroidCollisionOn = false;
+	public static boolean asteroidCollisionEnabled = false;
 
 	public Asteroid() {
 		int randSide = gen.nextInt(3);
@@ -51,12 +51,22 @@ public class Asteroid extends Actor {
 
 
 	public void handleCollision(Actor other) {
-		if (isAsteroidCollisionOn()){
-		// Don't collide w/ other asteroids less than 5 frames old
-		if (other instanceof Asteroid && (age < 5 || other.age < 5))
-			return;
+		if (other instanceof Asteroid) {
+			/*
+			 * This is a compromise if we handle asteroids colliding
+			 * with each other or not, it's an option the user can 
+			 * change via settings.
+			 */
+			if (asteroidCollisionEnabled){
+				// Don't collide w/ other asteroids less than 5 frames old
+				if (age < 5 || other.age < 5)
+					return;
+				// Otherwise we handle the collision below
+			} else {
+				// The default option is that asteroids do not interact with each other
+				return;
+			}
 		}
-		else if (other instanceof Asteroid) return;
 
 		// We don't want to blow up on PowerUps
 		if(other instanceof PowerUp){
@@ -117,12 +127,12 @@ public class Asteroid extends Actor {
 		return size <= SMALL_SIZE;
 	}
 	
-	public static boolean isAsteroidCollisionOn() {
-		return asteroidCollisionOn;
+	public static boolean isAsteroidCollisionEnabled() {
+		return asteroidCollisionEnabled;
 	}
 	
-	public static boolean isAsteroidsCollisionOn(boolean toggle) {
-		asteroidCollisionOn = toggle;
-		return asteroidCollisionOn;
+	public static boolean isAsteroidsCollisionEnabled(boolean toggle) {
+		asteroidCollisionEnabled = toggle;
+		return asteroidCollisionEnabled;
 	}
 }

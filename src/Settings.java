@@ -42,7 +42,7 @@ public class Settings extends JFrame {
 		
 		asteroidsCollide = new JCheckBox("Enabled Asteroid Collisions");
 		GUI.colorize(asteroidsCollide);
-		asteroidsCollide.setSelected(Asteroid.isAsteroidCollisionOn());
+		asteroidsCollide.setSelected(Asteroid.isAsteroidCollisionEnabled());
 		panel.add(asteroidsCollide);		
 		
 		return panel;
@@ -76,7 +76,7 @@ public class Settings extends JFrame {
 			 if (e.getSource() == apply) {
 				 SoundEffect.isEnabled(sound.isSelected());
 				 ParticleSystem.isEnabled(particles.isSelected());
-				 Asteroid.isAsteroidsCollisionOn(asteroidsCollide.isSelected());
+				 Asteroid.isAsteroidsCollisionEnabled(asteroidsCollide.isSelected());
 				 
 				 window.dispose();
 			 } else if (e.getSource() == close) {
