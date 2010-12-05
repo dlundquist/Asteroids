@@ -46,7 +46,8 @@ public class ScenePanel extends GLCanvas {
 			/*  It is where we should initialize various OpenGL features. */
 			GL2 gl = drawable.getGL().getGL2();
 
-			gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+			/* Set background color to black */
+			gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			gl.glClearDepthf(1.0f);
 			// Enable Textures
 			gl.glEnable(GL.GL_TEXTURE_2D);
