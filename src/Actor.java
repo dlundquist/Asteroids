@@ -157,9 +157,22 @@ abstract class Actor {
 		return this;
 	}
 	
-	public float getKineticEnergy(){
+	public float getKineticEnergy() {
 		// NOTE: Mass is missing from the equation so we throw in volume and leave out density
-		return size * size * size * (float)velocity.magnitude();
+		float speed = (float)velocity.magnitude();
+		return 0.5f * getMass() * speed * speed;
+	}
+	
+	public float getMass() {
+		// This does not account for different actors having different densities
+		// but the mass should scale with the cube of the linear scale (the volume)
+		return size * size * size;
+	}
+	
+	public Vector getMomentum() {
+		Vector p = new Vector(velocity);
+		p.scaleBy(getMass());
+		return p;
 	}
 	
 	/**
