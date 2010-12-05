@@ -12,15 +12,15 @@ public class Settings extends JFrame {
 	JCheckBox asteroidsCollide;
 	JButton close;
 	JButton apply;
-	
+
 	public Settings() {
 		setLayout(new BorderLayout());
 		setTitle("Settings");
-		
+
 		add(settingsPanel(), BorderLayout.NORTH);
-		
+
 		add(buttonPanel(), BorderLayout.SOUTH);
-		
+
 		pack();
 		setVisible(true);
 	}
@@ -34,40 +34,40 @@ public class Settings extends JFrame {
 		GUI.colorize(sound);
 		sound.setSelected(SoundEffect.isEnabled());
 		panel.add(sound);
-		
+
 		particles = new JCheckBox("Enabled Particle Effects");
 		GUI.colorize(particles);
 		particles.setSelected(ParticleSystem.isEnabled());
 		panel.add(particles);
-		
+
 		asteroidsCollide = new JCheckBox("Enabled Asteroid Collisions");
 		GUI.colorize(asteroidsCollide);
 		asteroidsCollide.setSelected(Asteroid.isAsteroidCollisionEnabled());
 		panel.add(asteroidsCollide);		
-		
+
 		return panel;
 	}
 
 	private JPanel buttonPanel() {
 		JPanel panel = new JPanel();
 		GUI.colorize(panel);
-		
+
 		apply = new JButton("Apply");
 		apply.addActionListener(new ButtonHandler(this));
 		GUI.colorize(apply);
 		panel.add(apply);
-		
+
 		close = new JButton("Close");
 		close.addActionListener(new ButtonHandler(this));
 		GUI.colorize(close);
 		panel.add(close);
-		
+
 		return panel;
 	}
-	
+
 	private class ButtonHandler implements ActionListener {
 		JFrame window;
-		
+
 		public ButtonHandler(JFrame w) {
 			window = w;
 		}
@@ -76,8 +76,8 @@ public class Settings extends JFrame {
 			 if (e.getSource() == apply) {
 				 SoundEffect.isEnabled(sound.isSelected());
 				 ParticleSystem.isEnabled(particles.isSelected());
-				 Asteroid.isAsteroidsCollisionEnabled(asteroidsCollide.isSelected());
-				 
+				 Asteroid.isAsteroidCollisionEnabled(asteroidsCollide.isSelected());
+
 				 window.dispose();
 			 } else if (e.getSource() == close) {
 				 window.dispose();

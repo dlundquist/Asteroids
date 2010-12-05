@@ -3,7 +3,7 @@
  *
  */
 public class Asteroids {
-	private final static int TIMER_REDUCED_BY = 1;
+	private final static int TIMER_REDUCED_BY = 3;
 
 	private static GUI gui;
 	private static MainMenu menu;
@@ -11,7 +11,7 @@ public class Asteroids {
 	private static HighScores highScores;
 	private static boolean paused;
 	private static int asteroidsLeft = 100;
-	private static int timeBetween = 110;
+	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
 
 
@@ -35,6 +35,7 @@ public class Asteroids {
 	public static void init() {
 		/* Start the game paused */
 		paused = true;
+
 		/* 
 		 * Put the player ship first, so when we we add additional actors
 		 * the players ship is always in the same position. This way
