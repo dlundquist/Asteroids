@@ -2,11 +2,13 @@ public class PlayerShip extends Actor {
 	private static final float PLAYER_SIZE = 0.1f;
 	private static final double FORWARD_THRUST = 0.0003f;
 	private static final double REVERSE_THRUST = -0.0002f;
-	private static final double ROTATION_INCREMENT = 0.05f;
+	private static final double ROTATION_INCREMENT = 0.07f;
 	private static final double MAX_SPEED = 0.03f;
 	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
     private static final int STARTING_LIVES = 3;
+    private static final int INVUL_TIME = 180;
+    private static int NEW_LIFE_INVUL_TIMER = INVUL_TIME;// for invulnerability
     
     
 	protected Weapon weapon;
@@ -31,6 +33,7 @@ public class PlayerShip extends Actor {
 		/* Update our rotation and velocity */
 		super.update();
 		weapon.update();
+		NEW_LIFE_INVUL_TIMER--;
 	}
 
 	public void handleCollision(Actor other) {
@@ -39,9 +42,13 @@ public class PlayerShip extends Actor {
 			return;
 		
 		// Is the other guy an Asteroid?
+		// Player is now invulnerable for 3 sec after dying
 		else if ( other instanceof Asteroid) {
+			if (NEW_LIFE_INVUL_TIMER <= 0){
 			ScorePanel.getScorePanel().playerHit();
 			playerDeath();
+			}
+			else if (NEW_LIFE_INVUL_TIMER > 0) return;
 		}
 		// Play the sound effect for player death
 		if(SoundEffect.isEnabled())
@@ -84,6 +91,7 @@ public class PlayerShip extends Actor {
 	private void regenerate(){
 		position = new Vector(0,0);
 		this.velocity.scaleBy(0);
+		NEW_LIFE_INVUL_TIMER = INVUL_TIME;
 	}
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */

@@ -62,19 +62,7 @@ public class Asteroids {
 	public static void update() {
 		if (isPaused)
 			return;
-
-		asteroidTimer--;
-
-		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
-		 * subtract 1 from the asteroids left total
-		 */
-		if (asteroidTimer == 0 && asteroidsLeft > 0){
-			Actor.actors.add(new Asteroid());
-			asteroidsLeft--;
-			timeBetween -= TIMER_REDUCED_BY;
-			asteroidTimer = timeBetween;
-			System.out.println("asteroidsLeft = "+asteroidsLeft);
-		}
+		gameMechanics();
 		
 		Actor.collisionDetection();
 		
@@ -90,6 +78,21 @@ public class Asteroids {
 	 * This is called by ScenePanel at the end of the game
 	 * any cleanup code should go here
 	 */
+	
+	public static void gameMechanics(){
+		asteroidTimer--;
+
+		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
+		 * subtract 1 from the asteroids left total
+		 */
+		if (asteroidTimer == 0 && asteroidsLeft > 0){
+			Actor.actors.add(new Asteroid());
+			asteroidsLeft--;
+			timeBetween -= TIMER_REDUCED_BY;
+			asteroidTimer = timeBetween;
+			System.out.println("asteroidsLeft = "+asteroidsLeft);
+		}
+	}
 	public static void dispose() {
 
 	}
