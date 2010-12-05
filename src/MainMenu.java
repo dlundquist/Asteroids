@@ -77,8 +77,23 @@ public class MainMenu extends JFrame {
 
 	private class HowToPlayListener implements ActionListener {
 		public void actionPerformed(ActionEvent f) {
-			String instrustions= ":How to PLAY:\n p= pause \n up= thrusters\n down= backwards \n right= right turn \n left= left turn \n up&down= stop\n W= warp";
-			JOptionPane.showMessageDialog(null, instrustions);		
+			String instructions= "<html>" +
+					"<body>" +
+					"<table>" +
+					"<tr><th colspan=2>How to PLAY</th></tr>" +
+					"<tr><td>pause game</td><td>pause or p</td></tr>" +
+					"<tr><td>menu</td><td>escape or q</td></tr>" +
+					"<tr><td>forward thrusters</td><td>up arrow</td></tr>" +
+					"<tr><td>reverse thrusters</td><td>down arrow</td></tr>" +
+					"<tr><td>turn left</td><td>left arrow</td></tr>" +
+					"<tr><td>turn right</td><td>right arrow</td></tr>" +
+					"<tr><td>emergency stop</td><td>up and down arrows</td></tr>" +
+					"<tr><td>flip 180</td><td>s</td></tr>" +
+					"<tr><td>warp</td><td>w</td></tr>" +
+					"</table>" +
+					"</body>" +
+					"</html>";
+			JOptionPane.showMessageDialog(null, instructions);		
 		}
 	}
 
