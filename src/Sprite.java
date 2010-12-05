@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import javax.media.opengl.*;
 import javax.imageio.*;
 import java.awt.Graphics2D;
@@ -14,29 +15,22 @@ import java.nio.ByteOrder;
  * @author Dustin Lundquist
  */
 public class Sprite {
-	public static final int BACKGROUND_ID = 0;
-	public static final int ASTEROID_ID = 1;
-	public static final int PLAYERSHIP_ID = 2;
-	public static final int BULLET_ID = 3;
-	public static final int POWER_UP_ID = 4;
-	public static final int TRIPLE_SHOT_POWER_UP_ID = 5;
-
-	/* The order here must match the indexes above */
-	private static final String[] TEXTURE_FILES = {
-		"background.jpg", /* BACKGROUND            */
-		"asteroid.png",   /* ASTEROID              */
-		"ship.png",       /* PLAYER_SHIP           */
-		"bullet.png",     /* BULLET                */
-		"ship2.png",      /* POWER_UP              */
-		"ship2.png"       /* TRIPLE_SHOT_POWER_UP  */
-	};
+	public static final int BACKGROUND_TYPE = 0;
+	public static final int ASTEROID_TYPE = 1;
+	public static final int PLAYER_SHIP_TYPE = 2;
+	public static final int BULLET_TYPE = 3;
+	public static final int POWER_UP_TYPE = 4;
+	public static final int TRIPLE_SHOT_POWER_UP_TYPE = 5;
 	private static final String TEXTURE_DIR = "data";
+	private static final String MANIFEST_FILE = "sprite.manifest";
 	
 	// a list of all the textures loaded so far
 	private static ArrayList<Sprite> sprites;
+	private static Random gen = new Random();
 
 		
-	private int texture_id;
+	private int texture;
+	private int type;
 	
 	/**
 	 * Create a new Sprite (OpenGL Texture)
@@ -48,25 +42,27 @@ public class Sprite {
 	 * @param gl - OpenGL context
 	 * @param filename - texture image filename
 	 */
-	public Sprite(GL gl, String filename) {
-		this(gl, new File(TEXTURE_DIR, filename));
+	public Sprite(GL gl, String filename, String type) {
+		this(gl, new File(TEXTURE_DIR, filename), Integer.parseInt(type));
 	}
 	
-	public Sprite(GL gl, File texture) {
+	public Sprite(GL gl, File textureFile, int type) {
 		BufferedImage image;
 		try {
-			image = ImageIO.read(texture);
+			image = ImageIO.read(textureFile);
 		} catch (IOException ie) {
 			ie.printStackTrace();
-			throw new RuntimeException("unable to open " + texture.getAbsolutePath());
+			throw new RuntimeException("unable to open " + textureFile.getAbsolutePath());
 		}
+		
+		this.type = type;
 
 		// Java really wanted to modify an array pointer
 		int[] texture_ids = new int[1];
 		gl.glGenTextures(1, texture_ids, 0); // not sure what the third argument is.
-		texture_id = texture_ids[0];
+		texture = texture_ids[0];
 
-		gl.glBindTexture(GL.GL_TEXTURE_2D, texture_id);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
 		makeRGBTexture(gl, image, GL.GL_TEXTURE_2D);
 		// Setup filters
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
@@ -74,41 +70,92 @@ public class Sprite {
 	}
 
 	public int getTextureId(){
-    	return texture_id;
+    	return texture;
     }
 
 	// Static methods from here on
 	public static void loadSprites(GL gl) {
-		sprites = new ArrayList<Sprite>(4);
-
-		for (String file : TEXTURE_FILES) {
-			sprites.add(new Sprite(gl, file));
+		String line;
+		BufferedReader manifest;
+		File manifestFile = new File(TEXTURE_DIR, MANIFEST_FILE);
+		
+		sprites = new ArrayList<Sprite>();
+		
+		try {
+			manifest = new BufferedReader(new FileReader(manifestFile));
+			
+			while ((line = manifest.readLine()) != null) {
+				// Skip comments
+				if (line.startsWith("#"))
+					continue;
+				
+				String[] parts = line.split("\\s+"); // Split on white space
+				
+				if (parts.length < 2)
+					continue;
+				
+				if (parts[1].matches("\\A\\d+\\Z") == false) { // Regexp foo to check that our type field is an integer
+					System.err.println("Malformed line in " + manifestFile.getPath() + ": " + line);
+					continue;
+				}
+				sprites.add(new Sprite(gl, parts[0], parts[1]));
+			}
+			manifest.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
 	// These four methods are for the ease of creating new Actors
 	public static Sprite background() {
-		return sprites.get(BACKGROUND_ID);
+		return getRandomSprite(BACKGROUND_TYPE);
 	}
 	
 	public static Sprite asteroid() {
-		return sprites.get(ASTEROID_ID);
+		return getRandomSprite(ASTEROID_TYPE);
 	}
 	
 	public static Sprite playerShip() {
-		return sprites.get(PLAYERSHIP_ID);
+		return getRandomSprite(PLAYER_SHIP_TYPE);
 	}
 	
 	public static Sprite bullet() {
-		return sprites.get(BULLET_ID);
+		return getRandomSprite(BULLET_TYPE);
 	}
 
 	public static Sprite tripleShotPowerUp() {
-		return sprites.get(TRIPLE_SHOT_POWER_UP_ID);
+		return getRandomSprite(TRIPLE_SHOT_POWER_UP_TYPE);
 	}
 	
 	public static Sprite powerUp() {
-		return sprites.get(POWER_UP_ID);
+		return getRandomSprite(POWER_UP_TYPE);
+	}
+	
+	private static ArrayList<Sprite> getAll(int type) {
+		ArrayList<Sprite> list = new ArrayList<Sprite>();
+		
+		for (int i = 0; i < sprites.size(); i ++) {
+			Sprite k = sprites.get(i);
+			if (k.type == type)
+				list.add(k);
+		}
+		
+		return list;
+	}
+	
+	private static Sprite getRandomSprite(int type) {
+		ArrayList<Sprite> list = getAll(type);
+		int length = list.size();
+		
+		switch(length) {
+		case(0):
+			throw new RuntimeException("No sprite of type " + type);
+		case(1):
+			return list.get(0);
+		default:
+			return list.get(gen.nextInt(length));
+		}
 	}
 
 	/* Switched texture loading method, to method from

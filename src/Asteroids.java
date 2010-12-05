@@ -6,6 +6,7 @@ public class Asteroids {
 	private final static int TIMER_REDUCED_BY = 1;
 
 	private static GUI gui;
+	private static MainMenu menu;
 	private static PlayerShip playerShip;
 	private static HighScores highScores;
 	private static boolean isPaused;
@@ -24,6 +25,7 @@ public class Asteroids {
 		ParticleSystem.init(true);
 		highScores = new HighScores();
 		gui = new GUI();
+		menu = new MainMenu();
 	}
 
 	/**
@@ -62,7 +64,24 @@ public class Asteroids {
 	public static void update() {
 		if (isPaused)
 			return;
+		gameMechanics();
+		
+		Actor.collisionDetection();
+		
+		Actor.updateActors();
 
+		if (ParticleSystem.enabled)
+			ParticleSystem.updateParticles();
+
+		ScorePanel.getScorePanel().updateScorePanel();
+	}
+
+	/**
+	 * This is called by ScenePanel at the end of the game
+	 * any cleanup code should go here
+	 */
+	
+	public static void gameMechanics(){
 		asteroidTimer--;
 
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
@@ -75,21 +94,7 @@ public class Asteroids {
 			asteroidTimer = timeBetween;
 			System.out.println("asteroidsLeft = "+asteroidsLeft);
 		}
-		
-		Actor.collisionDetection();
-		
-		Actor.updateActors();
-
-		if (ParticleSystem.isEnabled)
-			ParticleSystem.updateParticles();
-
-		ScorePanel.getScorePanel().updateScorePanel();
 	}
-
-	/**
-	 * This is called by ScenePanel at the end of the game
-	 * any cleanup code should go here
-	 */
 	public static void dispose() {
 
 	}
@@ -105,8 +110,30 @@ public class Asteroids {
 			isPaused = true;
 	}
 
-	public static void quitGame() {
-		// TODO Auto-generated method stub
+	public static void quitToMenu() {
+		// Don't open the menu multiple times
+		if (menu != null)
+			return;
+		
+		isPaused = true;
+		gui.setVisible(false);
+		menu = new MainMenu(); 
+	}
+	
+	public static void showGame() {
+		menu.dispose();
+		menu = null;
+		gui.setVisible(true);
+	}
 
+	public static void showHighScores() {	
+		highScores.displayScoreDialog();
+	}
+
+	public static boolean isStarted() {
+		if (playerShip == null)
+			return false;
+		
+		return playerShip.isAlive();
 	}
 }

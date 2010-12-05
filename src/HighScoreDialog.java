@@ -1,4 +1,6 @@
 import javax.swing.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,46 +18,57 @@ public class HighScoreDialog extends JFrame {
 	/* Display high score list */
 	public HighScoreDialog(HighScores scores) {
 		setTitle("High Scores");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(200,300);
 		setResizable(false);
-		setLayout(null);
+		
+		JPanel panel = new BlackPanel();
+		panel.setLayout(null);
 
-		close_button = new JButton("Close");
-		close_button.addActionListener(new buttonHandler());
+		close_button = new BlackButton("Close");
+		close_button.addActionListener(new CloseButtonHandler(this));
 
-		textAreaBuilder();
-		score_area.setBounds(0,5,200,200);
-		close_button.setBounds(50,220,100,20);
-		//TODO make close button close only the JFrame, not the entire window
+		score_area = textAreaBuilder();
+		score_area.setBounds(0, 5, 200, 200);
+		close_button.setBounds(50, 220, 100, 20);
 
-
+		
+		
 		//TODO make pretty - suggestion - colors - black background - check w/ GUI team
+		panel.add(close_button);
+		panel.add(score_area);
 
-		add(close_button);
-		add(score_area);
-
-
+		add(panel);
+		
 		setVisible(true);
 	}
 
-	private void textAreaBuilder(){
-		score_area = new JLabel();
-		String toPrint = "<HTML><TABLE>";
+	private JLabel textAreaBuilder() {
+		JLabel score_area = new JLabel();
 		
-		for(int i=0; i<HighScores.score_list.size() && i<10; i++) {
+		String toPrint = "<HTML><TABLE>";		
+		for (int i = 0; i < HighScores.score_list.size() && i < 10; i ++) {
 			toPrint += "<TR><TD align=left>" + (i + 1) + "." + "</TD><TD align=left>"
-			+ HighScores.score_list.get(i).name + "</TD><TD align=right>"
-			+ HighScores.score_list.get(i).score + "</TD></TR>";
+					+ HighScores.score_list.get(i).name + "</TD><TD align=right>"
+					+ HighScores.score_list.get(i).score + "</TD></TR>";
 		}
-		
 		toPrint += "</TABLE></HTML>";
+		
 		score_area.setText(toPrint);
+		
+		score_area.setBackground(Color.BLACK);
+		
+		return score_area;
 	}
 
-	private class buttonHandler implements ActionListener {
+	private class CloseButtonHandler implements ActionListener {
+		private JFrame frame;
+		
+		public CloseButtonHandler(JFrame w) {
+			frame = w;
+		}
+
 		public void actionPerformed(ActionEvent e) {
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.dispose();
 		}
 	}
 }

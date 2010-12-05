@@ -87,7 +87,7 @@ public class InputHandler implements KeyListener {
 		
 		if (flipDebounce > 0)
 			flipDebounce--;
-		
+				
 		//fires if up and down are pressed
 		if (keyState[1] && keyState[2]){
 			ignoreUpDown = true;
@@ -124,7 +124,8 @@ public class InputHandler implements KeyListener {
 				break;
 				case(KeyEvent.VK_Q):
 				case(KeyEvent.VK_ESCAPE):
-					Asteroids.quitGame();
+					Asteroids.quitToMenu();
+					clearKeyState(); /* Clear key state so we don't find this command in our buffer when we return to the game */
 					break;
 				case(KeyEvent.VK_P): // Fall through
 				case(KeyEvent.VK_PAUSE):
@@ -151,6 +152,14 @@ public class InputHandler implements KeyListener {
 					//do nothing
 			}
 		}
+	}
+
+	/*
+	 * Reset key states
+	 */
+	private void clearKeyState() {
+		for (int i = 0; i < keyState.length; i++)
+			keyState[i] = false;
 	}
 }
 

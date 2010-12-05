@@ -1,4 +1,3 @@
-
 public abstract class Particle extends Actor {
 	private static final long serialVersionUID = -1288874741029406494L;
 	public float colorR;
