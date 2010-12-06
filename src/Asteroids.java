@@ -49,6 +49,9 @@ public class Asteroids {
 		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
 	}
+	public static int getAsteroidsLeft(){
+		return asteroidsLeft;
+	}
 
 	public static PlayerShip getPlayer() {
 		return playerShip;
