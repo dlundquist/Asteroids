@@ -83,7 +83,7 @@ public class Asteroid extends Actor  {
 				// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
 				ParticleSystem.addDebrisParticle(this);
 			}  
-			if (size == LARGE_SIZE){
+			if (size >= LARGE_SIZE){
 				largeHp--;
 				if (largeHp == 0){
 					delete();
