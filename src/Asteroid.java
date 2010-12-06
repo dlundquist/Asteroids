@@ -113,7 +113,6 @@ public class Asteroid extends Actor {
 		float newMass = mass * (gen.nextFloat() + 1) / 3;
 		mass -= newMass;
 		mediumHp = 2;
-		//Actor.actors.add(new Asteroid(new Vector(position), newVelocity, MEDIUM_SIZE, id));
 		Asteroid medAsteroid = new Asteroid(new Vector(position), newVelocity, MEDIUM_SIZE,id, 2);
 		return medAsteroid;
 	}
@@ -122,7 +121,6 @@ public class Asteroid extends Actor {
 		Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());
 		float newMass = mass * (gen.nextFloat() + 1) / 3;
 		mass -= newMass;
-		//Actor.actors.add(new Asteroid(new Vector(position), newVelocity, SMALL_SIZE, id));
 		Asteroid smallAsteroid = new Asteroid(new Vector(position), newVelocity, SMALL_SIZE, id, 1);
 		return smallAsteroid;
 	}
