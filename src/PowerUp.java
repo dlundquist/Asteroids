@@ -29,6 +29,8 @@ abstract public class PowerUp extends Actor {
 	}
 	// What Happens when we hit with the Player
 	abstract void applyTo(PlayerShip player);
+	// What Happens when we hit with an Bandit
+	abstract void applyTo(Bandit bandit);
 	// What Happens when we hit with an Asteroid
 	abstract void applyTo(Asteroid asteroid);
 	// What Happens when we hit a Bullet
@@ -43,6 +45,8 @@ abstract public class PowerUp extends Actor {
 	public void handleCollision(Actor other) {
 		if (other instanceof PlayerShip) {
 			applyTo((PlayerShip) other);
+		} else if (other instanceof Bandit) {
+			applyTo((Bandit) other);
 		} else if (other instanceof Asteroid) {
 			applyTo((Asteroid) other);
 		} else if (other instanceof Bullet) {

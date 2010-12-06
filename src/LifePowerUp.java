@@ -45,5 +45,10 @@ public class LifePowerUp extends PowerUp{
 		System.out.println("Unhandled PowerUp Case for lifePowerUp");
 	}
 
+	@Override
+	void applyTo(Bandit bandit) {
+		Bandit.spawn(); // Spawn a friend (or foe)
+	}
+
 }
 

@@ -46,4 +46,10 @@ public class TripleShotPowerUp extends PowerUp{
 		System.out.println("Unhandled PowerUp Case for TrippleShotPowerUp");
 	}
 
+	@Override
+	void applyTo(Bandit bandit) {
+		bandit.weapon = new TripleShotWeapon(bandit);
+		delete();
+	}
+
 }

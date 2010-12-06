@@ -18,16 +18,20 @@ public class Bandit extends Actor {
 	private static final float SPEED = 0.009f;
 	private static final float ROTATION_INCREMENT = 0.07f;
 	private static final float SEARCH_DISTANCE = 0.7f;
-	private static final float MIN_PLAYER_SHIP_DISTANCE = 0.3f;
+	private static final float MIN_PLAYER_SHIP_DISTANCE = 0.24f;
 	private static final float FIRING_ARC = 0.2f;
+	private static enum State {
+		ATTACKING,
+		EVADING,
+	};
 
-	
 	public static void spawn() {
 		Actor.actors.add(new Bandit());
 	}
-	
-	
+
+
 	protected Weapon weapon;
+	private State state;
 
 	public Bandit() {
 		switch(gen.nextInt(3)){
@@ -51,6 +55,7 @@ public class Bandit extends Actor {
 		size = 0.1f;
 		id = generateId();
 		weapon = new BasicWeapon(this);
+		state = State.ATTACKING;
 	}
 
 	public void update() {
@@ -67,11 +72,11 @@ public class Bandit extends Actor {
 		// We don't want to disappear when we hit a PowerUp
 		if (other instanceof PowerUp)
 			return;
-		
+
 		delete();
 		ParticleSystem.addExplosion(position);
 	}
-	
+
 	private void turnLeft() {
 		System.out.println("BANDIT: turning left");
 		theta += ROTATION_INCREMENT;
@@ -79,7 +84,7 @@ public class Bandit extends Actor {
 		velocity.scaleBy(SPEED);
 		ParticleSystem.addFireParticle(this);
 	}
-	
+
 	private void turnRight() {
 		System.out.println("BANDIT: turning right");
 		theta -= ROTATION_INCREMENT;
@@ -87,7 +92,7 @@ public class Bandit extends Actor {
 		velocity.scaleBy(SPEED);
 		ParticleSystem.addFireParticle(this);
 	}
-	
+
 	private void shoot(float angle) {
 		if (angle < FIRING_ARC && angle > - FIRING_ARC) {
 			System.out.println("BANDIT: shooting");
@@ -102,41 +107,47 @@ public class Bandit extends Actor {
 		if (threat != null) {			
 			Vector displacement = threat.position.minus(position);
 			float angle = normalizeAngle((float)displacement.theta() - theta);
-					
-			System.out.println("BANDIT: " + threat + " detected at " + angle);
-			
+
+			//System.out.println("BANDIT: " + threat + " detected at " + angle);
+
 			shoot(angle);
-			
-			if (angle > 0) {
+
+			if (angle > 0)
 				turnRight();
-			} else { 
+			else
 				turnLeft();
-			}
+			
+			// If the player ship is our threat, evade!
+			if (threat instanceof PlayerShip)
+				state = State.EVADING;
 			return;
 		}
-		
-		System.out.println("BANDIT: no threats, seeking player");
+
+
 
 		Vector displacement = Asteroids.getPlayer().position.minus(position);
 		float angle = normalizeAngle((float)displacement.theta() - theta);
 
-		/*
-		// If we are near the player run away until we can make another pass
-		if (displacement.magnitude2() < MIN_PLAYER_SHIP_DISTANCE * MIN_PLAYER_SHIP_DISTANCE * 4) {
-			if (angle < 0) {
-				turnLeft();
-			} else {
+
+		switch(state) {
+		case EVADING:
+			//System.out.println("BANDIT: no threats, evading player");
+			if (angle > 0 && angle < Math.PI / 2)
 				turnRight();
-			}
-			return;
-		}
-		*/
-		
-		shoot(angle);
-		if (angle < 0) {
-			turnRight();
-		} else { 
-			turnLeft();
+			else if (angle < 0 && angle > -Math.PI / 2)
+				turnLeft();
+
+			// If we are near the player run away until we can make another pass
+			if (displacement.magnitude2() > SEARCH_DISTANCE * SEARCH_DISTANCE)
+				state = State.ATTACKING;
+			break;
+		case ATTACKING:
+			//System.out.println("BANDIT: no threats, seeking player");
+			shoot(angle);
+			if (angle > FIRING_ARC)
+				turnLeft();
+			else if (angle < -FIRING_ARC) 
+				turnRight();
 		}
 	}
 
@@ -146,33 +157,33 @@ public class Bandit extends Actor {
 	private Actor nearestThreat(float search_distance) {
 		//ArrayList<Actor> threats = new ArrayList<Actor>();
 		PriorityQueue<Actor> threats = new PriorityQueue<Actor>(10, new RiskAssessor());
-		
+
 		for (Actor a: Actor.actors) {
 			// Don't be scared of yourself
 			if (a == this)
 				continue;
-			
+
 			// do not consider these types threats
 			if (a instanceof Bullet || a instanceof PowerUp)
 				continue;
-			
+
 			Vector displacement = position.minus(a.position);
-			
+
 			// Reject objects not in box 2 * search_distance square
 			if (Math.abs(displacement.x()) > search_distance || Math.abs(displacement.y()) > search_distance)
 				continue;
-			
+
 			if (displacement.magnitude2() > search_distance * search_distance)
 				continue;
-			
-			if (a instanceof PlayerShip) {
-				if (displacement.magnitude2() > MIN_PLAYER_SHIP_DISTANCE * MIN_PLAYER_SHIP_DISTANCE)
-					continue;
-			}
-						
+
+			// If the threat is a player we do not continue a threat until we are much closer
+			if (a instanceof PlayerShip &&
+					displacement.magnitude2() > MIN_PLAYER_SHIP_DISTANCE * MIN_PLAYER_SHIP_DISTANCE)
+				continue;
+
 			threats.add(a);
 		}
-		
+
 		switch(threats.size()) {
 		case(0):
 			return null;
@@ -185,21 +196,21 @@ public class Bandit extends Actor {
 		public int compare(Actor a, Actor b) {
 			return Float.compare(assessRisk(b), assessRisk(a));
 		}
-		
+
 		private float assessRisk(Actor a) {
 			Vector displacement = position.minus(a.position);
 			return assessRisk(a, displacement);
 		}
-		
+
 		private float assessRisk(Actor a, Vector displacement) {
 			Vector ourPositionNextFrame = new Vector(position);
 			ourPositionNextFrame.incrementBy(velocity);
-			
+
 			Vector theirPositionNextFrame = new Vector(a.position);
 			theirPositionNextFrame.incrementBy(a.velocity);
 
 			Vector displacementNextFrame = ourPositionNextFrame.minus(theirPositionNextFrame);
-	
+
 			return (float) (displacement.magnitude2() / displacementNextFrame.magnitude2());
 		}	
 	}
