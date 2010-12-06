@@ -3,19 +3,27 @@
  * Description: Lets the player shoot 3 (smaller) bullets at once more slowly
  */
 public class TripleShotWeapon extends Weapon{
-	private static final float TRIPLE_BULLET_SIZE = 0.03f;
+	private static final float TRIPLE_BULLET_SIZE = 0.05f;
+	public static int shotsLeft;
+	protected Bullet bullet;
 
-	private static final int SHOOT_DELAY = 10; // 30 frame delay between shots
+	private static final int SHOOT_DELAY = 30; // 30 frame delay between shots
 
 	TripleShotWeapon(Actor owner) {
 		super(owner);
+		shotsLeft += 30;
 	}
 
 	@Override
 	void shoot() {
 		if (shootDelay > 0)
 			return;
-		
+		if (shotsLeft == 0) {
+			shotsLeft = 1;
+			//TODO: Return to BasicWeapon
+		}
+		shotsLeft--;
+		System.out.println(shotsLeft);
 		/* Loop from -1 to 1 so we can shoot at angles to both sides of forward */
 		for(int i = -1; i < 2; i++)
 
