@@ -41,7 +41,7 @@ public class NetworkUpdate implements Serializable {
 			}
 			break;
 		default:
-			System.err.println("Network protocal error");
+			System.err.println("Network protocol error");
 
 		}
 	}
@@ -69,7 +69,7 @@ public class NetworkUpdate implements Serializable {
 			}
 			break;
 		default:
-			System.err.println("Network protocal error");
+			System.err.println("Network protocol error");
 		}
 	}
 }
