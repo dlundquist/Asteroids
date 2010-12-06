@@ -20,7 +20,10 @@ public class TripleShotWeapon extends Weapon{
 			return;
 		if (shotsLeft == 0) {
 			shotsLeft = 1;
-			//TODO: Return to BasicWeapon
+			if(owner instanceof PlayerShip)
+				((PlayerShip)owner).weapon = new BasicWeapon(owner);
+			else if(owner instanceof Bandit)
+				((Bandit)owner).weapon = new BasicWeapon(owner);
 		}
 		shotsLeft--;
 		System.out.println(shotsLeft);

@@ -106,6 +106,7 @@ public class PlayerShip extends Actor {
 		position = new Vector(0,0);
 		velocity.scaleBy(0);
 		shield = new Shield(this);
+		weapon = new BasicWeapon(this);
 		NEW_LIFE_INVUL_TIMER = INVUL_TIME;
 	}
 	
