@@ -24,6 +24,7 @@ public class InputHandler implements KeyListener {
 		KeyEvent.VK_P,
 		KeyEvent.VK_W,
 		KeyEvent.VK_S,
+		KeyEvent.VK_F11,
 	};
 	/**
 	 * This is a mask to indicate if each key is disabled when the game is paused
@@ -40,6 +41,7 @@ public class InputHandler implements KeyListener {
 		false,//KeyEvent.VK_P,
 		true, //KeyEvent.VK_W,
 		true, //KeyEvent.VK_S,
+		true, //KeyEvent.VK_F11,
 	};
 	private int lastPause;
 	private int warpDebounce;
@@ -99,7 +101,7 @@ public class InputHandler implements KeyListener {
 				continue;
 
 			// Skip keys that are disabled when the game is paused
-			if (Asteroids.getPauseState() && KEY_PAUSE_MASK[i])
+			if (Asteroids.isPaused() && KEY_PAUSE_MASK[i])
 				continue;
 
 			switch(KEYS_IN_USE[i]){
@@ -148,6 +150,9 @@ public class InputHandler implements KeyListener {
 						flipDebounce = 10;
 					}
 				break;
+				case(KeyEvent.VK_F11): // This is just for DEBUGGING
+					// TODO remove from public version
+					Bandit.spawn();
 				default:
 					//do nothing
 			}

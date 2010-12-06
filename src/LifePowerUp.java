@@ -1,30 +1,28 @@
 
 /**
  * Author: Chris Lundquist
- * Description: When a PlayerShip collides, we replace the PlayerShip Weapon with
- *              a TripleShotWeapon
+ * Description: When a PlayerShip collides, we add a life to the player
  */
-public class TripleShotPowerUp extends PowerUp{
-	private static final long serialVersionUID = 7120396598193477176L;
+public class LifePowerUp extends PowerUp{
 
-	TripleShotPowerUp(Vector pos) {
+	LifePowerUp(Vector pos) {
 		super(pos);
 		init();
 	}
 
-	public TripleShotPowerUp(float x, float y) {
+	public LifePowerUp(float x, float y) {
 		super(x,y);
 		init();
 	}
-	
+
 	private void init(){
-		sprite = Sprite.tripleShotPowerUp();
+		sprite = Sprite.lifePowerUp();
 	}
 
 	@Override
 	void applyTo(PlayerShip player) {
-		// Give the player the triple shot weapon
-		player.weapon = new TripleShotWeapon(player);
+		// Give the player an extra life
+		player.incrementLives();
 		// After the player gets it, delete it
 		delete();
 	}
@@ -44,13 +42,13 @@ public class TripleShotPowerUp extends PowerUp{
 	@Override
 	void applyTo(Actor actor) {
 		// Shouldnt get here
-		System.out.println("Unhandled PowerUp Case for TrippleShotPowerUp");
+		System.out.println("Unhandled PowerUp Case for lifePowerUp");
 	}
 
 	@Override
 	void applyTo(Bandit bandit) {
-		bandit.weapon = new TripleShotWeapon(bandit);
-		delete();
+		Bandit.spawn(); // Spawn a friend (or foe)
 	}
 
 }
+

@@ -124,6 +124,15 @@ public class Vector implements Serializable {
 		x += velocity.x;
 		y += velocity.y;
 	}
+	
+	public void decrementBy(Vector velocity) {
+		x -= velocity.x;
+		y -= velocity.y;
+	}
+	
+	public Vector minus(Vector lhs) {
+		return new Vector(x - lhs.x, y - lhs.y);
+	}
 
 	public void incrementXBy(double delta) {
 		x += delta;
