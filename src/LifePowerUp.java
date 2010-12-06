@@ -4,6 +4,7 @@
  * Description: When a PlayerShip collides, we add a life to the player
  */
 public class LifePowerUp extends PowerUp{
+	private static final long serialVersionUID = 1086088222478807316L;
 
 	LifePowerUp(Vector pos) {
 		super(pos);

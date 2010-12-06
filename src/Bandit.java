@@ -15,6 +15,7 @@ import java.util.PriorityQueue;
  * in their front 60 degree arc.
  */
 public class Bandit extends Actor {
+	private static final long serialVersionUID = -6365235258680659042L;
 	private static final float SPEED = 0.009f;
 	private static final float ROTATION_INCREMENT = 0.07f;
 	private static final float SEARCH_DISTANCE = 0.7f;
