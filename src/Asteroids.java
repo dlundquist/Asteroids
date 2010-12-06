@@ -6,6 +6,7 @@ import java.util.Random;
  */
 public class Asteroids {
 	private final static int TIMER_REDUCED_BY = 4;
+	private final static int ASTEROIDS_PER_POWERUP = 5;
 
 	private static GUI gui;
 	private static MainMenu menu;
@@ -16,7 +17,7 @@ public class Asteroids {
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
-	private final static int ASTEROIDS_PER_POWERUP = 5;
+	private static boolean networkGame;
 
 
 	/**
@@ -48,6 +49,9 @@ public class Asteroids {
 		 */
 		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
+		
+		if (networkGame)
+			NetworkClientThread.joinGame(playerShip);
 	}
 
 	public static PlayerShip getPlayer() {
@@ -83,6 +87,9 @@ public class Asteroids {
 	 */
 	
 	public static void gameMechanics(){
+		if (networkGame)
+			return;
+		
 		asteroidTimer--;
 
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
@@ -144,5 +151,13 @@ public class Asteroids {
 			return false;
 		
 		return playerShip.isAlive();
+	}
+
+	public static void joinNetworkGame() {
+		networkGame = true;
+		showGame();
+		//Actor.actors.clear();
+		
+		//
 	}
 }

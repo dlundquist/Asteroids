@@ -160,6 +160,10 @@ public class Sprite {
 	}
 
 	private static Sprite getRandomSprite(int type) {
+		// Return null if we didn't load sprites
+		if (sprites == null)
+			return null;
+		
 		ArrayList<Sprite> list = getAll(type);
 		int length = list.size();
 

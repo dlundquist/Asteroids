@@ -13,13 +13,10 @@ public class NetworkClientThread extends Thread {
 	private Socket server;
 	private String playerName;
 
-	public NetworkClientThread(InetAddress addr, String name) {
+	public NetworkClientThread(InetAddress addr, String name) throws IOException {
 		
-		try {
-			server = new Socket(addr, DedicatedServer.SERVER_PORT);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		server = new Socket(addr, DedicatedServer.SERVER_PORT);
 	}
 	
 	public void run() {
@@ -67,8 +64,17 @@ public class NetworkClientThread extends Thread {
 		String name = "Player" + rand.nextInt(4);
 		try {
 			InetAddress addr = InetAddress.getByName(SERVER_HOSTNAME);
+			NetworkClientThread client;
 			
-			new NetworkClientThread(addr, name).start();
+			try {
+				client = new NetworkClientThread(addr, name);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
+			
+			client.start();
 		} catch (UnknownHostException e) {
 			System.err.println("Unable to resolve " + SERVER_HOSTNAME);	
 		}

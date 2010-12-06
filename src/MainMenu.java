@@ -16,6 +16,7 @@ public class MainMenu extends JFrame {
 	private JPanel buttonsPanel;
 	private JButton highScores;
 	private JButton startGame;
+	private JButton	networkGame;
 	private JButton settings;
 	private JButton howToPlay;
 	private JButton quitButton;
@@ -51,6 +52,8 @@ public class MainMenu extends JFrame {
 
 		startGame = new JButton(Asteroids.isStarted() ? "Resume Game" : "Start Game");
 		GUI.colorize(startGame);
+		networkGame = new JButton("Join Network Game");
+		GUI.colorize(networkGame);
 		howToPlay = new JButton("How to play");
 		GUI.colorize(howToPlay);
 		settings = new JButton("Settings");
@@ -61,6 +64,7 @@ public class MainMenu extends JFrame {
 		GUI.colorize(quitButton);
 
 		startGame.addActionListener(new StartGameListener());
+		networkGame.addActionListener(new NetworkGameListener());
 		howToPlay.addActionListener(new HowToPlayListener());
 		settings.addActionListener(new SettingsListener());
 		highScores.addActionListener(new HighScoresListener());
@@ -68,6 +72,7 @@ public class MainMenu extends JFrame {
 
 		titlePanel.add(title);
 		buttonsPanel.add(startGame);
+		buttonsPanel.add(networkGame);
 		buttonsPanel.add(howToPlay);
 		buttonsPanel.add(settings);
 		buttonsPanel.add(highScores);
@@ -81,6 +86,12 @@ public class MainMenu extends JFrame {
 	private class StartGameListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Asteroids.showGame();
+		}
+	}
+
+	private class NetworkGameListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			Asteroids.joinNetworkGame();
 		}
 	}
 

@@ -1,7 +1,10 @@
+import java.io.Serializable;
+
 /*
  * Author: Chris Lundquist
  */
-public abstract class Weapon {
+public abstract class Weapon implements Serializable {
+	private static final long serialVersionUID = 6655155887775072595L;
 	protected Actor owner;
 	protected int shootDelay;
 

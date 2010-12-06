@@ -50,7 +50,7 @@ public class NetworkUpdate implements Serializable {
 	 * Apply an update form a client to the server
 	 * @param server
 	 */
-	public void applyUpdate(ServerClientThread server) {
+	public void applyUpdate(ServerConnectionThread server) {
 		switch (type) {
 		case REQUEST:
 			NetworkPlayer p = new NetworkPlayer(playerName);
@@ -59,11 +59,9 @@ public class NetworkUpdate implements Serializable {
 		case UPDATE:
 			for (Actor a : actors) {
 				if (a.id == server.getPlayerShipId()) {
-					Actor.removeActorId(a.id);
-					Actor.actors.add(a);
+					server.updateActor(a);
 				} else if (a.parentId == server.getPlayerShipId() && a.age < MAX_AGE_TO_UPDATE_FROM_CLIENT) {
-					Actor.removeActorId(a.id);
-					Actor.actors.add(a);					
+					server.updateActor(a);				
 				}
 				// else do not accept updates for other objects from the client
 			}

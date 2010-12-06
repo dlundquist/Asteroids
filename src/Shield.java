@@ -1,10 +1,13 @@
+import java.io.Serializable;
 
-public class Shield {
+
+public class Shield implements Serializable {
+	private static final long serialVersionUID = 3737736996028582652L;
 	public static final float SHIELD_SIZE = 0.15f;
 	private static final float MAX_CAPACITY = 1.0f;
 	private static final float REGEN_RATE = 0.0001f;
 	private float strength; // The current strength of the shield
-	private Sprite sprite;
+	private transient Sprite sprite;
 	private Actor owner;
 	
 	public Shield(Actor owner){

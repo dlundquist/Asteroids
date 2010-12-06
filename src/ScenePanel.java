@@ -184,9 +184,9 @@ public class ScenePanel extends GLCanvas {
 		
         gl.glLoadIdentity();
         gl.glTranslatef(0, 0, -1.5f);
-        gl.glColor3f((float)GUI.titleColor().getRed() / 256,
-				(float)GUI.titleColor().getGreen() / 256,
-				(float)GUI.titleColor().getBlue() / 256);
+        gl.glColor3f((float)GUI.titleColor().getRed() / 255,
+				(float)GUI.titleColor().getGreen() / 255,
+				(float)GUI.titleColor().getBlue() / 255);
 		gl.glRasterPos2f(x, y);
 		
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, string);
@@ -212,13 +212,14 @@ public class ScenePanel extends GLCanvas {
 			return;
 
 		gl.glDisable(GL.GL_TEXTURE_2D);
-		for(int i = 0; i < ParticleSystem.particles.size(); i++) {
-			Particle p = ParticleSystem.particles.get(i);
+		//for(int i = 0; i < ParticleSystem.particles.size(); i++) {
+		//	Particle p = ParticleSystem.particles.get(i);
+		for(Particle p: ParticleSystem.particles) {
 			gl.glLoadIdentity();
 			gl.glTranslatef(p.getPosition().x(), p.getPosition().y(), -1.0f);
 			gl.glRotatef(p.getThetaDegrees(),0,0,1);
 			gl.glScalef(p.getSize(), p.getSize(), 1);
-			gl.glColor4f(p.colorR, p.colorG, p.colorB,p.colorA);
+			gl.glColor4f(p.colorR, p.colorG, p.colorB, 1.0f);
 			//System.err.println(p.colorR +" " + p.colorG+ " " +p.colorB);
 			gl.glBegin(7 /* GL.GL_QUADS*/);
 				gl.glVertex2d(-0.5f, -0.5f);

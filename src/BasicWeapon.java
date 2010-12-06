@@ -2,6 +2,7 @@
  * Author: Chris Lundquist
  */
 public class BasicWeapon extends Weapon{
+	private static final long serialVersionUID = -8238745473484972042L;
 	private static final int SHOOT_DELAY = 15; // 10 frame delay between shots
 	BasicWeapon(Actor owner) {
 		super(owner);

@@ -1,12 +1,12 @@
 import java.net.*;
 import java.io.*;
 
-public class ServerClientThread extends Thread {
+public class ServerConnectionThread extends Thread {
 	private DedicatedServer server;
 	private Socket client;
 	private NetworkPlayer player;
 
-	public ServerClientThread(Socket client, DedicatedServer server) {
+	public ServerConnectionThread(Socket client, DedicatedServer server) {
 		this.client = client;
 		this.server = server;
 	}
@@ -53,5 +53,9 @@ public class ServerClientThread extends Thread {
 	
 	public int getPlayerShipId() {
 		return player.getShipId();
+	}
+
+	public void updateActor(Actor a) {
+		server.updateActor(a);
 	}
 }

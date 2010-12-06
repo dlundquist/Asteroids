@@ -27,7 +27,7 @@ abstract class Actor implements Serializable {
 	protected Vector velocity;
 	protected float theta; // Angular position
 	protected float omega; // Angular velocity
-	protected Sprite sprite; // This is the texture of this object
+	protected transient Sprite sprite; // This is the texture of this object
 	protected float size; // the radius of the object
 	protected int id; // unique ID for each Actor 
 	protected int parentId;

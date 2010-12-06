@@ -3,6 +3,7 @@
  * Description: Lets the player shoot 3 (smaller) bullets at once more slowly
  */
 public class TripleShotWeapon extends Weapon{
+	private static final long serialVersionUID = -3924425722682118076L;
 	private static final float TRIPLE_BULLET_SIZE = 0.05f;
 	public static int shotsLeft;
 	protected Bullet bullet;
