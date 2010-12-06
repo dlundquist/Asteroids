@@ -2,7 +2,6 @@
  * Author: Chris Lundquist
  */
 public class BasicWeapon extends Weapon{
-	private static final int SHOOT_DELAY = 15; // 10 frame delay between shots
 	BasicWeapon(Actor owner) {
 		super(owner);
 	}
@@ -22,8 +21,12 @@ public class BasicWeapon extends Weapon{
 	    Actor.actors.add(bullet);
 	    
 	    /* reset our shoot delay */
-	    shootDelay = SHOOT_DELAY;
+	    shootDelay = getShootDelay();
 	}
-
+public int getShootDelay(){
+	int delay = Asteroids.getAsteroidsLeft()/4;
+	if (delay <= 10)return 1;
+	else return delay;
+}
 
 }
