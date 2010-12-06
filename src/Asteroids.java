@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * This is the main game logic
  *
@@ -10,9 +12,11 @@ public class Asteroids {
 	private static PlayerShip playerShip;
 	private static HighScores highScores;
 	private static boolean paused;
-	private static int asteroidsLeft = 100;
+	private static final int ASTEROIDS_IN_GAME = 100;
+	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
+	private final static int ASTEROIDS_PER_POWERUP = 5;
 
 
 	/**
@@ -44,10 +48,6 @@ public class Asteroids {
 		 */
 		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
-
-		// TODO spawn power ups randomly as game progresses
-		Actor.actors.add(new TripleShotPowerUp(0.5f,0.4f));
-
 	}
 
 	public static PlayerShip getPlayer() {
@@ -90,6 +90,14 @@ public class Asteroids {
 		 */
 		if (asteroidTimer == 0 && asteroidsLeft > 0){
 			Actor.actors.add(new Asteroid());
+			//Adding TripleShotWeapon to a random location every 5 asteroids
+			for (int i = 0; i <= (ASTEROIDS_IN_GAME/ASTEROIDS_PER_POWERUP) ; i++){
+				if (ASTEROIDS_IN_GAME - i*ASTEROIDS_PER_POWERUP == asteroidsLeft){
+					Random gen = new Random();
+					Actor.actors.add(new TripleShotPowerUp(gen.nextFloat() - gen.nextFloat(),
+							gen.nextFloat() - gen.nextFloat()));
+				}
+			}
 			asteroidsLeft--;
 			timeBetween -= TIMER_REDUCED_BY;
 			asteroidTimer = timeBetween;
