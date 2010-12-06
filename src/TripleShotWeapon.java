@@ -7,8 +7,6 @@ public class TripleShotWeapon extends Weapon{
 	public static int shotsLeft;
 	protected Bullet bullet;
 
-	private static final int SHOOT_DELAY = 30; // 30 frame delay between shots
-
 	TripleShotWeapon(Actor owner) {
 		super(owner);
 		shotsLeft += 30;
@@ -40,7 +38,7 @@ public class TripleShotWeapon extends Weapon{
 		bullet2.size = TRIPLE_BULLET_SIZE;
 		Bullet bullet3 = new Bullet(owner, 1.0f);
 		bullet3.size = TRIPLE_BULLET_SIZE;
-		
+
 		Actor.actors.add(bullet1);
 		Actor.actors.add(bullet2);
 		Actor.actors.add(bullet3);
@@ -53,6 +51,12 @@ public class TripleShotWeapon extends Weapon{
 
 
 		/* reset our shoot delay */
-		shootDelay = SHOOT_DELAY;
+		shootDelay = getTripleDelay();
+	}
+	public int getTripleDelay(){
+		int delay = Asteroids.getAsteroidsLeft()/2;
+		if (delay <= 10) return 10;
+		else return delay;
 	}
 }
+
