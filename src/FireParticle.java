@@ -1,6 +1,6 @@
 public class FireParticle extends Particle{
 	private static final long serialVersionUID = 9082476987034302079L;
-	private static final float PARTICLE_VELOCTIY = 0.01f;
+	private static final float PARTICLE_VELOCITY = 0.01f;
 	private static final int PARTICLE_LIFETIME = 30;
 	private static final float PARTICLE_SIZE = 0.02f;
 	private static final float PARTICLE_SPIN = 0.01f;
