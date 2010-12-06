@@ -25,6 +25,7 @@ public class InputHandler implements KeyListener {
 		KeyEvent.VK_W,
 		KeyEvent.VK_S,
 		KeyEvent.VK_F11,
+		KeyEvent.VK_BACK_SLASH,
 	};
 	/**
 	 * This is a mask to indicate if each key is disabled when the game is paused
@@ -42,6 +43,7 @@ public class InputHandler implements KeyListener {
 		true, //KeyEvent.VK_W,
 		true, //KeyEvent.VK_S,
 		true, //KeyEvent.VK_F11,
+		true, //KeyEvent.VK_BLACK_SLASH,
 	};
 	private int lastPause;
 	private int warpDebounce;
@@ -150,6 +152,8 @@ public class InputHandler implements KeyListener {
 						flipDebounce = 10;
 					}
 				break;
+				case(KeyEvent.VK_BACK_SLASH):
+					// Same as VK_F11
 				case(KeyEvent.VK_F11): // This is just for DEBUGGING
 					// TODO remove from public version
 					Bandit.spawn();

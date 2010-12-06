@@ -79,7 +79,7 @@ public class Bandit extends Actor {
 	}
 
 	private void turnLeft() {
-		System.out.println("BANDIT: turning left");
+		//System.out.println("BANDIT: turning left");
 		theta += ROTATION_INCREMENT;
 		velocity = new Vector(theta);
 		velocity.scaleBy(SPEED);
@@ -87,7 +87,7 @@ public class Bandit extends Actor {
 	}
 
 	private void turnRight() {
-		System.out.println("BANDIT: turning right");
+		//System.out.println("BANDIT: turning right");
 		theta -= ROTATION_INCREMENT;
 		velocity = new Vector(theta);
 		velocity.scaleBy(SPEED);
@@ -96,7 +96,7 @@ public class Bandit extends Actor {
 
 	private void shoot(float angle) {
 		if (angle < FIRING_ARC && angle > - FIRING_ARC) {
-			System.out.println("BANDIT: shooting");
+			//System.out.println("BANDIT: shooting");
 			weapon.shoot();
 		}
 	}

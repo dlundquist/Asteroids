@@ -2,9 +2,9 @@
 public class PlasmaParticle extends Particle {
 	private static final long serialVersionUID = -5250833419817334839L;
 	private static final float PLASMA_VELOCITY = 0.001f;
-	private static final int PLASMA_LIFETIME = 20;
-	private static final float PLASMA_SPIN = 0;
-	private final float PLASMA_SIZE = 0.005f;
+	private static final int PLASMA_LIFETIME = 40;
+	private static final float PLASMA_SPIN = 0.2f;
+	private final float PLASMA_SIZE = 0.01f;
 	
 	PlasmaParticle(Actor ship) {
 		position = new Vector(ship.getTailPosition());
@@ -59,7 +59,10 @@ public class PlasmaParticle extends Particle {
 		colorR -= 0.2f;
 		colorG -= 0.1f;
 		colorB -= 0.05f;
-		// We stay brown
+		if(colorB < 0.5f)
+			colorB = 0.5f;
+		if(colorG < 0.2f)
+			colorG = 0.2f;
 	}
 }
 
