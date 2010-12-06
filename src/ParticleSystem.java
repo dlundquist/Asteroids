@@ -22,16 +22,16 @@ public class ParticleSystem {
 				particles.add(new DebrisParticle(actor));
 	}
 	
-	public static void addPlasmaParticle(Actor actor){
+	public static void addPlasmaParticle(Vector position){
 		if(enabled)
 			for(int i = 0; i < DENSITY * 6; i++){
-				particles.add(new PlasmaParticle(actor));
+				particles.add(new PlasmaParticle(position));
 			}
 	}
 	
 	public static void addExplosion(Vector pos) {
 		if(enabled){
-			for(int i = 0; i < DENSITY * 1000; i++ ){
+			for(int i = 0; i < DENSITY * 15; i++ ){
 				particles.add(new FireParticle(pos));
 			}
 		}

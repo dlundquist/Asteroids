@@ -1,4 +1,7 @@
-public class Vector {
+import java.io.Serializable;
+
+public class Vector implements Serializable {
+	private static final long serialVersionUID = -8675559022498950246L;
 	/*
 	 * our vectors are stored in floats since that's what OpenGL works with
 	 */
@@ -120,6 +123,15 @@ public class Vector {
 	public void incrementBy(Vector velocity) {
 		x += velocity.x;
 		y += velocity.y;
+	}
+	
+	public void decrementBy(Vector velocity) {
+		x -= velocity.x;
+		y -= velocity.y;
+	}
+	
+	public Vector minus(Vector lhs) {
+		return new Vector(x - lhs.x, y - lhs.y);
 	}
 
 	public void incrementXBy(double delta) {

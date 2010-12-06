@@ -1,6 +1,8 @@
+import java.io.Serializable;
 import java.util.Random;
 
-abstract class Actor {
+abstract class Actor implements Serializable {
+	private static final long serialVersionUID = 744085604446096658L;
 	static private final double MAX_VELOCITY = 0.1;
 	static private final float MAX_OMEGA = 0.5f;
 	
@@ -43,6 +45,8 @@ abstract class Actor {
 		 if (velocity.magnitude() > MAX_VELOCITY)
 			 velocity.normalizeTo(MAX_VELOCITY);
 		 
+		 theta = normalizeAngle(theta);
+		 
 		 /* Update position and angle of rotation */
 		 theta += omega;
 		 position.incrementBy(velocity);
@@ -52,7 +56,15 @@ abstract class Actor {
 		 checkBounds();
 	 }
 	 
-	 // Returns a position vector at the "back" of the spite
+	 protected float normalizeAngle(float angle) {
+		 while (angle > Math.PI)
+			 angle -= 2 * Math.PI;
+		 while (angle < -Math.PI)
+			 angle += 2 * Math.PI;	
+		 return angle;
+	 }
+
+	// Returns a position vector at the "back" of the spite
 	 public Vector getTailPosition() {
 		 Vector tail = new Vector(position);
 		 tail.incrementXBy(-Math.cos(theta) * getRadius());
@@ -157,9 +169,22 @@ abstract class Actor {
 		return this;
 	}
 	
-	public float getKineticEnergy(){
+	public float getKineticEnergy() {
 		// NOTE: Mass is missing from the equation so we throw in volume and leave out density
-		return size * size * size * (float)velocity.magnitude();
+		float speed = (float)velocity.magnitude();
+		return 0.5f * getMass() * speed * speed;
+	}
+	
+	public float getMass() {
+		// This does not account for different actors having different densities
+		// but the mass should scale with the cube of the linear scale (the volume)
+		return size * size * size;
+	}
+	
+	public Vector getMomentum() {
+		Vector p = new Vector(velocity);
+		p.scaleBy(getMass());
+		return p;
 	}
 	
 	/**
@@ -180,6 +205,12 @@ abstract class Actor {
 	
 	protected int generateId() {
 		return (lastId =+ gen.nextInt(1000) + 1); // Pseudo random increments
+	}
+
+	public static void removeActorId(int idToRemove) {
+		for (Actor a: actors)
+			if (a.id == idToRemove)
+				actors.remove(a);
 	}
 	
 	public static void updateActors() {

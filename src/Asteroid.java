@@ -1,4 +1,5 @@
-public class Asteroid extends Actor {
+public class Asteroid extends Actor  {
+	private static final long serialVersionUID = 8547862796786070732L;
 	public static final float LARGE_SIZE = 0.30f;//.15f
 	public static final float MEDIUM_SIZE = 0.20f;//.10f
 	public static final float SMALL_SIZE = 0.10f;//.15f // If we set this to 0.05f the game is impossible
@@ -6,6 +7,7 @@ public class Asteroid extends Actor {
 	public static int largeHp = 4;
 	private static int hitPoints;
 	private static boolean asteroidCollisionEnabled;
+
 
 	public Asteroid() {
 		int randSide = gen.nextInt(3);
@@ -66,6 +68,12 @@ public class Asteroid extends Actor {
 		// We don't want to blow up on PowerUps
 		 if(other instanceof PowerUp){
 			return;
+/*
+		// Score code that we still need to integrate w/ below
+		} else if(other instanceof Bullet){
+			if (other.parentId == Asteroids.getPlayer().id)  // UFO bullets do not count to player's score
+				ScorePanel.getScorePanel().asteroidHit(this);
+*/
 		}  
 		 if(other instanceof Bullet){
 			ScorePanel.getScorePanel().asteroidHit(this);

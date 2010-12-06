@@ -5,6 +5,7 @@
  *              a TripleShotWeapon
  */
 public class TripleShotPowerUp extends PowerUp{
+	private static final long serialVersionUID = 7120396598193477176L;
 
 	TripleShotPowerUp(Vector pos) {
 		super(pos);
@@ -44,6 +45,12 @@ public class TripleShotPowerUp extends PowerUp{
 	void applyTo(Actor actor) {
 		// Shouldnt get here
 		System.out.println("Unhandled PowerUp Case for TrippleShotPowerUp");
+	}
+
+	@Override
+	void applyTo(Bandit bandit) {
+		bandit.weapon = new TripleShotWeapon(bandit);
+		delete();
 	}
 
 }

@@ -4,6 +4,7 @@
  * Description: When a PlayerShip collides, we add a life to the player
  */
 public class LifePowerUp extends PowerUp{
+	private static final long serialVersionUID = 1086088222478807316L;
 
 	LifePowerUp(Vector pos) {
 		super(pos);
@@ -43,6 +44,11 @@ public class LifePowerUp extends PowerUp{
 	void applyTo(Actor actor) {
 		// Shouldnt get here
 		System.out.println("Unhandled PowerUp Case for lifePowerUp");
+	}
+
+	@Override
+	void applyTo(Bandit bandit) {
+		Bandit.spawn(); // Spawn a friend (or foe)
 	}
 
 }

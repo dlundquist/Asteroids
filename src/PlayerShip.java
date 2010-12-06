@@ -1,4 +1,5 @@
 public class PlayerShip extends Actor {
+	private static final long serialVersionUID = -5348807415668521319L;
 	private static final float PLAYER_SIZE = 0.1f;
 	private static final double FORWARD_THRUST = 0.0003f;
 	private static final double REVERSE_THRUST = -0.0002f;
@@ -49,7 +50,7 @@ public class PlayerShip extends Actor {
 		
 		// Is the other guy an Asteroid?
 		// Player is now invulnerable for 3 sec after dying
-		if ( other instanceof Asteroid) {
+		if ( other instanceof Asteroid || other instanceof Bullet || other instanceof Bandit) { // TODO make this the default case
 			
 			// Take the shield damage
 			shield.handleCollision(other);
