@@ -43,6 +43,8 @@ abstract class Actor {
 		 if (velocity.magnitude() > MAX_VELOCITY)
 			 velocity.normalizeTo(MAX_VELOCITY);
 		 
+		 theta = normalizeAngle(theta);
+		 
 		 /* Update position and angle of rotation */
 		 theta += omega;
 		 position.incrementBy(velocity);
@@ -52,7 +54,15 @@ abstract class Actor {
 		 checkBounds();
 	 }
 	 
-	 // Returns a position vector at the "back" of the spite
+	 protected float normalizeAngle(float angle) {
+		 while (angle > Math.PI)
+			 angle -= 2 * Math.PI;
+		 while (angle < -Math.PI)
+			 angle += 2 * Math.PI;	
+		 return angle;
+	 }
+
+	// Returns a position vector at the "back" of the spite
 	 public Vector getTailPosition() {
 		 Vector tail = new Vector(position);
 		 tail.incrementXBy(-Math.cos(theta) * getRadius());

@@ -23,6 +23,7 @@ public class Sprite {
 	public static final int TRIPLE_SHOT_POWER_UP_TYPE = 5;
 	public static final int LIFE_POWER_UP_TYPE = 6;
 	public static final int SHIELD_TYPE = 7;
+	public static final int BANDIT_TYPE = 8;
 	private static final String TEXTURE_DIR = "data";
 	private static final String MANIFEST_FILE = "sprite.manifest";
 
@@ -140,6 +141,10 @@ public class Sprite {
 
 	public static Sprite shield() {
 		return getRandomSprite(SHIELD_TYPE);
+	}
+
+	public static Sprite bandit() {
+		return getRandomSprite(BANDIT_TYPE);
 	}
 
 	private static ArrayList<Sprite> getAll(int type) {

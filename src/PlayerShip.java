@@ -49,7 +49,7 @@ public class PlayerShip extends Actor {
 		
 		// Is the other guy an Asteroid?
 		// Player is now invulnerable for 3 sec after dying
-		if ( other instanceof Asteroid) {
+		if ( other instanceof Asteroid || other instanceof Bullet || other instanceof Bandit) { // TODO make this the default case
 			
 			// Take the shield damage
 			shield.handleCollision(other);

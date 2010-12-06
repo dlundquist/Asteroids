@@ -8,6 +8,7 @@ public class Bullet extends Actor {
 	private static final float BULLET_SIZE = 0.05f;
 	private static final float BULLET_SPIN = 0.05f;
 	private static final int BULLET_LIFETIME = 60; // 1 second
+	private static final float BULLET_DENSITY = 90;
 
 	public Bullet(Actor ship) {
 		this(ship, 0); // Call our other constructor with a zero deflection angle
@@ -59,5 +60,11 @@ public class Bullet extends Actor {
 			if (parentId == Asteroids.getPlayer().id) // UFO bullets do not count to player's score
 				ScorePanel.getScorePanel().bulletMissed();
 		}	
+	}
+	
+	public float getMass() {
+		// This does not account for different actors having different densities
+		// but the mass should scale with the cube of the linear scale (the volume)
+		return size * size * size * BULLET_DENSITY;
 	}
 }
