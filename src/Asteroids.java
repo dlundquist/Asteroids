@@ -3,7 +3,7 @@
  *
  */
 public class Asteroids {
-	private final static int TIMER_REDUCED_BY = 3;
+	private final static int TIMER_REDUCED_BY = 4;
 
 	private static GUI gui;
 	private static MainMenu menu;
