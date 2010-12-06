@@ -4,7 +4,6 @@ public class Asteroid extends Actor  {
 	public static final float MEDIUM_SIZE = 0.20f;//.10f
 	public static final float SMALL_SIZE = 0.10f;//.15f // If we set this to 0.05f the game is impossible
 	public static float mass;
-	public static int largeHp = 4;
 	private static int hitPoints;
 	private static boolean asteroidCollisionEnabled;
 
@@ -41,7 +40,7 @@ public class Asteroid extends Actor  {
 		size = LARGE_SIZE;//gen.nextFloat() / 8.0f + 0.1f;
 		id = generateId();
 		mass = size*size*size;
-		largeHp = 4;
+		largeAsteroid();
 	}
 
 	public Asteroid(Vector p, Vector v, float s, int parent, int hp) {
@@ -66,61 +65,32 @@ public class Asteroid extends Actor  {
 		else if (other instanceof Asteroid) return;
 
 		// We don't want to blow up on PowerUps
-		 if(other instanceof PowerUp){
+		if(other instanceof PowerUp){
 			return;
-/*
+			/*
 		// Score code that we still need to integrate w/ below
 		} else if(other instanceof Bullet){
 			if (other.parentId == Asteroids.getPlayer().id)  // UFO bullets do not count to player's score
 				ScorePanel.getScorePanel().asteroidHit(this);
-*/
+			 */
 		}  
-		 if(other instanceof Bullet){
+		if(other instanceof Bullet){
 			ScorePanel.getScorePanel().asteroidHit(this);
-			if (size <= SMALL_SIZE){
-				// Remove ourself from the game since we blew up
-				delete();
-				// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
-				ParticleSystem.addDebrisParticle(this);
-			}  
-			if (size >= LARGE_SIZE){
-				largeHp--;
-				if (largeHp == 0){
-					delete();
-					Asteroid m1 = mediumAsteroid();
-					Asteroid m2 = mediumAsteroid();
-					Actor.actors.add(m1);
-					Actor.actors.add(m2);
-				}
-			} else if (size == MEDIUM_SIZE){
-				hitPoints--;
-				if (hitPoints == 0){
-					delete();
-					Asteroid s1 = smallAsteroid();
-					Actor.actors.add(s1);
-					Asteroid s2 = smallAsteroid();
-					Actor.actors.add(s2);
-				}
-			}
-			//Asteroid won't blow up when hitting the ship
-		} else if(other instanceof PlayerShip){
-			return;
+			bulletHit();
 		}
+	}
+	public Asteroid largeAsteroid(){
+		float newMass = mass * (gen.nextFloat() + 1) / 3;
+		mass -= newMass;
+		Asteroid largeAsteroid = new Asteroid(new Vector(position), velocity, LARGE_SIZE,id, 4);
+		return largeAsteroid;
 
-		// Play our awesome explosion if sound is enabled
-		if (SoundEffect.isEnabled()){
-			if (this.isLarge())
-				SoundEffect.forLargeAsteroidDeath().play();
-			else if (this.isSmall())
-				SoundEffect.forSmallAsteroidDeath().play();
-		}
 	}
 	public Asteroid mediumAsteroid(){
 		float direction = gen.nextFloat() * 2 * (float)Math.PI;
 		Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());
 		float newMass = mass * (gen.nextFloat() + 1) / 3;
 		mass -= newMass;
-		mediumHp = 2;
 		Asteroid medAsteroid = new Asteroid(new Vector(position), newVelocity, MEDIUM_SIZE,id, 2);
 		return medAsteroid;
 	}
@@ -131,6 +101,33 @@ public class Asteroid extends Actor  {
 		mass -= newMass;
 		Asteroid smallAsteroid = new Asteroid(new Vector(position), newVelocity, SMALL_SIZE, id, 1);
 		return smallAsteroid;
+	}
+	public void bulletHit(){
+		if (size <= SMALL_SIZE){
+			// Remove ourself from the game since we blew up
+			delete();
+			// Add cool debrisParticles. The ParticleSystem knows if they are disabled or not
+			ParticleSystem.addDebrisParticle(this);
+		}  
+		if (size >= LARGE_SIZE){
+			hitPoints--;
+			if (hitPoints == 0){
+				delete();
+				Asteroid m1 = mediumAsteroid();
+				Asteroid m2 = mediumAsteroid();
+				Actor.actors.add(m1);
+				Actor.actors.add(m2);
+			}
+		} else if (size == MEDIUM_SIZE){
+			hitPoints--;
+			if (hitPoints == 0){
+				delete();
+				Asteroid s1 = smallAsteroid();
+				Actor.actors.add(s1);
+				Asteroid s2 = smallAsteroid();
+				Actor.actors.add(s2);
+			}
+		}
 	}
 	public void setMomentum(float m, Vector v){
 		mass = m;
