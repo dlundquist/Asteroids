@@ -22,13 +22,13 @@ public class ScenePanel extends GLCanvas {
 
 	public ScenePanel() {
 		input = new InputHandler();
-		
+
 		setPreferredSize(new Dimension(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
 
 		addGLEventListener(new GLEventHandler(this));
 		// Register our keyboard listener
 		addKeyListener(input);
-		
+
 		glu = new GLU();
 		animator = new FPSAnimator(this, 60); // 60 fps
 	}
@@ -38,11 +38,11 @@ public class ScenePanel extends GLCanvas {
 	 */
 	private class GLEventHandler implements GLEventListener {
 		private GLCanvas canvas;
-		
+
 		public GLEventHandler(GLCanvas canvas) {
 			this.canvas = canvas;
 		}
-		
+
 		@Override
 		public void init(GLAutoDrawable drawable) {
 			/*  It is where we should initialize various OpenGL features. */
@@ -72,11 +72,11 @@ public class ScenePanel extends GLCanvas {
 			/* Only update if the canvas is in focus */
 			if (canvas.hasFocus() == false)
 				return;
-			
+
 			input.update();
-			
+
 			Asteroids.update();
-			
+
 			render(drawable);
 		}
 
@@ -110,18 +110,18 @@ public class ScenePanel extends GLCanvas {
 			gl.glLoadIdentity();
 		}
 	}
-	
+
 	/*
 	 * Description: This is the main render loop where we draw each actor onto the frame buffer.
 	 */
 	private void render(GLAutoDrawable drawable) {
 		/* Fetch the OpenGL context */
 		GL2 gl = drawable.getGL().getGL2();
-		
+
 		// Clear the buffer in case we don't draw in every position
 		// we won't have ghosting
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		
+
 		// Render background
 		// FIXME gl.glClear(GL.GL_COLOR_BUFFER_BIT) should reset the color but doesn't seem to
 		gl.glLoadIdentity();
@@ -179,26 +179,28 @@ public class ScenePanel extends GLCanvas {
 		if (Asteroids.isPaused())
 			renderText(gl, "Paused", -0.25f, 0.25f);
 	}
-	
+
 	private void renderText(GL2 gl, String string, float x, float y) {
 		gl.glDisable(GL.GL_TEXTURE_2D);
 		GLUT glut = new GLUT();
-		
-        gl.glLoadIdentity();
-        gl.glTranslatef(0, 0, -1.5f);
-        gl.glColor3f((float)GUI.titleColor().getRed() / 256,
+
+		gl.glLoadIdentity();
+		gl.glTranslatef(0, 0, -1.5f);
+		gl.glColor3f((float)GUI.titleColor().getRed() / 256,
 				(float)GUI.titleColor().getGreen() / 256,
 				(float)GUI.titleColor().getBlue() / 256);
 		gl.glRasterPos2f(x, y);
-		
+
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, string);
 		gl.glEnable(GL.GL_TEXTURE_2D);
 	}
 
 	private void renderShields(GL2 gl){
 		PlayerShip player = Asteroids.getPlayer();
+
 		gl.glLoadIdentity();
 		// Texture of the player's shield
+		// Someone left the lights off?
 		gl.glBindTexture(GL.GL_TEXTURE_2D, player.shield.getSprite().getTextureId());
 		gl.glColor4f(1.0f, 1.0f, 1.0f,player.shield.getIntegrity());
 		// At the Player's position
@@ -207,9 +209,9 @@ public class ScenePanel extends GLCanvas {
 		// The Shield's Size
 		gl.glScalef(player.shield.getSize(), player.shield.getSize(), 1);
 		// Fade it with the shield's strength
-		drawNormalSquare(gl);  
+		drawNormalSquare(gl); 
 	}
-	
+
 	private void renderParticles(GL2 gl) {
 		if (ParticleSystem.enabled == false)
 			return;
@@ -224,21 +226,21 @@ public class ScenePanel extends GLCanvas {
 			gl.glColor4f(p.colorR, p.colorG, p.colorB,p.colorA);
 			//System.err.println(p.colorR +" " + p.colorG+ " " +p.colorB);
 			gl.glBegin(7 /* GL.GL_QUADS*/);
-				gl.glVertex2d(-0.5f, -0.5f);
-				// Bottom Right
-				//gl.glTexCoord2f(1, 1);
-				gl.glVertex2d(0.5f, -0.5f);
-				// Top Right
-				//gl.glTexCoord2f(1, 0);
-				gl.glVertex2d(0.5f, 0.5f);
-				// Top Left
-				//gl.glTexCoord2f(0, 0);
-				gl.glVertex2d(-0.5f, 0.5f);
+			gl.glVertex2d(-0.5f, -0.5f);
+			// Bottom Right
+			//gl.glTexCoord2f(1, 1);
+			gl.glVertex2d(0.5f, -0.5f);
+			// Top Right
+			//gl.glTexCoord2f(1, 0);
+			gl.glVertex2d(0.5f, 0.5f);
+			// Top Left
+			//gl.glTexCoord2f(0, 0);
+			gl.glVertex2d(-0.5f, 0.5f);
 			gl.glEnd();
 		}
-		
+		gl.glEnable(GL.GL_TEXTURE_2D);
 	}
-	
+
 	private void renderMessages(GL2 gl) {
 		GLUT glut = new GLUT();
 
@@ -261,7 +263,7 @@ public class ScenePanel extends GLCanvas {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
 	}
-	
+
 	/**
 	 * Draw a normalized square at the origin
 	 * @param gl - the OpenGL context
@@ -270,21 +272,21 @@ public class ScenePanel extends GLCanvas {
 		// These points will be multiplied by the transformations above
 		// to produce the desired and described transformations.
 		gl.glBegin(/* GL.GL_QUADS */ 7);//GL_QUADS isn't defined in the JOGL
-		    // Points must be counter clockwise defined or they will
-		    // be removed by back face culling
-		
-			// Bottom Left
-			gl.glTexCoord2f(0, 0);
-			gl.glVertex2d(-0.5f, -0.5f);
-			// Bottom Right
-			gl.glTexCoord2f(1, 0);
-			gl.glVertex2d(0.5f, -0.5f);
-			// Top Right
-			gl.glTexCoord2f(1, 1);
-			gl.glVertex2d(0.5f, 0.5f);
-			// Top Left
-			gl.glTexCoord2f(0, 1);
-			gl.glVertex2d(-0.5f, 0.5f);
+		// Points must be counter clockwise defined or they will
+		// be removed by back face culling
+
+		// Bottom Left
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex2d(-0.5f, -0.5f);
+		// Bottom Right
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex2d(0.5f, -0.5f);
+		// Top Right
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex2d(0.5f, 0.5f);
+		// Top Left
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex2d(-0.5f, 0.5f);
 		gl.glEnd();
 	}
 }
