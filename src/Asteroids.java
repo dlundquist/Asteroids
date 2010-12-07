@@ -17,6 +17,7 @@ public class Asteroids {
 	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
 	private final static int ASTEROIDS_PER_POWERUP = 5;
+	private static boolean highScoreSubmitted = false; 
 
 
 	/**
@@ -93,8 +94,11 @@ public class Asteroids {
 	public static void gameMechanics(){
 		// Game over man!
 		if (playerShip.isAlive() == false && playerShip.moreLives() == false) {
-			OnscreenMessage.add(new OnscreenMessage("Game Over!"));
-			highScores.newScore(ScorePanel.getScorePanel().getScore());
+			if (highScoreSubmitted == false) {
+				highScoreSubmitted = true;
+				new HighScoreThread(highScores, ScorePanel.getScorePanel().getScore()).start();
+				OnscreenMessage.add(new OnscreenMessage("Game Over!"));
+			}
 		}
 		asteroidTimer--;
 
