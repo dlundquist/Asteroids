@@ -1,5 +1,3 @@
-import java.util.Random;
-
 /**
  * This is the main game logic
  *
@@ -16,7 +14,7 @@ public class Asteroids {
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
-	private final static int ASTEROIDS_PER_POWERUP = 5;
+	private static boolean gameOver = false;
 	private static boolean highScoreSubmitted = false; 
 
 
@@ -39,9 +37,15 @@ public class Asteroids {
 	 * put any game initialization code here.
 	 */
 	public static void init() {
-		/* Start the game paused */
 		paused = false;
-
+		timeBetween = 400;
+		asteroidTimer = timeBetween;
+		asteroidsLeft = ASTEROIDS_IN_GAME;
+		gameOver = false;
+		highScoreSubmitted = false;
+		
+		Actor.actors.clear();
+		ScorePanel.getScorePanel().reset();
 		/* 
 		 * Put the player ship first, so when we we add additional actors
 		 * the players ship is always in the same position. This way
@@ -53,6 +57,7 @@ public class Asteroids {
 		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
 	}
+	
 	public static int getAsteroidsLeft(){
 		return asteroidsLeft;
 	}
@@ -94,6 +99,7 @@ public class Asteroids {
 	public static void gameMechanics(){
 		// Game over man!
 		if (playerShip.isAlive() == false && playerShip.moreLives() == false) {
+			gameOver = true;
 			if (highScoreSubmitted == false) {
 				highScoreSubmitted = true;
 				new HighScoreThread(highScores, ScorePanel.getScorePanel().getScore()).start();
@@ -161,6 +167,9 @@ public class Asteroids {
 	}
 	
 	public static void showGame() {
+		if (gameOver == true)
+			init();
+		
 		menu.dispose();
 		menu = null;
 		gui.setVisible(true);

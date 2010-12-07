@@ -132,9 +132,16 @@ public class ScorePanel extends JPanel {
 	public int getScore() {
 		return scoreAmount;
 	}
+	
 	public int banditHit(Bandit bandit) {
 		int amountToAdd = (int) (BANDIT_VALUE + BANDIT_VALUE * getAccuracy() * .01);
 		scoreAmount +=  amountToAdd;
 		return amountToAdd;
+	}
+
+	public void reset() {
+		scoreAmount = 0;
+		hitAmount = 0;
+		shotsMissed = 0;
 	}
 }
