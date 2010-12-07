@@ -24,7 +24,7 @@ public class TripleShotWeapon extends Weapon{
 				((Bandit)owner).weapon = new BasicWeapon(owner);
 		}
 		shotsLeft--;
-		System.out.println(shotsLeft);
+		//System.out.println(shotsLeft);
 		/* Loop from -1 to 1 so we can shoot at angles to both sides of forward */
 		for(int i = -1; i < 2; i++)
 
