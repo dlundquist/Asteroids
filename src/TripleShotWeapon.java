@@ -9,7 +9,7 @@ public class TripleShotWeapon extends Weapon{
 
 	TripleShotWeapon(Actor owner) {
 		super(owner);
-		shotsLeft += 30;
+		shotsLeft += 25;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class TripleShotWeapon extends Weapon{
 		shootDelay = getTripleDelay();
 	}
 	public int getTripleDelay(){
-		int delay = Asteroids.getAsteroidsLeft()/2;
+		int delay = Asteroids.getAsteroidsLeft()/3;
 		if (delay <= 10) return 10;
 		else return delay;
 	}

@@ -61,12 +61,13 @@ abstract public class PowerUp extends Actor {
 	}
 
 	public static void spawn() {
-		switch(gen.nextInt(2)) {
+		switch(gen.nextInt(4)) {
 		case(0):
-			Actor.actors.add(new TripleShotPowerUp(randomPosition()));
-			break;
-		case(1):
 			Actor.actors.add(new LifePowerUp(randomPosition()));
+			break;
+		default:
+			Actor.actors.add(new TripleShotPowerUp(randomPosition()));
+			
 		}	
 	}
 }

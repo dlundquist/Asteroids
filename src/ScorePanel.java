@@ -7,7 +7,7 @@ public class ScorePanel extends JPanel {
 	private static final int MEDIUM_ASTEROID_VALUE = 10;
 	private static final int LARGE_ASTEROID_VALUE = 5;
 	private static final int BOSS_ASTEROID_VALUE = 1000;
-	private static final int BANDIT_VALUE = 100;
+	private static final int BANDIT_VALUE = 145;
 	private static ScorePanel scorePanel; // there should be a better way to do this
 	private static DecimalFormat decPlaces = new DecimalFormat("0");
 
@@ -63,21 +63,24 @@ public class ScorePanel extends JPanel {
 		// TODO end game when boolean returns false
 	}
 
-	public void asteroidHit(Asteroid asteroid) {
+	public int asteroidHit(Asteroid asteroid) {
 		hitAmount ++;
-
+		int amountToAdd = 0;
 		// points per size asteroid
 		if (asteroid.isSmall()) {
-			scoreAmount += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * getAccuracy() * .01);
+			amountToAdd += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * getAccuracy() * .01);
 		} else if (asteroid.isMedium()) {
-			scoreAmount += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * getAccuracy() * .01);
+			amountToAdd += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * getAccuracy() * .01);
 		} else if (asteroid.isLarge()) {
-			scoreAmount += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * getAccuracy() * .01);
+			amountToAdd += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * getAccuracy() * .01);
 		} else if (asteroid.isBoss()){
-			scoreAmount += BOSS_ASTEROID_VALUE + (BOSS_ASTEROID_VALUE * getAccuracy()* 0.01);
+			amountToAdd += BOSS_ASTEROID_VALUE + (BOSS_ASTEROID_VALUE * getAccuracy()* 0.01);
 		} else {
 			System.err.println("DEBUG: unknown asteroid size.");
 		}
+		scoreAmount += amountToAdd;
+		// Return the amount we added so that we can display it in text
+		return amountToAdd;
 	}
 
 	public void bulletMissed() {
@@ -129,7 +132,9 @@ public class ScorePanel extends JPanel {
 	public int getScore() {
 		return scoreAmount;
 	}
-	public void banditHit(Bandit bandit) {
-		scoreAmount +=  + (BANDIT_VALUE + BANDIT_VALUE * getAccuracy() * .01);
+	public int banditHit(Bandit bandit) {
+		int amountToAdd = (int) (BANDIT_VALUE + BANDIT_VALUE * getAccuracy() * .01);
+		scoreAmount +=  amountToAdd;
+		return amountToAdd;
 	}
 }

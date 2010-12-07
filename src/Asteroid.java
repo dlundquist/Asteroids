@@ -108,17 +108,18 @@ public class Asteroid extends Actor  {
 			 */
 		}  
 		if(other instanceof Bullet){
-			ScorePanel.getScorePanel().asteroidHit(this);
 			bulletHit();
-
 		}
 	}
 
 	public void bulletHit(){
 		System.err.println(hitPoints);
 		hitPoints--;
-		if (hitPoints <= 0) 
+		if (hitPoints <= 0){
+			int points = ScorePanel.getScorePanel().asteroidHit(this);
+			OnscreenMessage.add(new OnscreenMessage("+"+points,this));
 			delete();
+		}
 		else 
 			return;
 		breakApart();
