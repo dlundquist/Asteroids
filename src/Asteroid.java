@@ -114,7 +114,7 @@ public class Asteroid extends Actor  {
 	}
 
 	public void bulletHit(){
-		System.err.println(hitPoints);
+		//System.err.println(hitPoints);
 		hitPoints--;
 		if (hitPoints <= 0){
 			int points = ScorePanel.getScorePanel().asteroidHit(this);
@@ -205,10 +205,12 @@ public class Asteroid extends Actor  {
 		size = new_size;
 		return this;
 	}
+
 	public static int getAsteroidsDestroyed(){
-		System.out.println(asteroidsDestroyed);
+		//System.out.println(asteroidsDestroyed);
 		return asteroidsDestroyed;
 	}
+
 	public boolean isBoss() {
 		return size >= BOSS_SIZE;
 	}
