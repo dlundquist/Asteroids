@@ -75,20 +75,19 @@ public class ScorePanel extends JPanel {
 		int amountToAdd = 0;
 		// points per size asteroid
 		if (asteroid.isSmall()) {
-			amountToAdd += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * getAccuracy() * .01);
+			amountToAdd += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * getAccuracy() * .01*scoreMultiplyer);
 		} else if (asteroid.isMedium()) {
-			amountToAdd += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * getAccuracy() * .01);
+			amountToAdd += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * getAccuracy() * .01*scoreMultiplyer);
 		} else if (asteroid.isLarge()) {
-			amountToAdd += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * getAccuracy() * .01);
+			amountToAdd += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * getAccuracy() * .01*scoreMultiplyer);
 		} else if (asteroid.isBoss()){
-			amountToAdd += BOSS_ASTEROID_VALUE + (BOSS_ASTEROID_VALUE * getAccuracy()* 0.01);
+			amountToAdd += BOSS_ASTEROID_VALUE + (BOSS_ASTEROID_VALUE * getAccuracy()* 0.01*scoreMultiplyer);
 		} else {
 			System.err.println("DEBUG: unknown asteroid size.");
 		}
-		scoreMultiplyer = Asteroid.getAsteroidsDestroyed()/NUMBER_FOR_MULTIPLYER+1;
-		scoreAmount += amountToAdd*scoreMultiplyer;
+		scoreAmount += amountToAdd;
 		// Return the amount we added so that we can display it in text
-		return amountToAdd*scoreMultiplyer;
+		return amountToAdd;
 	}
 
 	public void bulletMissed() {
@@ -99,6 +98,7 @@ public class ScorePanel extends JPanel {
 	 * Update is called by Asteroids.update() every frame to redraw the scores
 	 */
 	public void updateScorePanel() {
+		scoreMultiplyer = Asteroid.getAsteroidsDestroyed()/NUMBER_FOR_MULTIPLYER+1;
 		// Update every 30 frames
 		if (frameCounter > 0) {
 			frameCounter --;
@@ -143,7 +143,7 @@ public class ScorePanel extends JPanel {
 	}
 	
 	public int banditHit(Bandit bandit) {
-		int amountToAdd = (int) (BANDIT_VALUE + BANDIT_VALUE * getAccuracy() * .01);
+		int amountToAdd = (int) (BANDIT_VALUE + BANDIT_VALUE * getAccuracy() * .01*scoreMultiplyer);
 		scoreAmount +=  amountToAdd;
 		return amountToAdd;
 	}
