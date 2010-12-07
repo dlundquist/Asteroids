@@ -101,7 +101,7 @@ public class Asteroids {
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
 		 */
-		if (asteroidsLeft % 3 == 0 && asteroidTimer == 0){
+		if (asteroidsLeft % ASTEROIDS_PER_POWERUP == 0 && asteroidTimer == 0){
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 		}
 		if (asteroidTimer == 0 && asteroidsLeft > 0){
