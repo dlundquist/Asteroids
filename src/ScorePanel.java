@@ -70,13 +70,13 @@ public class ScorePanel extends JPanel {
 		int amountToAdd = 0;
 		// points per size asteroid
 		if (asteroid.isSmall()) {
-			amountToAdd += SMALL_ASTEROID_VALUE + (SMALL_ASTEROID_VALUE * getAccuracy() * .01*scoreMultiplyer);
+			amountToAdd += SMALL_ASTEROID_VALUE*scoreMultiplyer + (SMALL_ASTEROID_VALUE * getAccuracy() * .01);
 		} else if (asteroid.isMedium()) {
-			amountToAdd += MEDIUM_ASTEROID_VALUE + (MEDIUM_ASTEROID_VALUE * getAccuracy() * .01*scoreMultiplyer);
+			amountToAdd += MEDIUM_ASTEROID_VALUE*scoreMultiplyer + (MEDIUM_ASTEROID_VALUE * getAccuracy() * .01);
 		} else if (asteroid.isLarge()) {
-			amountToAdd += LARGE_ASTEROID_VALUE + (LARGE_ASTEROID_VALUE * getAccuracy() * .01*scoreMultiplyer);
+			amountToAdd += LARGE_ASTEROID_VALUE*scoreMultiplyer + (LARGE_ASTEROID_VALUE * getAccuracy() * .01);
 		} else if (asteroid.isBoss()){
-			amountToAdd += BOSS_ASTEROID_VALUE + (BOSS_ASTEROID_VALUE * getAccuracy()* 0.01*scoreMultiplyer);
+			amountToAdd += BOSS_ASTEROID_VALUE*scoreMultiplyer + (BOSS_ASTEROID_VALUE * getAccuracy()* 0.01);
 		} else {
 			System.err.println("DEBUG: unknown asteroid size.");
 		}
@@ -138,7 +138,7 @@ public class ScorePanel extends JPanel {
 	}
 	
 	public int banditHit(Bandit bandit) {
-		int amountToAdd = (int) (BANDIT_VALUE + BANDIT_VALUE * getAccuracy() * .01*scoreMultiplyer);
+		int amountToAdd = (int) (BANDIT_VALUE*scoreMultiplyer + BANDIT_VALUE * getAccuracy() * .01);
 		scoreAmount +=  amountToAdd;
 		return amountToAdd;
 	}
