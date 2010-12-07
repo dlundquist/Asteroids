@@ -120,6 +120,10 @@ public class HighScores {
 		if (this.isNewHighScore(score)) {
 			String name =  JOptionPane.showInputDialog("New high score, enter your name");
 
+			// Don't add high scores when the player doesn't enter a name
+			if (name == null)
+				return;
+
 			this.add(name, score);
 			writeScoreFile();
 		}
