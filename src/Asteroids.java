@@ -10,7 +10,7 @@ public class Asteroids {
 	private static PlayerShip playerShip;
 	private static HighScores highScores;
 	private static boolean paused;
-	private static final int ASTEROIDS_IN_GAME = 2;
+	private static final int ASTEROIDS_IN_GAME = 100;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
@@ -113,7 +113,7 @@ public class Asteroids {
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
 		 */
-		if (asteroidsLeft % 3 == 0 && asteroidTimer == 0){
+		if (asteroidsLeft % 3 == 0 && asteroidTimer == 1 ){
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 		}
 		if (asteroidTimer == 1 && asteroidsLeft > 0){

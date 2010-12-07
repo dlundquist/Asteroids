@@ -5,7 +5,7 @@ public class Asteroid extends Actor  {
 	public static final float SMALL_SIZE = 0.14f;
 	public static final float MEDIUM_SIZE = (float) Math.pow(Math.pow(SMALL_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
 	public static final float LARGE_SIZE = (float) Math.pow(Math.pow(MEDIUM_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
-	public static final float BOSS_SIZE = (float) Math.pow(Math.pow(1*LARGE_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
+	public static final float BOSS_SIZE = (float) Math.pow(Math.pow(3*LARGE_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
 	private static final int INVOLNERABLE_TO_ASTEROIDS_FOR = 10;
 	private static final float DEBRIS_ANGLE = (float)Math.PI / 1.5f;
 	private static final int BOSS_HP = 30;
@@ -15,6 +15,7 @@ public class Asteroid extends Actor  {
 
 	private static boolean asteroidCollisionEnabled;
 	protected int hitPoints;
+	private static int asteroidsDestroyed;
 
 	static public Asteroid spawn(){
 		Asteroid asteroid = null;
@@ -129,6 +130,7 @@ public class Asteroid extends Actor  {
 	private void breakApart(){
 		if (SoundEffect.isEnabled())
 			SoundEffect.forLargeAsteroidDeath().play();
+		asteroidsDestroyed++;
 		// If the asteroid isn't small, spawn fragments
 		if (isSmall() == false){
 			float original_mass = getMass();
@@ -182,7 +184,9 @@ public class Asteroid extends Actor  {
 			}
 		}
 	 */
-
+	public static void setAsteroidsDestroyed(int a){
+		asteroidsDestroyed = a;
+	}
 
 	private Asteroid setHpForSize(){
 		if (isSmall())
@@ -200,6 +204,10 @@ public class Asteroid extends Actor  {
 	public Asteroid setSize(float new_size){
 		size = new_size;
 		return this;
+	}
+	public static int getAsteroidsDestroyed(){
+		System.out.println(asteroidsDestroyed);
+		return asteroidsDestroyed;
 	}
 	public boolean isBoss() {
 		return size >= BOSS_SIZE;

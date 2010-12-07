@@ -3,13 +3,16 @@ import java.text.DecimalFormat;
 
 public class ScorePanel extends JPanel {
 	private static final long serialVersionUID = -3919165149509621102L;
-	private static final int SMALL_ASTEROID_VALUE = 15;
-	private static final int MEDIUM_ASTEROID_VALUE = 10;
-	private static final int LARGE_ASTEROID_VALUE = 5;
+	private static final int SMALL_ASTEROID_VALUE = 3;
+	private static final int MEDIUM_ASTEROID_VALUE = 2;
+	private static final int LARGE_ASTEROID_VALUE = 1;
 	private static final int BOSS_ASTEROID_VALUE = 1000;
-	private static final int BANDIT_VALUE = 145;
+	private static final int BANDIT_VALUE = 17;
+	private final int NUMBER_FOR_MULTIPLYER =10;
 	private static ScorePanel scorePanel; // there should be a better way to do this
 	private static DecimalFormat decPlaces = new DecimalFormat("0");
+	private int scoreMultiplyer =1;
+
 
 	/*
 	 * There should be a better way to do this, but we need various parts
@@ -21,6 +24,7 @@ public class ScorePanel extends JPanel {
 
 
 	private int frameCounter;
+	private JLabel multiplyer;
 	private JLabel score;
 	private JLabel lives;
 	private JLabel accurate;
@@ -32,7 +36,9 @@ public class ScorePanel extends JPanel {
 	public ScorePanel() {
 		// Fix issue on MacOS where score panel is huge and ScenePanel is postage stamp sized
 		// setPreferredSize(new Dimension(100, 500));
-
+		
+		multiplyer = new JLabel(" x"+scoreMultiplyer);
+		GUI.colorize(multiplyer);
 		accurate = new JLabel("Accuracy 0%");
 		GUI.colorize(accurate);
 		lives = new JLabel("Lives: " + getLives());
@@ -44,6 +50,7 @@ public class ScorePanel extends JPanel {
 		add(score);
 		add(lives);
 		add(accurate);
+		add(multiplyer);
 		add(asteroidNumber);
 
 		/* If this is the first ScorePanel register it as our ScorePanel - there should only be one */
@@ -78,9 +85,10 @@ public class ScorePanel extends JPanel {
 		} else {
 			System.err.println("DEBUG: unknown asteroid size.");
 		}
-		scoreAmount += amountToAdd;
+		scoreMultiplyer = Asteroid.getAsteroidsDestroyed()/NUMBER_FOR_MULTIPLYER+1;
+		scoreAmount += amountToAdd*scoreMultiplyer;
 		// Return the amount we added so that we can display it in text
-		return amountToAdd;
+		return amountToAdd*scoreMultiplyer;
 	}
 
 	public void bulletMissed() {
@@ -100,6 +108,7 @@ public class ScorePanel extends JPanel {
 			score.setText("Score: " + scoreAmount);
 			lives.setText("Extra Lives:" + getLives());
 			accurate.setText("Accuracy: " + decPlaces.format(getAccuracy()) + "%");
+			multiplyer.setText(" x"+scoreMultiplyer);
 			asteroidNumber.setText("Asteroids Left: "+Asteroids.getAsteroidsLeft());
 		}
 	}

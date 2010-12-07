@@ -89,6 +89,7 @@ public class PlayerShip extends Actor {
 		ParticleSystem.addExplosion(position);
 		OnscreenMessage.add(new OnscreenMessage("You Died!", this));
 		Actor.actors.remove(this);
+		Asteroid.setAsteroidsDestroyed(0);
 
 		if(SoundEffect.isEnabled())
 			SoundEffect.forPlayerDeath().play();
