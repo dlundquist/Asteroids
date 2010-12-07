@@ -96,6 +96,11 @@ public class PlayerShip extends Actor {
 	}
 
 	public void regenerate(){
+		if (moreLives() == false) {
+			OnscreenMessage.add(new OnscreenMessage("Game Over!", new Vector(0, 0.5f)));
+			return;
+		}
+		
 		position = new Vector(0,0);
 		velocity.scaleBy(0);
 		shield = new Shield(this);
