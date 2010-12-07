@@ -99,8 +99,9 @@ public class Vector implements Serializable {
 	 * Scale the vector such that it's magnitude is newMagnitude
 	 * @param newMagnitude
 	 */
-	public void normalizeTo(double newMagnitude) {
+	public Vector normalizeTo(double newMagnitude) {
 		scaleBy(newMagnitude / magnitude());
+		return this;
 	}
 	
 	public double distance(Vector there) {
