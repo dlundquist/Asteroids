@@ -27,6 +27,7 @@ public class Asteroids {
 		// Load our sounds and enable them.
 		SoundEffect.init(false);
 		ParticleSystem.init(true);
+		OnscreenMessage.init();
 		highScores = new HighScores();
 		gui = new GUI();
 		menu = new MainMenu();
@@ -76,6 +77,8 @@ public class Asteroids {
 
 		if (ParticleSystem.enabled)
 			ParticleSystem.updateParticles();
+		
+		OnscreenMessage.updateMessages();
 
 		ScorePanel.getScorePanel().updateScorePanel();
 	}
@@ -115,11 +118,14 @@ public class Asteroids {
 		switch(Actor.gen.nextInt(20)) {
 		case(1):
 			Bandit.spawn();
+			OnscreenMessage.add(new OnscreenMessage("Bandit!"));
 			// Spawn a power up too
 		case(2):
+			OnscreenMessage.add(new OnscreenMessage("Power up!"));
 			PowerUp.spawn();
 			break;
 		default:
+			OnscreenMessage.add(new OnscreenMessage("Asteroid!"));
 			Actor.actors.add(new Asteroid());
 			
 		}

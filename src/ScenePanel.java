@@ -14,6 +14,8 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
  */
 public class ScenePanel extends GLCanvas {
 	private static final long serialVersionUID = 702382815287044105L;
+	private static final int VIEWPORT_WIDTH = 500;
+	private static final int VIEWPORT_HEIGHT = 500;
 	private FPSAnimator animator;
 	private GLU glu;
 	private InputHandler input;
@@ -21,7 +23,7 @@ public class ScenePanel extends GLCanvas {
 	public ScenePanel() {
 		input = new InputHandler();
 		
-		setPreferredSize(new Dimension(500, 500));
+		setPreferredSize(new Dimension(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
 
 		addGLEventListener(new GLEventHandler(this));
 		// Register our keyboard listener
@@ -170,7 +172,7 @@ public class ScenePanel extends GLCanvas {
 		// owners. Its really half a dozen or the other since the render code is centralized.
 		// -CL
 		renderShields(gl);
-		
+		renderMessages(gl);
 		/*
 		 * Display message if game is paused
 		 */
@@ -201,12 +203,13 @@ public class ScenePanel extends GLCanvas {
 		gl.glColor4f(1.0f, 1.0f, 1.0f,player.shield.getIntegrity());
 		// At the Player's position
 		gl.glTranslatef(player.getPosition().x(), player.getPosition().y(), -1.0f);
-		gl.glRotatef(player.getThetaDegrees(),0,0,1);
+		gl.glRotatef(player.getThetaDegrees(), 0, 0, 1);
 		// The Shield's Size
 		gl.glScalef(player.shield.getSize(), player.shield.getSize(), 1);
 		// Fade it with the shield's strength
 		drawNormalSquare(gl);  
 	}
+	
 	private void renderParticles(GL2 gl) {
 		if (ParticleSystem.enabled == false)
 			return;
@@ -233,6 +236,29 @@ public class ScenePanel extends GLCanvas {
 				gl.glVertex2d(-0.5f, 0.5f);
 			gl.glEnd();
 		}
+		
+	}
+	
+	private void renderMessages(GL2 gl) {
+		GLUT glut = new GLUT();
+
+		gl.glDisable(GL.GL_TEXTURE_2D);
+		for (OnscreenMessage msg: OnscreenMessage.getMessages()) {
+			gl.glLoadIdentity();
+			gl.glColor4f((float)GUI.titleColor().getRed() / 256,
+					(float)GUI.titleColor().getGreen() / 256,
+					(float)GUI.titleColor().getBlue() / 256,
+					msg.getAlpha());
+			gl.glTranslatef(msg.getPosition().x(), msg.getPosition().y(), -1.5f);
+
+			// center text
+			float width = 2 * glut.glutBitmapLength(GLUT.BITMAP_HELVETICA_18, msg.getText()) / (float)VIEWPORT_WIDTH;
+			gl.glRasterPos2f(width / -2, 0.1f);
+
+			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, msg.getText());
+
+		}
+
 		gl.glEnable(GL.GL_TEXTURE_2D);
 	}
 	
