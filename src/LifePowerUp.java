@@ -48,7 +48,8 @@ public class LifePowerUp extends PowerUp{
 
 	@Override
 	void applyTo(Bandit bandit) {
-		Bandit.spawn(); // Spawn a friend (or foe)
+		Bandit.spawn();// Spawn a friend (or foe)
+		delete();
 	}
 
 }

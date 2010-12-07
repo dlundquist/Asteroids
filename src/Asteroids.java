@@ -10,12 +10,13 @@ public class Asteroids {
 	private static PlayerShip playerShip;
 	private static HighScores highScores;
 	private static boolean paused;
-	private static final int ASTEROIDS_IN_GAME = 100;
+	private static final int ASTEROIDS_IN_GAME = 2;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
 	private static boolean gameOver = false;
 	private static boolean highScoreSubmitted = false; 
+	private static boolean bossSpawned = false;
 
 
 	/**
@@ -43,6 +44,7 @@ public class Asteroids {
 		asteroidsLeft = ASTEROIDS_IN_GAME;
 		gameOver = false;
 		highScoreSubmitted = false;
+		bossSpawned = false;
 		
 		Actor.actors.clear();
 		ScorePanel.getScorePanel().reset();
@@ -111,10 +113,10 @@ public class Asteroids {
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
 		 */
-		if (asteroidsLeft % ASTEROIDS_PER_POWERUP == 0 && asteroidTimer == 0){
+		if (asteroidsLeft % 3 == 0 && asteroidTimer == 0){
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 		}
-		if (asteroidTimer == 0 && asteroidsLeft > 0){
+		if (asteroidTimer == 1 && asteroidsLeft > 0){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
 			spawnEnemy();
 			asteroidsLeft--;
@@ -122,9 +124,20 @@ public class Asteroids {
 			asteroidTimer = timeBetween;
 		}
 		//Make a boss asteroid at the end
-		if (asteroidsLeft == 0){
-			Asteroid.bossAsteroid();
+		if (asteroidsLeft <= 0 && bossSpawned == false){
+			Actor.actors.add(Asteroid.bossAsteroid());
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+			bossSpawned = true;
+		}else if (bossSpawned){
+			if (Actor.actors.size() == 1 && highScoreSubmitted == false) {
+				highScoreSubmitted = true;
+				new HighScoreThread(highScores, ScorePanel.getScorePanel().getScore()).start();
+				OnscreenMessage.add(new OnscreenMessage("Look at you fancy pants you won the game!"));
+				init();
+			}
 		}
+		
 	}
 	
 	// Spawns an enemy
@@ -135,8 +148,8 @@ public class Asteroids {
 			OnscreenMessage.add(new OnscreenMessage("Bandit!"));
 			// Spawn a power up too
 		default:
-			OnscreenMessage.add(new OnscreenMessage("Asteroid!"));
-			Actor.actors.add(Asteroid.newLargeAsteroid());
+			//OnscreenMessage.add(new OnscreenMessage("Asteroid!"));
+			if (asteroidsLeft >=2)Actor.actors.add(Asteroid.newLargeAsteroid());
 			asteroidsLeft--;
 		}
 	}
@@ -178,7 +191,7 @@ public class Asteroids {
 	public static void showHighScores() {	
 		highScores.displayScoreDialog();
 	}
-
+	// Used by main menu to determine if we should show start game or resume game
 	public static boolean isStarted() {
 		if (playerShip == null)
 			return false;
