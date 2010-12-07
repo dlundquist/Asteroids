@@ -92,21 +92,39 @@ public class Asteroids {
 		 * subtract 1 from the asteroids left total
 		 */
 		if (asteroidTimer == 0 && asteroidsLeft > 0){
-			Actor.actors.add(new Asteroid());
+			spawnEnemy();
+			/*
+			 * 
+			 * (asteroidsLeft % ASTEROIDS_PER_POWERUP == 0)
 			//Adding TripleShotWeapon to a random location every 5 asteroids
 			for (int i = 0; i <= (ASTEROIDS_IN_GAME/ASTEROIDS_PER_POWERUP) ; i++){
 				if (ASTEROIDS_IN_GAME - i*ASTEROIDS_PER_POWERUP == asteroidsLeft){
-					Random gen = new Random();
-					Actor.actors.add(new TripleShotPowerUp(gen.nextFloat() - gen.nextFloat(),
-							gen.nextFloat() - gen.nextFloat()));
+					PowerUp.spawn();
 				}
 			}
+			*/
 			asteroidsLeft--;
 			timeBetween -= TIMER_REDUCED_BY;
 			asteroidTimer = timeBetween;
 			System.out.println("asteroidsLeft = "+asteroidsLeft);
 		}
 	}
+	
+	// Spawns an enemy
+	private static void spawnEnemy() {
+		switch(Actor.gen.nextInt(20)) {
+		case(1):
+			Bandit.spawn();
+			// Spawn a power up too
+		case(2):
+			PowerUp.spawn();
+			break;
+		default:
+			Actor.actors.add(new Asteroid());
+			
+		}
+	}
+
 	public static void dispose() {
 
 	}

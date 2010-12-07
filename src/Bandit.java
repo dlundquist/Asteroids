@@ -27,27 +27,15 @@ public class Bandit extends Actor {
 	};
 
 	public static void spawn() {
-		Actor.actors.add(new Bandit());
+		Actor.actors.add(new Bandit(randomEdge()));
 	}
-
+	
 
 	protected Weapon weapon;
 	private State state;
 
-	public Bandit() {
-		switch(gen.nextInt(3)){
-		case(0):
-			position = new Vector (1, gen.nextFloat() * 2 - 1);
-		break;
-		case(1):
-			position = new Vector (gen.nextFloat() * 2 - 1, 1);
-		break;
-		case(2):
-			position = new Vector (-1, gen.nextFloat() * 2 - 1);
-		break;
-		case(3):
-			position = new Vector (gen.nextFloat() * 2 - 1, -1);
-		}
+	public Bandit(Vector p) {
+		position = p;
 		theta = gen.nextFloat() * 2.0f * (float)Math.PI;
 		omega = 0;
 		velocity = new Vector(theta);
@@ -95,6 +83,11 @@ public class Bandit extends Actor {
 	}
 
 	private void shoot(float angle) {
+		// If we have triple shot, engage targets at a wider arc
+		float arc = FIRING_ARC;
+		if (weapon instanceof TripleShotWeapon)
+			arc *= 2;
+			
 		if (angle < FIRING_ARC && angle > - FIRING_ARC) {
 			//System.out.println("BANDIT: shooting");
 			weapon.shoot();
@@ -106,7 +99,7 @@ public class Bandit extends Actor {
 		// Find out if an actor is in front of us
 		threat = nearestThreat(SEARCH_DISTANCE);
 		if (threat != null) {			
-			Vector displacement = threat.position.minus(position);
+			Vector displacement = threat.position.differenceOverEdge(position);
 			float angle = normalizeAngle((float)displacement.theta() - theta);
 
 			//System.out.println("BANDIT: " + threat + " detected at " + angle);
@@ -126,7 +119,7 @@ public class Bandit extends Actor {
 
 
 
-		Vector displacement = Asteroids.getPlayer().position.minus(position);
+		Vector displacement = Asteroids.getPlayer().position.differenceOverEdge(position);
 		float angle = normalizeAngle((float)displacement.theta() - theta);
 
 
@@ -165,14 +158,14 @@ public class Bandit extends Actor {
 				continue;
 
 			// do not consider these types threats
-			if (a instanceof Bullet || a instanceof PowerUp)
+			if (a instanceof PowerUp)
+				continue;
+			
+			// Do not consider our own bullets threats
+			if (a instanceof Bullet || a.parentId == id)
 				continue;
 
-			Vector displacement = position.minus(a.position);
-
-			// Reject objects not in box 2 * search_distance square
-			if (Math.abs(displacement.x()) > search_distance || Math.abs(displacement.y()) > search_distance)
-				continue;
+			Vector displacement = position.differenceOverEdge(a.position);
 
 			if (displacement.magnitude2() > search_distance * search_distance)
 				continue;
@@ -199,7 +192,7 @@ public class Bandit extends Actor {
 		}
 
 		private float assessRisk(Actor a) {
-			Vector displacement = position.minus(a.position);
+			Vector displacement = position.differenceOverEdge(a.position);
 			return assessRisk(a, displacement);
 		}
 
@@ -210,9 +203,14 @@ public class Bandit extends Actor {
 			Vector theirPositionNextFrame = new Vector(a.position);
 			theirPositionNextFrame.incrementBy(a.velocity);
 
-			Vector displacementNextFrame = ourPositionNextFrame.minus(theirPositionNextFrame);
-
-			return (float) (displacement.magnitude2() / displacementNextFrame.magnitude2());
+			Vector displacementNextFrame = ourPositionNextFrame.differenceOverEdge(theirPositionNextFrame);
+			
+			float distance2 = (float)displacement.magnitude2();
+			float relativeVelocity2 = distance2 / (float)displacementNextFrame.magnitude2();
+			
+			// This should be larger for greater threats
+			// 1/frames until collision^2 
+			return relativeVelocity2 / distance2;
 		}	
 	}
 }

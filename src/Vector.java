@@ -64,6 +64,7 @@ public class Vector implements Serializable {
 		return x * x + y * y;
 	}
 	
+	
 	public double magnitude() {
 		return Math.sqrt(magnitude2());
 	}
@@ -132,6 +133,28 @@ public class Vector implements Serializable {
 	
 	public Vector minus(Vector lhs) {
 		return new Vector(x - lhs.x, y - lhs.y);
+	}
+	
+	public Vector differenceOverEdge(Vector lhs) {
+		float deltaX, deltaY;
+		
+		deltaX = differenceOverEdge(x, lhs.x);
+		deltaY = differenceOverEdge(y, lhs.y);			
+		
+		return new Vector(deltaX, deltaY);
+	}
+	
+	private static float differenceOverEdge(float a, float b) {
+		if (a > 0.5f && b < -0.5f)
+			b += 2;
+		if (a < -0.5f && b > 0.5f)
+			a += 2;
+			
+		return a - b;
+	}
+	
+	public String toString() {
+		return "<" + x + ", " +  y + ">";
 	}
 
 	public void incrementXBy(double delta) {

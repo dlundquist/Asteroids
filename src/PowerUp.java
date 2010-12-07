@@ -57,5 +57,15 @@ abstract public class PowerUp extends Actor {
 			applyTo(other);
 		}
 	}
+
+	public static void spawn() {
+		switch(gen.nextInt(2)) {
+		case(0):
+			Actor.actors.add(new TripleShotPowerUp(randomPosition()));
+			break;
+		case(1):
+			Actor.actors.add(new LifePowerUp(randomPosition()));
+		}	
+	}
 }
 

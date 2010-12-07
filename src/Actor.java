@@ -361,4 +361,22 @@ abstract class Actor implements Serializable {
 		return true;
 	}
 	/* End Collision Detection */
+	
+	/* Returns a random position on the edge of the screen for an asteroid or bandit */
+	protected static Vector randomEdge() {
+		switch(gen.nextInt(4)){
+		case(0):
+			return new Vector (1, gen.nextFloat() * 2 - 1);
+		case(1):
+			return new Vector (gen.nextFloat() * 2 - 1, 1);
+		case(2):
+			return new Vector (-1, gen.nextFloat() * 2 - 1);
+		default: // should only be 3
+			return new Vector (gen.nextFloat() * 2 - 1, -1);
+		}
+	}
+	
+	protected static Vector randomPosition() {
+		return new Vector(gen.nextFloat() - gen.nextFloat(), gen.nextFloat() - gen.nextFloat());
+	}
 }
