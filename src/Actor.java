@@ -5,6 +5,7 @@ abstract class Actor implements Serializable {
 	private static final long serialVersionUID = 744085604446096658L;
 	static private final double MAX_VELOCITY = 0.1;
 	static private final float MAX_OMEGA = 0.5f;
+	static protected final float MASS_SCALING = 2.0f;
 	
 	/**
 	 * Common random number generator object
@@ -178,7 +179,8 @@ abstract class Actor implements Serializable {
 	public float getMass() {
 		// This does not account for different actors having different densities
 		// but the mass should scale with the cube of the linear scale (the volume)
-		return size * size * size;
+		// But the area is more fun!
+		return size * size;
 	}
 	
 	public Vector getMomentum() {
