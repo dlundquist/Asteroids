@@ -42,11 +42,6 @@ public class Bullet extends Actor {
 		if(other instanceof PowerUp)
 			return;
 
-
-		// Play our awesome sound
-		if(SoundEffect.isEnabled())
-    		SoundEffect.forBulletHit().play();
-
 		// Remove ourself from the game
 		delete();
 	}

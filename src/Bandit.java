@@ -61,7 +61,7 @@ public class Bandit extends Actor {
 		// We don't want to disappear when we hit a PowerUp
 		if (other instanceof PowerUp)
 			return;
-
+		ScorePanel.getScorePanel().banditHit(this);
 		delete();
 		ParticleSystem.addExplosion(position);
 	}

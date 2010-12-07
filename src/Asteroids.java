@@ -25,7 +25,7 @@ public class Asteroids {
 	 */
 	public static void main(String[] args) {
 		// Load our sounds and enable them.
-		SoundEffect.init(false);
+		SoundEffect.init(true);
 		ParticleSystem.init(true);
 		OnscreenMessage.init();
 		highScores = new HighScores();
@@ -39,7 +39,7 @@ public class Asteroids {
 	 */
 	public static void init() {
 		/* Start the game paused */
-		paused = true;
+		paused = false;
 
 		/* 
 		 * Put the player ship first, so when we we add additional actors
@@ -47,6 +47,8 @@ public class Asteroids {
 		 * we can draw the actors in reverse order and the players ship
 		 * will always be on top. 
 		 */
+		Actor.actors.add(Asteroid.newLargeAsteroid());
+		asteroidsLeft--;
 		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
 	}
@@ -95,17 +97,20 @@ public class Asteroids {
 			highScores.newScore(ScorePanel.getScorePanel().getScore());
 		}
 		asteroidTimer--;
-		
 
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
 		 */
 		if (asteroidTimer == 0 && asteroidsLeft > 0){
+			Actor.actors.add(Asteroid.newLargeAsteroid());
 			spawnEnemy();
 			asteroidsLeft--;
 			timeBetween -= TIMER_REDUCED_BY;
 			asteroidTimer = timeBetween;
-			System.out.println("asteroidsLeft = "+asteroidsLeft);
+		}
+		//Make a boss asteroid at the end
+		if (asteroidsLeft == 0){
+			Asteroid.bossAsteroid();
 		}
 	}
 	
@@ -122,7 +127,7 @@ public class Asteroids {
 			break;
 		default:
 			OnscreenMessage.add(new OnscreenMessage("Asteroid!"));
-			Asteroid.spawn();
+			Asteroid.newLargeAsteroid();
 		}
 	}
 

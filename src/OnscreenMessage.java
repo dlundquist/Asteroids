@@ -38,7 +38,7 @@ public class OnscreenMessage {
 	}
 	
 	public OnscreenMessage(String msg, Vector position) {
-		this(msg, position, new Vector(0.0f, 0.0f));
+		this(msg, position, new Vector());
 	}
 	
 	public OnscreenMessage(String msg, Actor actor) {

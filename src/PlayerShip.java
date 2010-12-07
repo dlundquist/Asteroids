@@ -89,6 +89,9 @@ public class PlayerShip extends Actor {
 		ParticleSystem.addExplosion(position);
 		OnscreenMessage.add(new OnscreenMessage("You Died!", this));
 		Actor.actors.remove(this);
+
+		if(SoundEffect.isEnabled())
+			SoundEffect.forPlayerDeath().play();
 	}
 
 	public boolean isAlive() {

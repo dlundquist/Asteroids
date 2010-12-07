@@ -4,7 +4,7 @@ public class SoundEffect {
 	static private boolean enabled;
 
 	// TODO make this sexy. This looks like copy pasta.
-	private static final String BULLET_SHOT_FILE = "explode.mp3";
+	private static final String BULLET_SHOT_FILE = "laser_effect.mp3";
 	private static final String BULLET_HIT_FILE = "explode.mp3";
 	private static final String LARGE_ASTEROID_DEATH_FILE = "large_asteroid_explosion.mp3";
 	private static final String SMALL_ASTEROID_DEATH_FILE = "small_asteroid_explosion.mp3";

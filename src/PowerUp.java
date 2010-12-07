@@ -56,6 +56,8 @@ abstract public class PowerUp extends Actor {
 			System.err.println("DEBUG:Poorly Handled powerup applied to Actor class");
 			applyTo(other);
 		}
+		if(SoundEffect.isEnabled())
+			SoundEffect.forPowerUp().play();
 	}
 
 	public static void spawn() {
