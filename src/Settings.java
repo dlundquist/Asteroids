@@ -27,41 +27,36 @@ public class Settings extends JFrame {
 
 	private JPanel settingsPanel() {
 		JPanel panel = new JPanel();
-		GUI.colorize(panel);
 		panel.setLayout(new GridLayout(3, 1));
 
 		sound = new JCheckBox("Enabled Sound");
-		GUI.colorize(sound);
 		sound.setSelected(SoundEffect.isEnabled());
 		panel.add(sound);
 
 		particles = new JCheckBox("Enabled Particle Effects");
-		GUI.colorize(particles);
 		particles.setSelected(ParticleSystem.isEnabled());
 		panel.add(particles);
 
 		asteroidsCollide = new JCheckBox("Enabled Asteroid Collisions");
-		GUI.colorize(asteroidsCollide);
 		asteroidsCollide.setSelected(Asteroid.isAsteroidCollisionEnabled());
 		panel.add(asteroidsCollide);		
 
+		GUI.colorize(panel);
 		return panel;
 	}
 
 	private JPanel buttonPanel() {
 		JPanel panel = new JPanel();
-		GUI.colorize(panel);
 
 		apply = new JButton("Apply");
 		apply.addActionListener(new ButtonHandler(this));
-		GUI.colorize(apply);
 		panel.add(apply);
 
 		close = new JButton("Close");
 		close.addActionListener(new ButtonHandler(this));
-		GUI.colorize(close);
 		panel.add(close);
 
+		GUI.colorize(panel);
 		return panel;
 	}
 

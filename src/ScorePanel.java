@@ -38,15 +38,10 @@ public class ScorePanel extends JPanel {
 		// setPreferredSize(new Dimension(100, 500));
 		
 		multiplyer = new JLabel(" x"+scoreMultiplyer);
-		GUI.colorize(multiplyer);
 		accurate = new JLabel("Accuracy 0%");
-		GUI.colorize(accurate);
 		lives = new JLabel("Lives: " + getLives());
-		GUI.colorize(lives);
 		score = new JLabel("Score: " + scoreAmount);
-		GUI.colorize(score);
 		asteroidNumber = new JLabel("Asteroids left: "+Asteroids.getAsteroidsLeft());
-		GUI.colorize(asteroidNumber);
 		add(score);
 		add(lives);
 		add(accurate);

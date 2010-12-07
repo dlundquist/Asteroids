@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 
 
@@ -15,6 +16,11 @@ public class GUI extends JFrame {
 			component.setBackground(Color.BLACK);
 			component.setForeground(GUI.titleColor());
 		}
+		
+		// Recursively colorize all children
+		for (Component child: component.getComponents())
+			if (child instanceof JComponent)
+				colorize((JComponent) child);	
 	}
 
 	/* Returns the color used in the title image */

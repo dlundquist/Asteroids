@@ -24,12 +24,11 @@ public class HighScoreDialog extends JFrame {
 		add(score_area, BorderLayout.NORTH);
 		
 		JPanel button_area = new JPanel();
-		GUI.colorize(button_area);
 		
 		close_button = new JButton("Close");
-		GUI.colorize(close_button);
 		close_button.addActionListener(new CloseButtonHandler(this));
 		
+		GUI.colorize(button_area);
 		button_area.add(close_button);
 		
 		add(button_area, BorderLayout.SOUTH);
@@ -41,7 +40,6 @@ public class HighScoreDialog extends JFrame {
 
 	private JPanel textAreaBuilder(HighScores scores) {
 		JPanel score_area = new JPanel();
-		GUI.colorize(score_area);
 		
 		String toPrint = "<HTML><TABLE>";		
 		for (int i = 0; i < scores.getScoreList().size() && i < 10; i ++) {
@@ -54,9 +52,9 @@ public class HighScoreDialog extends JFrame {
 		toPrint += "</TABLE></HTML>";
 		
 		JLabel score_text = new JLabel(toPrint);
-		GUI.colorize(score_text);
 		score_area.add(score_text);
 		
+		GUI.colorize(score_area);
 		return score_area;
 	}
 
