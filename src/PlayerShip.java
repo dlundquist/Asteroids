@@ -7,72 +7,76 @@ public class PlayerShip extends Actor {
 	private static final double MAX_SPEED = 0.03f;
 	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
-    private static final int STARTING_LIVES = 3;
-    private static final int INVUL_TIME = 180;
-    private static int NEW_LIFE_INVUL_TIMER = INVUL_TIME; // for invulnerability
-    
-    
+	private static final int STARTING_LIVES = 3;
+	private static final int INVUL_TIME = 180;
+
+
 	protected Weapon weapon;
 	protected Shield shield;
 	private int lives;
-	
-	
+	private int invulnerableFor;
+
+
 	public PlayerShip() {
-		this (0, 0, 0, 0);
+		this (new Vector(), new Vector());
 	}
 
-	public PlayerShip(float px, float py, float vx, float vy) {
-		position = new Vector(px, py);
-		velocity = new Vector(vx, vy);
-		sprite = Sprite.playerShip();
+	public PlayerShip(Vector pos, Vector vel) {
+		position = pos;
+		velocity = vel;
 		size = PLAYER_SIZE;
+		sprite = Sprite.playerShip();
 		weapon = new BasicWeapon(this);
 		shield = new Shield(this);
 		id = generateId();
 		lives = STARTING_LIVES;
+		theta = (float)Math.PI / 2;
+		invulnerableFor = INVUL_TIME;
 	}
-	
+
 	public void update() {
 		/* Update our rotation and velocity */
 		super.update();
 		weapon.update();
 		shield.update();
-		NEW_LIFE_INVUL_TIMER--;
+		invulnerableFor --;
 	}
 
 	public void handleCollision(Actor other) {
 		// Ignore things we spawned e.g. our bullets
-		if(other.parentId == id)
+		if (other.parentId == id)
 			return;
-		// Check invuln
-		if (NEW_LIFE_INVUL_TIMER > 0) 
-			return;
-		
-		// Is the other guy an Asteroid?
 		// Player is now invulnerable for 3 sec after dying
-		if ( other instanceof Asteroid || other instanceof Bullet || other instanceof Bandit) { // TODO make this the default case
-			
+		if (invulnerableFor > 0) 
+			return;
+		// Do not die when picking up power ups
+		if (other instanceof PowerUp)
+			return;
+
+		if (shield != null) {
 			// Take the shield damage
 			shield.handleCollision(other);
 			// If it is still up, we don't die
 			if(shield.isUp())
 				return;
-			ScorePanel.getScorePanel().playerHit();
-			playerDeath();
 		}
+
+		ScorePanel.getScorePanel().playerHit();
+		playerDeath();
+
 		// Play the sound effect for player death
 		if(SoundEffect.isEnabled())
-		    SoundEffect.forPlayerDeath().play();
+			SoundEffect.forPlayerDeath().play();
 	}
-	
+
 	public void incrementLives() {
 		lives ++;
 	}
-	
+
 	public void decrementLives() {
 		lives --;
 	}
-	
+
 	public int getLives() {
 		return lives;
 	}
@@ -81,53 +85,60 @@ public class PlayerShip extends Actor {
 		weapon.shoot();
 	}
 
-	public void forwardThrust() {
-		/* Get a unit vector in the direction the ship is pointed */
-		Vector thrust = new Vector(theta);
-		//Setting max speed
-		if (velocity.magnitude()>MAX_SPEED){
-			thrust.scaleBy(0);
-			velocity.incrementBy(thrust);
-		}
-		/* Scale it by our thrust increment */
-		else thrust.scaleBy(FORWARD_THRUST);
-		/* Add it to our current velocity */
-		velocity.incrementBy(thrust);
-	
-		ParticleSystem.addFireParticle(this);
-	}
-	
 	private void playerDeath(){
 		ParticleSystem.addExplosion(position);
-		regenerate();
+		OnscreenMessage.add(new OnscreenMessage("You Died!", this));
+		Actor.actors.remove(this);
 	}
-	
-	private void regenerate(){
+
+	public boolean isAlive() {
+		return Actor.actors.contains(this);
+	}
+
+	public void regenerate(){
 		position = new Vector(0,0);
 		velocity.scaleBy(0);
 		shield = new Shield(this);
 		weapon = new BasicWeapon(this);
-		NEW_LIFE_INVUL_TIMER = INVUL_TIME;
+		invulnerableFor = INVUL_TIME;
+		Actor.actors.add(this);
 	}
-	
+
+	public void forwardThrust() {
+		/* Get a unit vector in the direction the ship is pointed */
+		Vector thrust = new Vector(theta);
+
+		// Setting max speed, we need to check the direction of the thrust and the current speed
+		if (thrust.dotProduct(velocity) > 0 && velocity.magnitude() > MAX_SPEED)
+			thrust.scaleBy(0);
+		else
+			thrust.scaleBy(FORWARD_THRUST); /* Scale it by our thrust increment */
+
+		/* Add it to our current velocity */
+		velocity.incrementBy(thrust);
+
+		if (isAlive())
+			ParticleSystem.addFireParticle(this);
+	}
+
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
-		// setting max reverse speed
-		if (velocity.magnitude() >= MAX_REVERSE_SPEED){
+
+		// setting max reverse speed, we need to check the direction of the thrust and the current speed
+		if (thrust.dotProduct(velocity) < 0 && velocity.magnitude() > MAX_REVERSE_SPEED)
 			thrust.scaleBy(0);
-		} else {
-			/* Scale it by our thrust by a negative amount to slow our ship */
-			thrust.scaleBy(REVERSE_THRUST);
-		}
+		else
+			thrust.scaleBy(REVERSE_THRUST); /* Scale it by our thrust by a negative amount to slow our ship */
+
 		/* And add it to our current velocity */
 		velocity.incrementBy(thrust);
 	}
-	
+
 	public void turnLeft() {
 		theta += ROTATION_INCREMENT;
 	}
-	
+
 	public void turnRight() {
 		theta -= ROTATION_INCREMENT;	
 	}
@@ -135,7 +146,7 @@ public class PlayerShip extends Actor {
 	public void brakeShip() {
 		velocity.scaleBy(BRAKE_AMOUNT);
 	}
-	
+
 	public void warpShip(){
 		/* Would this be better as:
 		 * 2 * gen.nextFloat() - 1
@@ -150,7 +161,7 @@ public class PlayerShip extends Actor {
 		theta += Math.PI;
 	}
 
-	public boolean isAlive() {
+	public boolean moreLives() {
 		return lives > 0;
 	}
 }

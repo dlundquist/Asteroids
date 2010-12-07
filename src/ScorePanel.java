@@ -115,4 +115,8 @@ public class ScorePanel extends JPanel {
     	else 
     		return player.getLives();
     }
+
+	public int getScore() {
+		return scoreAmount;
+	}
 }

@@ -118,8 +118,12 @@ public class Bandit extends Actor {
 		}
 
 
-
-		Vector displacement = Asteroids.getPlayer().position.differenceOverEdge(position);
+		PlayerShip player = Asteroids.getPlayer();
+		// Don't circle a dead player
+		if (player.isAlive() == false)
+			return;
+		
+		Vector displacement = player.position.differenceOverEdge(position);
 		float angle = normalizeAngle((float)displacement.theta() - theta);
 
 

@@ -1,6 +1,6 @@
 public class OnscreenMessage {
 	private static final int MAX_AGE = 90;
-	private static final int FADE_AGE = 20;
+	private static final int FADE_AGE = 30;
 	static private java.util.Vector<OnscreenMessage> messages;
 	
 	static public void init() {

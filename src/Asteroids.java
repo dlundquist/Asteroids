@@ -89,7 +89,13 @@ public class Asteroids {
 	 */
 	
 	public static void gameMechanics(){
+		// Game over man!
+		if (playerShip.isAlive() == false && playerShip.moreLives() == false) {
+			OnscreenMessage.add(new OnscreenMessage("Game Over!"));
+			highScores.newScore(ScorePanel.getScorePanel().getScore());
+		}
 		asteroidTimer--;
+		
 
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
@@ -159,6 +165,6 @@ public class Asteroids {
 		if (playerShip == null)
 			return false;
 		
-		return playerShip.isAlive();
+		return playerShip.moreLives();
 	}
 }
