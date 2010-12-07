@@ -128,6 +128,7 @@ public class Asteroids {
 			Actor.actors.add(Asteroid.bossAsteroid());
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+			asteroidsLeft = 0;
 			bossSpawned = true;
 		}else if (bossSpawned){
 			if (Actor.actors.size() == 1 && highScoreSubmitted == false) {

@@ -37,7 +37,7 @@ public class ScorePanel extends JPanel {
 		// Fix issue on MacOS where score panel is huge and ScenePanel is postage stamp sized
 		// setPreferredSize(new Dimension(100, 500));
 		
-		multiplyer = new JLabel(" x"+scoreMultiplyer);
+		multiplyer = new JLabel("Multi: x"+scoreMultiplyer);
 		accurate = new JLabel("Accuracy 0%");
 		lives = new JLabel("Lives: " + getLives());
 		score = new JLabel("Score: " + scoreAmount);
@@ -101,9 +101,9 @@ public class ScorePanel extends JPanel {
 			frameCounter = 30;
 
 			score.setText("Score: " + scoreAmount);
-			lives.setText("Extra Lives:" + getLives());
+			lives.setText("Lives: " + getLives());
 			accurate.setText("Accuracy: " + decPlaces.format(getAccuracy()) + "%");
-			multiplyer.setText(" x"+scoreMultiplyer);
+			multiplyer.setText("Multi: x"+scoreMultiplyer);
 			asteroidNumber.setText("Asteroids Left: "+Asteroids.getAsteroidsLeft());
 		}
 	}
