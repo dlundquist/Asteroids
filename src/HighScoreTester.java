@@ -8,11 +8,13 @@ public class HighScoreTester {
 		hs.printScores();
 		
 		int score = 9999999;
-
 		hs.newScore(score);
 		
 		hs.printScores();
-		
+
+		score = 999999;
+		hs.newScore(score);
+
 		
 		hs.displayScoreDialog(); // Show high score list
 		
