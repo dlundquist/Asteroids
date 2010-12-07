@@ -55,12 +55,10 @@ public class HighScores {
 	}
 	
 	public boolean isNewHighScore(int score) {
-		for(int i = score_list.size() - 1; i >= 0; i--) {
-			if (score < score_list.get(i).score) {
-				return false;
-			}
-		}
-
+		HighScore lowestHighScores = score_list.get(score_list.size() - 1);
+		
+		if (score < lowestHighScores.score)
+			return false;
 		return true;
 	}
 
