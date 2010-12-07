@@ -251,11 +251,11 @@ public class ScenePanel extends GLCanvas {
 					(float)GUI.titleColor().getGreen() / 256,
 					(float)GUI.titleColor().getBlue() / 256,
 					msg.getAlpha());
-			gl.glTranslatef(msg.getPosition().x(), msg.getPosition().y(), -1.5f);
+			gl.glTranslatef(msg.getPosition().x(), msg.getPosition().y(), -1.0f);
 
 			// center text
 			float width = 2 * glut.glutBitmapLength(GLUT.BITMAP_HELVETICA_18, msg.getText()) / (float)VIEWPORT_WIDTH;
-			gl.glRasterPos2f(width / -2, 0.1f);
+			gl.glRasterPos2f(width / -2, 0.0f);
 
 			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, msg.getText());
 
