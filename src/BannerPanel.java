@@ -5,7 +5,6 @@ public class BannerPanel extends JPanel {
 	
 	public BannerPanel() {
 		JLabel l = new JLabel("Asteroids");
-		GUI.colorize(l);
 		add(l);
 		GUI.colorize(this);
 	}
