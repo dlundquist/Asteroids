@@ -93,16 +93,6 @@ public class Asteroids {
 		 */
 		if (asteroidTimer == 0 && asteroidsLeft > 0){
 			spawnEnemy();
-			/*
-			 * 
-			 * (asteroidsLeft % ASTEROIDS_PER_POWERUP == 0)
-			//Adding TripleShotWeapon to a random location every 5 asteroids
-			for (int i = 0; i <= (ASTEROIDS_IN_GAME/ASTEROIDS_PER_POWERUP) ; i++){
-				if (ASTEROIDS_IN_GAME - i*ASTEROIDS_PER_POWERUP == asteroidsLeft){
-					PowerUp.spawn();
-				}
-			}
-			*/
 			asteroidsLeft--;
 			timeBetween -= TIMER_REDUCED_BY;
 			asteroidTimer = timeBetween;
@@ -120,7 +110,7 @@ public class Asteroids {
 			PowerUp.spawn();
 			break;
 		default:
-			Actor.actors.add(new Asteroid());
+			Asteroid.spawn();
 			
 		}
 	}
