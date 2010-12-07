@@ -23,11 +23,25 @@ public class Shield {
 		// TODO calculate kinetic energy of our owner against the other
 		strength -= 30000.0f * other.getKineticEnergy();
 		
-		Vector difference = other.getPosition().minus(owner.getPosition());
+		// plasma effect halfway between the owner and other
+		Vector difference = owner.getPosition().minus(other.getPosition());
 		difference.scaleBy(0.5f);
-		difference.incrementBy(owner.getPosition());
+		difference.incrementBy(other.getPosition());
 		
 		ParticleSystem.addPlasmaParticle(difference);
+
+		
+		Vector bump = owner.getPosition().differenceOverEdge(other.getPosition());
+		bump.scaleBy(0.02f);
+		owner.getPosition().incrementBy(bump);
+		
+		
+		// Check if we are headed into the object
+		if (owner.getVelocity().dotProduct(bump) < 0) {
+			owner.getVelocity().incrementBy(bump);
+		}
+
+		
 		//System.err.println("Shield Hit Captain! Down to " + getIntegrity() + "% (" + strength + ")");
 		// Don't put a minimum bound on shield
 	}
