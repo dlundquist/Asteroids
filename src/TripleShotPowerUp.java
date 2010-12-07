@@ -44,7 +44,7 @@ public class TripleShotPowerUp extends PowerUp{
 	@Override
 	void applyTo(Actor actor) {
 		// Shouldnt get here
-		System.out.println("Unhandled PowerUp Case for TrippleShotPowerUp");
+		System.out.println("Unhandled PowerUp Case for TripleShotPowerUp");
 	}
 
 	@Override

@@ -52,6 +52,8 @@ abstract public class PowerUp extends Actor {
 			applyTo((Asteroid) other);
 		} else if (other instanceof Bullet) {
 			applyTo((Bullet) other);
+		} else if (other instanceof PowerUp) {
+			return; // We don't care if power ups overlap
 		} else /* Actor */{
 			System.err.println("DEBUG:Poorly Handled powerup applied to Actor class");
 			applyTo(other);
