@@ -25,7 +25,7 @@ public class BasicWeapon extends Weapon{
 	}
 	// FIXME
 	public int getShootDelay(){
-		int delay = Asteroids.getAsteroidsLeft()/4;
+		int delay = Asteroids.getAsteroidsLeft()/6;
 		if (delay <= 10)
 			return 10;
 		else

@@ -5,7 +5,7 @@ import java.util.Random;
  *
  */
 public class Asteroids {
-	private final static int TIMER_REDUCED_BY = 4;
+	private final static int TIMER_REDUCED_BY = 2;
 
 	private static GUI gui;
 	private static MainMenu menu;
@@ -25,7 +25,7 @@ public class Asteroids {
 	 */
 	public static void main(String[] args) {
 		// Load our sounds and enable them.
-		SoundEffect.init(true);
+		SoundEffect.init(false);
 		ParticleSystem.init(true);
 		OnscreenMessage.init();
 		highScores = new HighScores();
@@ -101,6 +101,9 @@ public class Asteroids {
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
 		 */
+		if (asteroidsLeft % 3 == 0 && asteroidTimer == 0){
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+		}
 		if (asteroidTimer == 0 && asteroidsLeft > 0){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
 			spawnEnemy();
@@ -116,18 +119,15 @@ public class Asteroids {
 	
 	// Spawns an enemy
 	private static void spawnEnemy() {
-		switch(Actor.gen.nextInt(20)) {
+		switch(Actor.gen.nextInt(2)) {
 		case(1):
 			Bandit.spawn();
 			OnscreenMessage.add(new OnscreenMessage("Bandit!"));
 			// Spawn a power up too
-		case(2):
-			OnscreenMessage.add(new OnscreenMessage("Power up!"));
-			PowerUp.spawn();
-			break;
 		default:
 			OnscreenMessage.add(new OnscreenMessage("Asteroid!"));
-			Asteroid.newLargeAsteroid();
+			Actor.actors.add(Asteroid.newLargeAsteroid());
+			asteroidsLeft--;
 		}
 	}
 
