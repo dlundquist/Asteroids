@@ -1,9 +1,9 @@
 # Sprite manifest format
 # Filename	Type
 background.jpg	0
-asteroid1.png	1
-asteroid2.png	1
-asteroid3.png	1
+asteroid1.png	9
+asteroid2.png	10
+asteroid3.png	11
 ship.png	2
 bullet.png	3
 ship2.png	4

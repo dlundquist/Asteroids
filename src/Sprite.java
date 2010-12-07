@@ -16,7 +16,7 @@ import java.nio.ByteOrder;
  */
 public class Sprite {
 	public static final int BACKGROUND_TYPE = 0;
-	public static final int ASTEROID_TYPE = 1;
+	//public static final int ASTEROID_TYPE = 1; /* Depcrecated */
 	public static final int PLAYER_SHIP_TYPE = 2;
 	public static final int BULLET_TYPE = 3;
 	public static final int POWER_UP_TYPE = 4;
@@ -24,6 +24,9 @@ public class Sprite {
 	public static final int LIFE_POWER_UP_TYPE = 6;
 	public static final int SHIELD_TYPE = 7;
 	public static final int BANDIT_TYPE = 8;
+	public static final int SMALL_ASTEROID_TYPE = 9;
+	public static final int MEDIUM_ASTEROID_TYPE = 10;
+	public static final int LARGE_ASTEROID_TYPE = 11;
 	private static final String TEXTURE_DIR = "data";
 	private static final String MANIFEST_FILE = "sprite.manifest";
 
@@ -114,9 +117,20 @@ public class Sprite {
 	public static Sprite background() {
 		return getRandomSprite(BACKGROUND_TYPE);
 	}
+	
+	public static Sprite smallAsteroid() {
+		return getRandomSprite(SMALL_ASTEROID_TYPE);
 
-	public static Sprite asteroid() {
-		return getRandomSprite(ASTEROID_TYPE);
+	}
+
+	public static Sprite mediumAsteroid() {
+		return getRandomSprite(MEDIUM_ASTEROID_TYPE);
+
+	}
+
+	public static Sprite largeAsteroid() {
+		return getRandomSprite(LARGE_ASTEROID_TYPE);
+
 	}
 
 	public static Sprite playerShip() {
