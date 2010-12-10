@@ -10,14 +10,15 @@ public class Asteroids {
 	private static PlayerShip playerShip;
 	private static HighScores highScores;
 	private static boolean paused;
-	private static final int ASTEROIDS_IN_GAME = 100;
+	private static final int ASTEROIDS_IN_GAME = 60;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int timeBetween = 400;
 	private static int asteroidTimer = timeBetween;
 	private static boolean gameOver = false;
 	private static boolean highScoreSubmitted = false; 
 	private static boolean bossSpawned = false;
-
+	private static int CHANCE_OF_TRIPLE = 100;
+	private static int CHANCE_OF_EXTRA_LIFE = 20;
 
 	/**
 	 * Our main function
@@ -114,7 +115,12 @@ public class Asteroids {
 		 * subtract 1 from the asteroids left total
 		 */
 		if (asteroidsLeft % 3 == 0 && asteroidTimer == 1 ){
+			if (Actor.gen.nextInt(99)+1<=CHANCE_OF_TRIPLE)
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+			else if (Actor.gen.nextInt(99)+1<=CHANCE_OF_EXTRA_LIFE){
+			PowerUp.spawn();
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+			}
 		}
 		if (asteroidTimer == 1 && asteroidsLeft > 0){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
@@ -122,6 +128,13 @@ public class Asteroids {
 			asteroidsLeft--;
 			timeBetween -= TIMER_REDUCED_BY;
 			asteroidTimer = timeBetween;
+		}
+		if (asteroidTimer == 60 && asteroidsLeft <= 50){
+			Actor.actors.add(Asteroid.newLargeAsteroid());
+			spawnEnemy();
+			asteroidsLeft--;
+			timeBetween -= TIMER_REDUCED_BY;
+			
 		}
 		//Make a boss asteroid at the end
 		if (asteroidsLeft <= 0 && bossSpawned == false){
