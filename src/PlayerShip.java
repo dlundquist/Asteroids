@@ -28,6 +28,8 @@ public class PlayerShip extends Actor {
 		sprite = Sprite.playerShip();
 		weapon = new BasicWeapon(this);
 		shield = new Shield(this);
+		Shield.setShieldStrength(.5f);
+		Shield.setRegenRate(0.0f);
 		id = generateId();
 		lives = STARTING_LIVES;
 		theta = (float)Math.PI / 2;
@@ -108,6 +110,8 @@ public class PlayerShip extends Actor {
 		position = new Vector(0,0);
 		velocity.scaleBy(0);
 		shield = new Shield(this);
+		Shield.setShieldStrength(0.5f);
+		Shield.setRegenRate(0.0f);
 		weapon = new BasicWeapon(this);
 		invulnerableFor = INVUL_TIME;
 		Actor.actors.add(this);
