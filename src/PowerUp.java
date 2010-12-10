@@ -10,16 +10,19 @@
 abstract public class PowerUp extends Actor {
 	private static final long serialVersionUID = -6702121556971776417L;
 	private static final float POWERUP_SIZE = 0.1f;
+	private static int TRIPLE_CHANCE = 40;
+	private static int EXTRALIFE_CHANCE = 5;
+	private static int SHIELD_CHANCE = 20;
 
 	PowerUp(Vector pos){
 		position = pos;
 		init();
 	}
-	
+
 	PowerUp(float x, float y){
 		this(new Vector(x, y));
 	}
-	
+
 	private void init() {
 		size = PowerUp.POWERUP_SIZE;
 		theta = 0;
@@ -39,7 +42,7 @@ abstract public class PowerUp extends Actor {
 	// Fall back
 	abstract void applyTo(Actor actor);
 
-	
+
 	// This method figures out which method to call in the
 	// derived classes.
 	@Override
@@ -61,10 +64,18 @@ abstract public class PowerUp extends Actor {
 		if(SoundEffect.isEnabled())
 			SoundEffect.forPowerUp().play();
 	}
-
-	public static void spawn() {
-			Actor.actors.add(new LifePowerUp(randomPosition()));	
-		}	
+	public static void spawnWeaponPowerUp(){
+		if (Actor.gen.nextInt(99)+1<=TRIPLE_CHANCE)
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 	}
+
+	public static void spawnLifePowerUp() {
+		if (Actor.gen.nextInt(99)+1<=EXTRALIFE_CHANCE){
+			Actor.actors.add(new LifePowerUp(randomPosition()));
+		}else if(Actor.gen.nextInt(99)+1<=SHIELD_CHANCE){
+			Actor.actors.add(new ShieldRegen(randomPosition()));
+		}
+	}
+}
 
 
