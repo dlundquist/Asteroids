@@ -2,8 +2,8 @@
 public class Shield {
 	public static final float SHIELD_SIZE = 0.15f;
 	private static final float MAX_CAPACITY = 1.0f;
-	private static final float REGEN_RATE = 0.0001f;
-	private float strength; // The current strength of the shield
+	private static float regenRate = 0.0002f;
+	private static float strength; // The current strength of the shield
 	private Sprite sprite;
 	private Actor owner;
 	
@@ -16,7 +16,7 @@ public class Shield {
 	public void update(){
 		// Don't regenerate if its full
 		if(strength <= MAX_CAPACITY)
-			strength += REGEN_RATE;
+			strength += regenRate;
 	}
 	
 	public void handleCollision(Actor other){
@@ -44,6 +44,12 @@ public class Shield {
 		
 		//System.err.println("Shield Hit Captain! Down to " + getIntegrity() + "% (" + strength + ")");
 		// Don't put a minimum bound on shield
+	}
+	public static void setShieldStrength(float shield){
+		strength = shield;
+	}
+	public static void setRegenRate(float regen){
+		regenRate = regen;
 	}
 	
 	public boolean isDown() {
