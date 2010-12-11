@@ -55,7 +55,7 @@ public class TripleShotWeapon extends Weapon{
 	}
 	public int getTripleDelay(){
 		int delay = Asteroids.getAsteroidsLeft()/3;
-		if (delay <= 10) return 10;
+		if (delay <= 20) return 20;
 		else return delay;
 	}
 }
