@@ -3,7 +3,7 @@
  *
  */
 public class Asteroids {
-	private final static int TIMER_REDUCED_BY = 2;
+	private final static int TIMER_REDUCED_BY = 3;
 
 	private static GUI gui;
 	private static MainMenu menu;
@@ -11,8 +11,9 @@ public class Asteroids {
 	private static HighScores highScores;
 	private static boolean paused;
 	private static final int ASTEROIDS_IN_GAME = 100;
+	private static final int DOUBLE_TIMER = 80;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
-	private static int timeBetween = 400;
+	private static int timeBetween = ASTEROIDS_IN_GAME*3;
 	private static int asteroidTimer = timeBetween;
 	private static boolean gameOver = false;
 	private static boolean highScoreSubmitted = false; 
@@ -43,7 +44,7 @@ public class Asteroids {
 		gameOver = false;
 		highScoreSubmitted = false;
 		bossSpawned = false;
-		
+
 		Actor.actors.clear();
 		ScorePanel.getScorePanel().reset();
 		/* 
@@ -57,7 +58,7 @@ public class Asteroids {
 		playerShip = new PlayerShip();
 		Actor.actors.add(playerShip);
 	}
-	
+
 	public static int getAsteroidsLeft(){
 		return asteroidsLeft;
 	}
@@ -78,14 +79,14 @@ public class Asteroids {
 		if (paused)
 			return;
 		gameMechanics();
-		
+
 		Actor.collisionDetection();
-		
+
 		Actor.updateActors();
 
 		if (ParticleSystem.enabled)
 			ParticleSystem.updateParticles();
-		
+
 		OnscreenMessage.updateMessages();
 
 		ScorePanel.getScorePanel().updateScorePanel();
@@ -95,7 +96,7 @@ public class Asteroids {
 	 * This is called by ScenePanel at the end of the game
 	 * any cleanup code should go here
 	 */
-	
+
 	public static void gameMechanics(){
 		// Game over man!
 		if (playerShip.isAlive() == false && playerShip.moreLives() == false) {
@@ -124,7 +125,7 @@ public class Asteroids {
 			timeBetween -= TIMER_REDUCED_BY;
 			asteroidTimer = timeBetween;
 		}
-		if (asteroidTimer == timeBetween/2 && asteroidsLeft <= 50){
+		if (asteroidTimer == timeBetween/2 && asteroidsLeft <= DOUBLE_TIMER){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
 			if(asteroidsLeft>0)asteroidsLeft--;
 		}
@@ -143,20 +144,21 @@ public class Asteroids {
 				init();
 			}
 		}
-		
+
 	}
-	
+
 	// Spawns an enemy
 	private static void spawnEnemy() {
-		switch(Actor.gen.nextInt(3)) {
+		switch(Actor.gen.nextInt(4)) {
 		case(1):
 			Bandit.spawn();
-			OnscreenMessage.add(new OnscreenMessage("Bandit!"));
-			// Spawn a power up too
+		OnscreenMessage.add(new OnscreenMessage("Bandit!"));
 		default:
 			//OnscreenMessage.add(new OnscreenMessage("Asteroid!"));
-			if (asteroidsLeft >=2)Actor.actors.add(Asteroid.newLargeAsteroid());
-			asteroidsLeft--;
+			if (asteroidsLeft >=2){
+				Actor.actors.add(Asteroid.newLargeAsteroid());
+				if (asteroidsLeft >=1)asteroidsLeft--;
+			}
 		}
 	}
 
@@ -179,16 +181,16 @@ public class Asteroids {
 		// Don't open the menu multiple times
 		if (menu != null)
 			return;
-		
+
 		paused = true;
 		gui.setVisible(false);
 		menu = new MainMenu(); 
 	}
-	
+
 	public static void showGame() {
 		if (gameOver == true)
 			init();
-		
+
 		menu.dispose();
 		menu = null;
 		gui.setVisible(true);
@@ -201,7 +203,7 @@ public class Asteroids {
 	public static boolean isStarted() {
 		if (playerShip == null)
 			return false;
-		
+
 		return playerShip.moreLives();
 	}
 }
