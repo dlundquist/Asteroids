@@ -112,6 +112,7 @@ public class PlayerShip extends Actor {
 		shield = new Shield(this);
 		Shield.setShieldStrength(0.5f);
 		Shield.setRegenRate(0.0f);
+		DoubleFireRate.setDoubleShotsLeft(0);
 		weapon = new BasicWeapon(this);
 		invulnerableFor = INVUL_TIME;
 		Actor.actors.add(this);

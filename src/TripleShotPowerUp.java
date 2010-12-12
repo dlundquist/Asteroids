@@ -49,7 +49,7 @@ public class TripleShotPowerUp extends PowerUp{
 
 	@Override
 	void applyTo(Bandit bandit) {
-		bandit.weapon = new TripleShotWeapon(bandit);
+		bandit.weapon = new BanditTripleShot(bandit);
 		delete();
 	}
 

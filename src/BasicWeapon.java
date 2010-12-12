@@ -19,13 +19,19 @@ public class BasicWeapon extends Weapon{
 			SoundEffect.forBulletShot().play();
 
 		Actor.actors.add(bullet);
-
+		DoubleFireRate.setDoubleShotsLeft((DoubleFireRate.getDoubleShotsLeft()-1));
 		/* reset our shoot delay */
 		shootDelay = getShootDelay();
+		System.out.println(shootDelay);
 	}
 	// FIXME
 	public int getShootDelay(){
-		int delay = Asteroids.getAsteroidsLeft()/6;
+		if (DoubleFireRate.isDoubleFireRate()){
+			int doubleDelay = 10*Asteroids.getAsteroidsLeft()/90;
+			if (doubleDelay <=5) return 5;
+			else return doubleDelay;
+		}
+		int delay = 10*Asteroids.getAsteroidsLeft()/45;
 		if (delay <= 10)
 			return 10;
 		else

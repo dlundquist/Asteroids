@@ -43,13 +43,14 @@ public class Bandit extends Actor {
 		sprite = Sprite.bandit();
 		size = 0.1f;
 		id = generateId();
-		weapon = new BasicWeapon(this);
+		weapon = new BanditBasicWeapon(this);
+		DoubleFireRate.setBanditDoubleShotsLeft(0);
 		state = State.ATTACKING;
 	}
 
 	public void update() {
 		doAI();
-		weapon.update();
+		weapon.banditUpdate();
 		super.update();
 	}
 
@@ -87,7 +88,7 @@ public class Bandit extends Actor {
 	private void shoot(float angle) {
 		// If we have triple shot, engage targets at a wider arc
 		float arc = FIRING_ARC;
-		if (weapon instanceof TripleShotWeapon)
+		if (weapon instanceof BanditTripleShot)
 			arc *= 2;
 			
 		if (angle < FIRING_ARC && angle > - FIRING_ARC) {

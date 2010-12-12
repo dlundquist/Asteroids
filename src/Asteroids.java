@@ -3,7 +3,7 @@
  *
  */
 public class Asteroids {
-	private final static int TIMER_REDUCED_BY = 3;
+	private final static int TIMER_REDUCED_BY = 4;
 
 	private static GUI gui;
 	private static MainMenu menu;
@@ -11,9 +11,9 @@ public class Asteroids {
 	private static HighScores highScores;
 	private static boolean paused;
 	private static final int ASTEROIDS_IN_GAME = 100;
-	private static final int DOUBLE_TIMER = 80;
+	private static final int DOUBLE_TIMER = ASTEROIDS_IN_GAME-5;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
-	private static int timeBetween = ASTEROIDS_IN_GAME*3;
+	private static int timeBetween = 10*ASTEROIDS_IN_GAME*35;
 	private static int asteroidTimer = timeBetween;
 	private static boolean gameOver = false;
 	private static boolean highScoreSubmitted = false; 
@@ -125,6 +125,7 @@ public class Asteroids {
 			timeBetween -= TIMER_REDUCED_BY;
 			asteroidTimer = timeBetween;
 		}
+		//Here a large asteroid is released half way through the timer
 		if (asteroidTimer == timeBetween/2 && asteroidsLeft <= DOUBLE_TIMER){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
 			if(asteroidsLeft>0)asteroidsLeft--;
@@ -132,8 +133,10 @@ public class Asteroids {
 		//Make a boss asteroid at the end
 		if (asteroidsLeft <= 0 && bossSpawned == false){
 			Actor.actors.add(Asteroid.bossAsteroid());
-			PowerUp.spawnLifePowerUp();
-			PowerUp.spawnWeaponPowerUp();
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+			Actor.actors.add(new DoubleFireRatePowerUp(Actor.randomPosition()));
+			Actor.actors.add(new LifePowerUp(Actor.randomPosition()));
+			Actor.actors.add(new ShieldRegen(Actor.randomPosition()));
 			asteroidsLeft = 0;
 			bossSpawned = true;
 		}else if (bossSpawned){
@@ -149,18 +152,16 @@ public class Asteroids {
 
 	// Spawns an enemy
 	private static void spawnEnemy() {
-		switch(Actor.gen.nextInt(4)) {
-		case(1):
+		switch(Actor.gen.nextInt(9)) {
+		case(0):
 			Bandit.spawn();
+		case(1):
+			asteroidTimer -= timeBetween/2;
 		OnscreenMessage.add(new OnscreenMessage("Bandit!"));
 		default:
-			//OnscreenMessage.add(new OnscreenMessage("Asteroid!"));
-			if (asteroidsLeft >=2){
-				Actor.actors.add(Asteroid.newLargeAsteroid());
-				if (asteroidsLeft >=1)asteroidsLeft--;
 			}
 		}
-	}
+	
 
 	public static void dispose() {
 

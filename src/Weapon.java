@@ -3,7 +3,8 @@
  */
 public abstract class Weapon {
 	protected Actor owner;
-	protected int shootDelay;
+	protected static int shootDelay;
+	protected static int banditShootDelay;
 
 	Weapon(Actor owner) {
 		this.owner = owner;
@@ -16,5 +17,15 @@ public abstract class Weapon {
 		// decrement our shoot delay
 		if (shootDelay > 0)
 			shootDelay--;
+	}
+	void banditUpdate(){
+		if (banditShootDelay > 0)
+			banditShootDelay--;
+	}
+	public int getBanditShootDelay(){
+		return banditShootDelay;
+	}
+	public int getShootDelay(){
+		return shootDelay;
 	}
 }

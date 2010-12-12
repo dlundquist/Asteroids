@@ -27,6 +27,7 @@ public class Sprite {
 	public static final int SMALL_ASTEROID_TYPE = 9;
 	public static final int MEDIUM_ASTEROID_TYPE = 10;
 	public static final int LARGE_ASTEROID_TYPE = 11;
+	public static final int DOUBLE_FIRE_RATE_TYPE = 12;
 	private static final String TEXTURE_DIR = "data";
 	private static final String MANIFEST_FILE = "sprite.manifest";
 
@@ -152,6 +153,9 @@ public class Sprite {
 	public static Sprite lifePowerUp() {
 		return getRandomSprite(LIFE_POWER_UP_TYPE);
 	}
+	public static Sprite doubleFireRate(){
+		return getRandomSprite(DOUBLE_FIRE_RATE_TYPE);
+	}
 
 	public static Sprite shield() {
 		return getRandomSprite(SHIELD_TYPE);
@@ -169,7 +173,6 @@ public class Sprite {
 			if (k.type == type)
 				list.add(k);
 		}
-
 		return list;
 	}
 
