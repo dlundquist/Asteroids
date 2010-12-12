@@ -26,6 +26,8 @@ public class InputHandler implements KeyListener {
 		KeyEvent.VK_S,
 		KeyEvent.VK_F11,
 		KeyEvent.VK_BACK_SLASH,
+		KeyEvent.VK_D,
+		KeyEvent.VK_A,
 	};
 	/**
 	 * This is a mask to indicate if each key is disabled when the game is paused
@@ -44,6 +46,8 @@ public class InputHandler implements KeyListener {
 		true, //KeyEvent.VK_S,
 		true, //KeyEvent.VK_F11,
 		true, //KeyEvent.VK_BLACK_SLASH,
+		true, //KeyEvent.VK_D,
+		true, //KeyEvent.VK_A,
 	};
 	/**
 	 * This is a mask to indicate if each key is disabled when the game is paused
@@ -62,6 +66,8 @@ public class InputHandler implements KeyListener {
 		true, //KeyEvent.VK_S,
 		true, //KeyEvent.VK_F11,
 		true, //KeyEvent.VK_BLACK_SLASH,
+		true, //KeyEvent.VK_D,
+		true, //KeyEvent.VK_A,
 	};
 
 
@@ -174,6 +180,12 @@ public class InputHandler implements KeyListener {
 			case(KeyEvent.VK_P): // Fall through
 			case(KeyEvent.VK_PAUSE):
 				Asteroids.togglePause();
+				break;
+			case(KeyEvent.VK_D): //Warp ship
+				player.boostShip();
+				break;
+			case(KeyEvent.VK_A): //Warp ship
+				player.superBrakeShip();
 				break;
 			case(KeyEvent.VK_W): //Warp ship
 				player.warpShip();

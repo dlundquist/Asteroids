@@ -7,6 +7,8 @@ public class PlayerShip extends Actor {
 	private static final double MAX_SPEED = 0.03f;
 	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
+	private static final double SUPER_BRAKE_AMOUNT = .25;
+	private static final double BOOST_AMOUNT = 2.5;
 	private static final int STARTING_LIVES = 3;
 	private static final int INVUL_TIME = 180;
 
@@ -159,6 +161,12 @@ public class PlayerShip extends Actor {
 
 	public void brakeShip() {
 		velocity.scaleBy(BRAKE_AMOUNT);
+	}
+	public void superBrakeShip() {
+		velocity.scaleBy(SUPER_BRAKE_AMOUNT);
+	}
+	public void boostShip () {
+		velocity.scaleBy(BOOST_AMOUNT);
 	}
 
 	public void warpShip(){
