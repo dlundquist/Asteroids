@@ -4,6 +4,7 @@ import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.gl2.GLUT;
 
 import java.awt.Dimension;
+
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
@@ -18,16 +19,16 @@ public class ScenePanel extends GLCanvas {
 	private static final int VIEWPORT_HEIGHT = 500;
 	private FPSAnimator animator;
 	private GLU glu;
-	private InputHandler input;
+	private KeyboardInput input = new KeyboardInput();
 
 	public ScenePanel() {
-		input = new InputHandler();
-
+		
 		setPreferredSize(new Dimension(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
 
 		addGLEventListener(new GLEventHandler(this));
 		// Register our keyboard listener
 		addKeyListener(input);
+		
 
 		glu = new GLU();
 		animator = new FPSAnimator(this, 60); // 60 fps
@@ -72,8 +73,8 @@ public class ScenePanel extends GLCanvas {
 			/* Only update if the canvas is in focus */
 			if (canvas.hasFocus() == false)
 				return;
-
-			input.update();
+			
+			Input.update();
 
 			Asteroids.update();
 

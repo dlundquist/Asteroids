@@ -1,3 +1,5 @@
+import java.awt.event.KeyEvent;
+
 public class PlayerShip extends Actor {
 	private static final long serialVersionUID = -5348807415668521319L;
 	private static final float PLAYER_SIZE = 0.1f;
@@ -8,9 +10,10 @@ public class PlayerShip extends Actor {
 	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
 	private static final double SUPER_BRAKE_AMOUNT = .25;
-	private static final double BOOST_AMOUNT = 2.5;
+	private static final double BOOST_AMOUNT = 2;
 	private static final int STARTING_LIVES = 3;
 	private static final int INVUL_TIME = 180;
+	public static boolean isAlive;
 
 
 	protected Weapon weapon;
@@ -36,6 +39,7 @@ public class PlayerShip extends Actor {
 		lives = STARTING_LIVES;
 		theta = (float)Math.PI / 2;
 		invulnerableFor = INVUL_TIME;
+		isAlive = true;
 	}
 
 	public void update() {
@@ -93,14 +97,14 @@ public class PlayerShip extends Actor {
 		ParticleSystem.addExplosion(position);
 		OnscreenMessage.add(new OnscreenMessage("You Died!", this));
 		Actor.actors.remove(this);
-		Asteroid.setAsteroidsDestroyed(0);
-
+		Asteroid.setAsteroidsDestroyed(0);// reset multiplyer
+		isAlive = false;
 		if(SoundEffect.isEnabled())
 			SoundEffect.forPlayerDeath().play();
 	}
 
 	public boolean isAlive() {
-		return Actor.actors.contains(this);
+		return isAlive = Actor.actors.contains(this);
 	}
 
 	public void regenerate(){
@@ -108,7 +112,7 @@ public class PlayerShip extends Actor {
 			OnscreenMessage.add(new OnscreenMessage("Game Over!", new Vector(0, 0.5f)));
 			return;
 		}
-		
+
 		position = new Vector(0,0);
 		velocity.scaleBy(0);
 		shield = new Shield(this);
@@ -118,6 +122,7 @@ public class PlayerShip extends Actor {
 		weapon = new BasicWeapon(this);
 		invulnerableFor = INVUL_TIME;
 		Actor.actors.add(this);
+		isAlive = true;
 	}
 
 	public void forwardThrust() {
