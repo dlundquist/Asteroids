@@ -5,7 +5,13 @@ public class BasicWeapon extends Weapon{
 	BasicWeapon(Actor owner) {
 		super(owner);
 	}
-
+	void shootOnce(){
+		Bullet bullet = new Bullet(owner);
+		if(SoundEffect.isEnabled())
+			SoundEffect.forBulletShot().play();
+		Weapon.setShootDelay(10+ Asteroids.getLevelNumber()*3);
+		Actor.actors.add(bullet);
+	}
 	@Override
 	void shoot() {
 		/* Limit rate of fire */
@@ -19,23 +25,9 @@ public class BasicWeapon extends Weapon{
 			SoundEffect.forBulletShot().play();
 
 		Actor.actors.add(bullet);
-		DoubleFireRate.setDoubleShotsLeft((DoubleFireRate.getDoubleShotsLeft()-1));
 		/* reset our shoot delay */
-		shootDelay = getShootDelay();
-		System.out.println(shootDelay);
+		shootDelay = 10 + Asteroids.getLevelNumber()*3;
+		
 	}
-	// FIXME
-	public int getShootDelay(){
-		if (DoubleFireRate.isDoubleFireRate()){
-			int doubleDelay = 10*Asteroids.getAsteroidsLeft()/90;
-			if (doubleDelay <=5) return 5;
-			else return doubleDelay;
-		}
-		int delay = 10*Asteroids.getAsteroidsLeft()/45;
-		if (delay <= 10)
-			return 10;
-		else
-			return delay;
-	}
-
+	
 }

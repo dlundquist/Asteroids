@@ -8,9 +8,9 @@ public class Asteroid extends Actor  {
 	public static final float BOSS_SIZE = (float) Math.pow(Math.pow(3*LARGE_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
 	private static final int INVOLNERABLE_TO_ASTEROIDS_FOR = 10;
 	private static final float DEBRIS_ANGLE = (float)Math.PI / 1.5f;
-	private static final int BOSS_HP = 30;
-	private static final int LARGE_HP = 4;
-	private static final int MEDIUM_HP = 2;
+	private static final int BOSS_HP = 60;
+	private static final int LARGE_HP = 9;
+	private static final int MEDIUM_HP = 3;
 	private static final int SMALL_HP = 1;
 
 	private static boolean asteroidCollisionEnabled;

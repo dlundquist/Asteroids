@@ -42,6 +42,9 @@ public class ShieldRegen extends PowerUp {
 
 	@Override
 	void applyTo(Bandit bandit) {
+		BanditShield.setShieldStrength(2.0f);
+		BanditShield.setRegenRate(0.0003f);
+		
 		delete();
 	}
 

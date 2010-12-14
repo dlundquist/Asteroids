@@ -1,4 +1,5 @@
-
+//DEPRECIATED
+//TODO: delete this 
 public abstract class DoubleFireRate {
 	public static int doubleShotsLeft;
 	public static int banditDoubleShots;

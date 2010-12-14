@@ -28,7 +28,6 @@ public class TripleShotWeapon extends Weapon{
 		/* Loop from -1 to 1 so we can shoot at angles to both sides of forward */
 		for(int i = -1; i < 2; i++){
 			Actor.actors.add(new Bullet(owner, i * .2f).setSize(TRIPLE_BULLET_SIZE));
-			DoubleFireRate.setDoubleShotsLeft(DoubleFireRate.getDoubleShotsLeft()-1);
 		}
 		/* Expanded form of the Loop above
 		Bullet bullet1 = new Bullet(owner, -1.0f);
@@ -56,13 +55,15 @@ public class TripleShotWeapon extends Weapon{
 		return shotsLeft;
 	}
 	public int getTripleDelay(){
-		if (DoubleFireRate.isDoubleFireRate()){
-			int doubleDelay = 10*Asteroids.getAsteroidsLeft()/45;
-			if (doubleDelay <=10) return 10;
-			else return doubleDelay;
+		 return 10+ Asteroids.getLevelNumber()*3;
+	}
+
+	@Override
+	void shootOnce() {
+		for(int i = -1; i < 2; i++){
+			Actor.actors.add(new Bullet(owner, i * .2f).setSize(TRIPLE_BULLET_SIZE));
 		}
-		int delay = 10*Asteroids.getAsteroidsLeft()/22;
-		if (delay <= 20) return 20;
-		else return delay;
+		if(SoundEffect.isEnabled())
+			SoundEffect.forBulletShot().play();
 	}
 }

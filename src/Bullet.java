@@ -8,7 +8,7 @@ public class Bullet extends Actor {
 	private static final float BULLET_VELOCTIY = 0.035f;
 	private static final float BULLET_SIZE = 0.05f;
 	private static final float BULLET_SPIN = 0.05f;
-	private static final int BULLET_LIFETIME = 60; // 1 second
+	private static final int BULLET_LIFETIME = 40; 
 	private static final float BULLET_DENSITY = 90;
 
 	public Bullet(Actor ship) {

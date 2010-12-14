@@ -11,7 +11,6 @@ abstract public class PowerUp extends Actor {
 	private static final long serialVersionUID = -6702121556971776417L;
 	private static final float POWERUP_SIZE = 0.1f;
 	private static int TRIPLE_CHANCE = 40;
-	private static int DOUBLE_CHANCE = 20;
 	private static int EXTRALIFE_CHANCE =10;
 	private static int SHIELD_CHANCE = 40;
 
@@ -68,9 +67,6 @@ abstract public class PowerUp extends Actor {
 	public static void spawnWeaponPowerUp(){
 		if (Actor.gen.nextInt(99)+1<=TRIPLE_CHANCE){
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
-		}
-		if (Actor.gen.nextInt(99)+1<=DOUBLE_CHANCE){
-			Actor.actors.add(new DoubleFireRatePowerUp(Actor.randomPosition()));
 		}
 	}
 

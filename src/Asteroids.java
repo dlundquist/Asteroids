@@ -1,20 +1,18 @@
+
 /**
  * This is the main game logic
  *
  */
 public class Asteroids {
-	private final static int TIMER_REDUCED_BY = 4;
-
 	private static GUI gui;
 	private static MainMenu menu;
 	private static PlayerShip playerShip;
 	private static HighScores highScores;
 	private static boolean paused;
+	private static int levelNumber;
 	private static final int ASTEROIDS_IN_GAME = 100;
-	private static final int DOUBLE_TIMER = ASTEROIDS_IN_GAME-5;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
-	private static int timeBetween = 10*ASTEROIDS_IN_GAME*35;
-	private static int asteroidTimer = timeBetween;
+	private static int asteroidTimer;
 	private static boolean gameOver = false;
 	private static boolean highScoreSubmitted = false; 
 	private static boolean bossSpawned = false;
@@ -38,9 +36,9 @@ public class Asteroids {
 	 */
 	public static void init() {
 		paused = false;
-		timeBetween = 400;
-		asteroidTimer = timeBetween;
+		asteroidTimer = ASTEROIDS_IN_GAME*3;
 		asteroidsLeft = ASTEROIDS_IN_GAME;
+		levelNumber =5;
 		gameOver = false;
 		highScoreSubmitted = false;
 		bossSpawned = false;
@@ -122,14 +120,13 @@ public class Asteroids {
 			Actor.actors.add(Asteroid.newLargeAsteroid());
 			spawnEnemy();
 			asteroidsLeft--;
-			timeBetween -= TIMER_REDUCED_BY;
-			asteroidTimer = timeBetween;
+			asteroidTimer = asteroidsLeft*4;
+			if (asteroidTimer < (ASTEROIDS_IN_GAME-(15*levelNumber)+45))
+				asteroidTimer = (ASTEROIDS_IN_GAME-(15*levelNumber)+45);
+			System.out.println(asteroidTimer);
 		}
-		//Here a large asteroid is released half way through the timer
-		if (asteroidTimer == timeBetween/2 && asteroidsLeft <= DOUBLE_TIMER){
-			Actor.actors.add(Asteroid.newLargeAsteroid());
-			if(asteroidsLeft>0)asteroidsLeft--;
-		}
+		
+		System.out.println(asteroidTimer);
 		//Make a boss asteroid at the end
 		if (asteroidsLeft <= 0 && bossSpawned == false){
 			Actor.actors.add(Asteroid.bossAsteroid());
@@ -141,12 +138,10 @@ public class Asteroids {
 			bossSpawned = true;
 		}else if (bossSpawned){
 			if (Actor.actors.size() == 1 && highScoreSubmitted == false) {
-				highScoreSubmitted = true;
-				new HighScoreThread(highScores, ScorePanel.getScorePanel().getScore()).start();
-				OnscreenMessage.add(new OnscreenMessage("Look at you fancy pants you won the game!"));
-				init();
+				newLevel();
 			}
-		}
+		} 
+	
 
 	}
 
@@ -155,13 +150,11 @@ public class Asteroids {
 		switch(Actor.gen.nextInt(9)) {
 		case(0):
 			Bandit.spawn();
-		case(1):
-			asteroidTimer -= timeBetween/2;
 		OnscreenMessage.add(new OnscreenMessage("Bandit!"));
 		default:
-			}
 		}
-	
+	}
+
 
 	public static void dispose() {
 
@@ -196,6 +189,9 @@ public class Asteroids {
 		menu = null;
 		gui.setVisible(true);
 	}
+	public static int getLevelNumber(){
+		return levelNumber;
+	}
 
 	public static void showHighScores() {	
 		highScores.displayScoreDialog();
@@ -206,5 +202,17 @@ public class Asteroids {
 			return false;
 
 		return playerShip.moreLives();
+	}
+	private static void newLevel(){
+		levelNumber++;
+		if (levelNumber>8)levelNumber = 9; // Max Level
+		asteroidTimer = ASTEROIDS_IN_GAME*3;
+		paused = false;
+		asteroidsLeft = ASTEROIDS_IN_GAME;
+		gameOver = false;
+		highScoreSubmitted = false;
+		bossSpawned = false;
+		Actor.actors.add(Asteroid.newLargeAsteroid());
+		asteroidsLeft--;
 	}
 }

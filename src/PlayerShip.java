@@ -1,4 +1,4 @@
-import java.awt.event.KeyEvent;
+//import java.awt.event.KeyEvent; depreciated
 
 public class PlayerShip extends Actor {
 	private static final long serialVersionUID = -5348807415668521319L;
@@ -10,8 +10,8 @@ public class PlayerShip extends Actor {
 	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
 	private static final double SUPER_BRAKE_AMOUNT = .25;
-	private static final double BOOST_AMOUNT = 2;
-	private static final int STARTING_LIVES = 3;
+	private static final double BOOST_AMOUNT = 0.03;
+	private static final int STARTING_LIVES = 300;
 	private static final int INVUL_TIME = 180;
 	public static boolean isAlive;
 
@@ -171,7 +171,10 @@ public class PlayerShip extends Actor {
 		velocity.scaleBy(SUPER_BRAKE_AMOUNT);
 	}
 	public void boostShip () {
-		velocity.scaleBy(BOOST_AMOUNT);
+		Vector boost = new Vector(theta);
+		boost.scaleBy(BOOST_AMOUNT);
+		velocity.incrementBy(boost);
+		
 	}
 
 	public void warpShip(){
@@ -190,5 +193,10 @@ public class PlayerShip extends Actor {
 
 	public boolean moreLives() {
 		return lives > 0;
+	}
+
+	public void shootOnce() {
+		weapon.shootOnce();
+		
 	}
 }

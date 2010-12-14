@@ -1,4 +1,5 @@
-
+//DEPRECIATED
+//TODO: delete this
 public class DoubleFireRatePowerUp extends PowerUp {
 	private static final long serialVersionUID = 1L;
 	

@@ -106,7 +106,7 @@ public class Input  {
 			rightTimer = 0;
 		}
 		if(keyboard.keyDownOnce(KeyEvent.VK_SPACE)){
-			player.shoot();
+			player.shootOnce();
 			spaceTimer = 0;
 		}
 
@@ -130,6 +130,10 @@ public class Input  {
 		}
 		if(keyboard.keyDownOnce(KeyEvent.VK_ESCAPE)){
 			Asteroids.quitToMenu();
+		}
+		//for debug
+		if (keyboard.keyDownOnce(KeyEvent.VK_F11)){
+			Bandit.spawn();
 		}
 //Regenerate-------------------------------------------------------------------------------
 		if(keyboard.keyDown(KeyEvent.VK_SPACE) && (player.isAlive() == false)){

@@ -21,6 +21,7 @@ public class Bandit extends Actor {
 	private static final float SEARCH_DISTANCE = 0.7f;
 	private static final float MIN_PLAYER_SHIP_DISTANCE = 0.24f;
 	private static final float FIRING_ARC = 0.2f;
+	protected BanditShield shield;
 	private static enum State {
 		ATTACKING,
 		EVADING,
@@ -41,6 +42,9 @@ public class Bandit extends Actor {
 		velocity = new Vector(theta);
 		velocity.scaleBy(SPEED);
 		sprite = Sprite.bandit();
+		shield = new BanditShield(this);
+		BanditShield.setShieldStrength(.5f);
+		BanditShield.setRegenRate(0.0f);
 		size = 0.1f;
 		id = generateId();
 		weapon = new BanditBasicWeapon(this);
@@ -56,6 +60,13 @@ public class Bandit extends Actor {
 
 	@Override
 	public void handleCollision(Actor other) {
+		if (shield != null) {
+			// Take the shield damage
+			shield.handleCollision(other);
+			// If it is still up, we don't die
+			if(shield.isUp())
+				return;
+		}
 		// Our bullets can't kill us
 		if(other.parentId == id)
 			return;

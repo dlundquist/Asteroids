@@ -66,4 +66,10 @@ public class BanditTripleShot extends Weapon{
 		if (delay <= 20) return 20;
 		else return delay;
 	}
+
+	@Override
+	void shootOnce() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -11,7 +11,7 @@ public abstract class Weapon {
 	}
 	// Places a bullet
 	abstract void shoot();
-	
+	abstract void shootOnce();
 	// Keeps track of our shoot delay counter
 	void update() {
 		// decrement our shoot delay
@@ -21,6 +21,9 @@ public abstract class Weapon {
 	void banditUpdate(){
 		if (banditShootDelay > 0)
 			banditShootDelay--;
+	}
+	static void setShootDelay(int time){
+		shootDelay = time;
 	}
 	public int getBanditShootDelay(){
 		return banditShootDelay;

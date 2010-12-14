@@ -37,4 +37,10 @@ public class BanditBasicWeapon extends Weapon{
 			return delay;
 	}
 
+	@Override
+	void shootOnce() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
