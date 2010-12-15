@@ -76,7 +76,7 @@ public class Asteroids {
 	public static void update() {
 		if (paused)
 			return;
-		//gameMechanics();
+		gameMechanics();
 
 		Actor.collisionDetection();
 
@@ -118,7 +118,6 @@ public class Asteroids {
 		}
 		if (asteroidTimer == 1 && asteroidsLeft > 0){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
-			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 			spawnEnemy();
 			asteroidsLeft--;
 			asteroidTimer = asteroidsLeft*3;
