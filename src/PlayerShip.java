@@ -6,11 +6,8 @@ public class PlayerShip extends Actor {
 	private static final double FORWARD_THRUST = 0.0003f;
 	private static final double REVERSE_THRUST = -0.0002f;
 	private static final double ROTATION_INCREMENT = 0.07f;
-	private static final double MAX_SPEED = 0.03f;
-	private static final double MAX_REVERSE_SPEED = 0.02f;
 	private static final double BRAKE_AMOUNT = .93;
-	private static final double SUPER_BRAKE_AMOUNT = .25;
-	private static final double BOOST_AMOUNT = 0.03;
+	private static final double BOOST_AMOUNT = 0.025;
 	private static final int STARTING_LIVES = 300;
 	private static final int INVUL_TIME = 180;
 	public static boolean isAlive;
@@ -97,6 +94,7 @@ public class PlayerShip extends Actor {
 		ParticleSystem.addExplosion(position);
 		OnscreenMessage.add(new OnscreenMessage("You Died!", this));
 		Actor.actors.remove(this);
+		TripleShotWeapon.resetShotLevel();
 		Asteroid.setAsteroidsDestroyed(0);// reset multiplyer
 		isAlive = false;
 		if(SoundEffect.isEnabled())
@@ -128,12 +126,7 @@ public class PlayerShip extends Actor {
 	public void forwardThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
-
-		// Setting max speed, we need to check the direction of the thrust and the current speed
-		if (thrust.dotProduct(velocity) > 0 && velocity.magnitude() > MAX_SPEED)
-			thrust.scaleBy(0);
-		else
-			thrust.scaleBy(FORWARD_THRUST); /* Scale it by our thrust increment */
+		thrust.scaleBy(FORWARD_THRUST); /* Scale it by our thrust increment */
 
 		/* Add it to our current velocity */
 		velocity.incrementBy(thrust);
@@ -145,12 +138,7 @@ public class PlayerShip extends Actor {
 	public void reverseThrust() {
 		/* Get a unit vector in the direction the ship is pointed */
 		Vector thrust = new Vector(theta);
-
-		// setting max reverse speed, we need to check the direction of the thrust and the current speed
-		if (thrust.dotProduct(velocity) < 0 && velocity.magnitude() > MAX_REVERSE_SPEED)
-			thrust.scaleBy(0);
-		else
-			thrust.scaleBy(REVERSE_THRUST); /* Scale it by our thrust by a negative amount to slow our ship */
+		thrust.scaleBy(REVERSE_THRUST); /* Scale it by our thrust by a negative amount to slow our ship */
 
 		/* And add it to our current velocity */
 		velocity.incrementBy(thrust);
@@ -167,14 +155,12 @@ public class PlayerShip extends Actor {
 	public void brakeShip() {
 		velocity.scaleBy(BRAKE_AMOUNT);
 	}
-	public void superBrakeShip() {
-		velocity.scaleBy(SUPER_BRAKE_AMOUNT);
-	}
 	public void boostShip () {
 		Vector boost = new Vector(theta);
 		boost.scaleBy(BOOST_AMOUNT);
 		velocity.incrementBy(boost);
-		
+		if (isAlive())
+			ParticleSystem.addExplosion(this.position);
 	}
 
 	public void warpShip(){

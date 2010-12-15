@@ -1,8 +1,21 @@
-
 import java.awt.event.KeyEvent;
 
+ /*
+Controls:
+UP = forward
+DOWN = reverse
+LEFT = turn left
+RIGHT = turn right
 
+UP + DOWN = brakeShip()
+LEFT + RIGHT (Simultaneously) = flipShip()
+UP + SPACE = boostShip()
 
+W = warpShip()
+A = boostShip()
+S = brakeShip()
+D = flipShip
+*/
 public class Input  {
 
 	protected final static int REACTION_TIME = 2;
@@ -15,7 +28,7 @@ public class Input  {
 	private static KeyboardInput keyboard = new KeyboardInput();
 	static PlayerShip player = Asteroids.getPlayer();
 	public static void update(){	
-		
+
 			KeyboardInput.poll();
 //Simultaneous press functions-------------------------------------------------------------
 		if(keyboard.keyDown(KeyEvent.VK_UP)&&(keyboard.keyDown(KeyEvent.VK_DOWN))){
@@ -29,23 +42,12 @@ public class Input  {
 			upTimer = REACTION_TIME;
 			spaceTimer = REACTION_TIME;
 		}
-		if (downTimer < REACTION_TIME && spaceTimer < REACTION_TIME){
-			player.warpShip();
-			downTimer = REACTION_TIME;
-			spaceTimer = REACTION_TIME;
-		}
 		if (leftTimer < REACTION_TIME && rightTimer < REACTION_TIME){	
 			player.flipShip();
 			leftTimer = REACTION_TIME;
 			rightTimer = REACTION_TIME;
 		}
-	
-		if (upTimer < REACTION_TIME && downTimer < REACTION_TIME){
-			player.superBrakeShip();
-			upTimer = REACTION_TIME;
-			downTimer = REACTION_TIME;
-		}
-		
+
 //Key released functions-------------------------------------------------------------------
 		if (keyboard.keyReleased(KeyEvent.VK_DOWN)){
 			downTimer = REACTION_TIME;
@@ -86,6 +88,9 @@ public class Input  {
 			player.shoot();
 			spaceTimer++;
 		}
+		if(keyboard.keyDown(KeyEvent.VK_S)){
+			player.brakeShip();
+		}
 //Key down once functions----------------------------------------------------------
 		if(keyboard.keyDownOnce(KeyEvent.VK_DOWN)) {
 			player.reverseThrust();
@@ -113,14 +118,14 @@ public class Input  {
 		if(keyboard.keyDownOnce(KeyEvent.VK_W)){
 			player.warpShip();
 		}
-		if(keyboard.keyDownOnce(KeyEvent.VK_S)){
+		if(keyboard.keyDownOnce(KeyEvent.VK_D)){
 			player.flipShip();
 		}
 		if(keyboard.keyDownOnce(KeyEvent.VK_A)){
 			player.boostShip();
 		}
-		if(keyboard.keyDownOnce(KeyEvent.VK_D)){
-			player.superBrakeShip();
+		if(keyboard.keyDownOnce(KeyEvent.VK_S)){
+			player.brakeShip();
 		}
 		if(keyboard.keyDownOnce(KeyEvent.VK_P)){
 			Asteroids.togglePause();

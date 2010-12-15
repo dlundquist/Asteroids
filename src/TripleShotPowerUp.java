@@ -26,6 +26,7 @@ public class TripleShotPowerUp extends PowerUp{
 		// Give the player the triple shot weapon
 		player.weapon = new TripleShotWeapon(player);
 		// After the player gets it, delete it
+		TripleShotWeapon.incrementShotLevel();
 		delete();
 	}
 

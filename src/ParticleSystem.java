@@ -15,7 +15,7 @@ public class ParticleSystem {
 			for(int i = 0; i < DENSITY; i++)
 				particles.add(new FireParticle(ship));
 	}
-
+	
 	public static void addDebrisParticle(Actor actor){
 		if(enabled)
 			for(int i = 0; i < DENSITY * 6; i++)

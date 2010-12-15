@@ -38,7 +38,7 @@ public class Asteroids {
 		paused = false;
 		asteroidTimer = ASTEROIDS_IN_GAME*3;
 		asteroidsLeft = ASTEROIDS_IN_GAME;
-		levelNumber =5;
+		levelNumber =0;
 		gameOver = false;
 		highScoreSubmitted = false;
 		bossSpawned = false;
@@ -76,7 +76,7 @@ public class Asteroids {
 	public static void update() {
 		if (paused)
 			return;
-		gameMechanics();
+		//gameMechanics();
 
 		Actor.collisionDetection();
 
@@ -118,15 +118,13 @@ public class Asteroids {
 		}
 		if (asteroidTimer == 1 && asteroidsLeft > 0){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 			spawnEnemy();
 			asteroidsLeft--;
-			asteroidTimer = asteroidsLeft*4;
+			asteroidTimer = asteroidsLeft*3;
 			if (asteroidTimer < (ASTEROIDS_IN_GAME-(15*levelNumber)+45))
 				asteroidTimer = (ASTEROIDS_IN_GAME-(15*levelNumber)+45);
-			System.out.println(asteroidTimer);
-		}
-		
-		System.out.println(asteroidTimer);
+		}  
 		//Make a boss asteroid at the end
 		if (asteroidsLeft <= 0 && bossSpawned == false){
 			Actor.actors.add(Asteroid.bossAsteroid());
