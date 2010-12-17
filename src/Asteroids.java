@@ -1,4 +1,3 @@
-
 /**
  * This is the main game logic
  *
@@ -11,6 +10,7 @@ public class Asteroids {
 	private static boolean paused;
 	private static int levelNumber;
 	private static final int ASTEROIDS_IN_GAME = 100;
+	private static final int MINI_BOSS_AT = 50;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int asteroidTimer;
 	private static boolean gameOver = false;
@@ -124,11 +124,17 @@ public class Asteroids {
 			if (asteroidTimer < (ASTEROIDS_IN_GAME-(15*levelNumber)+45))
 				asteroidTimer = (ASTEROIDS_IN_GAME-(15*levelNumber)+45);
 		}  
+		if (asteroidsLeft == MINI_BOSS_AT && asteroidTimer == 2){
+			Actor.actors.add(Asteroid.miniBossAsteroid());
+			OnscreenMessage.add(new OnscreenMessage("Mini Boss!"));
+			asteroidsLeft--;
+		}
 		//Make a boss asteroid at the end
 		if (asteroidsLeft <= 0 && bossSpawned == false){
 			Actor.actors.add(Asteroid.bossAsteroid());
+			OnscreenMessage.add(new OnscreenMessage("Boss!"));
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
-			Actor.actors.add(new DoubleFireRatePowerUp(Actor.randomPosition()));
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 			Actor.actors.add(new LifePowerUp(Actor.randomPosition()));
 			Actor.actors.add(new ShieldRegen(Actor.randomPosition()));
 			asteroidsLeft = 0;
@@ -138,7 +144,7 @@ public class Asteroids {
 				newLevel();
 			}
 		} 
-	
+
 
 	}
 
@@ -147,7 +153,6 @@ public class Asteroids {
 		switch(Actor.gen.nextInt(9)) {
 		case(0):
 			Bandit.spawn();
-		OnscreenMessage.add(new OnscreenMessage("Bandit!"));
 		default:
 		}
 	}

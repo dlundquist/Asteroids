@@ -2,14 +2,16 @@ public class Asteroid extends Actor  {
 	private static final long serialVersionUID = 8547862796786070732L;
 
 	private static final int NUMBER_OF_FRAGMENTS = 2;
-	public static final float SMALL_SIZE = 0.14f;
-	public static final float MEDIUM_SIZE = (float) Math.pow(Math.pow(SMALL_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
-	public static final float LARGE_SIZE = (float) Math.pow(Math.pow(MEDIUM_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
-	public static final float BOSS_SIZE = (float) Math.pow(Math.pow(3*LARGE_SIZE, MASS_SCALING) * NUMBER_OF_FRAGMENTS, 1.0f / MASS_SCALING);
+	public static final float SMALL_SIZE = 0.10f;
+	public static final float MEDIUM_SIZE = 0.20f;
+	public static final float LARGE_SIZE = 0.30f;
+	public static final float MINI_BOSS_SIZE = .50f;
+	public static final float BOSS_SIZE = 0.70f;
 	private static final int INVOLNERABLE_TO_ASTEROIDS_FOR = 10;
 	private static final float DEBRIS_ANGLE = (float)Math.PI / 1.5f;
 	private static final int BOSS_HP = 60;
-	private static final int LARGE_HP = 9;
+	private static final int MINI_BOSS_HP = 30;
+	private static final int LARGE_HP = 6;
 	private static final int MEDIUM_HP = 3;
 	private static final int SMALL_HP = 1;
 
@@ -33,8 +35,16 @@ public class Asteroid extends Actor  {
 		Actor.actors.add(asteroid);
 		return asteroid;
 	}
+    public Vector breakApartVelocity(int pieces){
+    	float direction = (float) (velocity.theta() + gen.nextFloat() * DEBRIS_ANGLE - DEBRIS_ANGLE / pieces);
+    	Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());
+    	return newVelocity;
+	}
 	static public Asteroid bossAsteroid(){
 		return (new Asteroid(BOSS_SIZE));
+	}
+	static public Asteroid miniBossAsteroid(){
+		return (new Asteroid(MINI_BOSS_SIZE));
 	}
 	static public Asteroid newLargeAsteroid(){
 		return (new Asteroid(LARGE_SIZE));
@@ -50,11 +60,11 @@ public class Asteroid extends Actor  {
 		position = randomEdge();
 		// Make our Asteroids initial velocity random, not always towards the first quadrant
 		velocity = getRandomVelocity();
-		
+
 		size = LARGE_SIZE;
 		init();
 	}
-	
+
 	public Asteroid(float size){
 		// Make our Asteroids initial velocity random, not always towards the first quadrant
 		this(randomEdge(),getRandomVelocity(),size,0);
@@ -64,11 +74,10 @@ public class Asteroid extends Actor  {
 		position = p;
 		velocity = v;
 		this.size = size;
-
 		parentId = parent;
 		init();
 	}
-	
+
 	private void init(){
 		setSpriteForSize();
 		setHpForSize();
@@ -80,7 +89,7 @@ public class Asteroid extends Actor  {
 	private static Vector getRandomVelocity(){
 		return new Vector((gen.nextFloat() - 0.5f )/80, (gen.nextFloat() - 0.5f) /80);
 	}
-	
+
 	private void setSpriteForSize() {
 		if (isSmall())
 			sprite = Sprite.smallAsteroid();
@@ -120,10 +129,11 @@ public class Asteroid extends Actor  {
 			int points = ScorePanel.getScorePanel().asteroidHit(this);
 			OnscreenMessage.add(new OnscreenMessage("+"+points,this));
 			delete();
+			breakApart();
+			ParticleSystem.addDebrisParticle(this);
 		}
 		else 
 			return;
-		breakApart();
 	}
 
 	// Spawns new little baby Asteroids based off of this asteroid.
@@ -131,8 +141,28 @@ public class Asteroid extends Actor  {
 		if (SoundEffect.isEnabled())
 			SoundEffect.forLargeAsteroidDeath().play();
 		asteroidsDestroyed++;
+		if (isMedium()){
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), SMALL_SIZE, id));
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), SMALL_SIZE, id));
+		}
+		if (isLarge()){
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), MEDIUM_SIZE, id));
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), MEDIUM_SIZE, id));
+		}
+		if (isMiniBoss()){
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), LARGE_SIZE, id));
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), LARGE_SIZE, id));
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), LARGE_SIZE, id));
+		}
+		if (isBoss()){
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), MINI_BOSS_SIZE, id));
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), MINI_BOSS_SIZE, id));
+			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), MINI_BOSS_SIZE, id));
+		}
+	}
+
 		// If the asteroid isn't small, spawn fragments
-		if (isSmall() == false){
+		/*if (isSmall() == false){
 			float original_mass = getMass();
 			Vector originalMomemntum = getMomentum();
 
@@ -168,7 +198,7 @@ public class Asteroid extends Actor  {
 		ParticleSystem.addDebrisParticle(this);
 	}
 
-
+	*/
 	/**int subAsteroids = gen.nextInt(2) + 2;
 				//System.out.println(subAsteroids+"... created from ID: " + id);
 				for(int i = 1; i < subAsteroids; i++){
@@ -193,10 +223,11 @@ public class Asteroid extends Actor  {
 			hitPoints = SMALL_HP;
 		else if (isMedium())
 			hitPoints = MEDIUM_HP;
-		else if (isLarge()){
+		else if (isLarge())
 			hitPoints = LARGE_HP;
-		} else 
-			hitPoints = BOSS_HP;
+		else if (isMiniBoss())
+			hitPoints = MINI_BOSS_HP;
+		else hitPoints = BOSS_HP;
 		return this;
 	}	
 
@@ -214,9 +245,12 @@ public class Asteroid extends Actor  {
 	public boolean isBoss() {
 		return size >= BOSS_SIZE;
 	}
+	public boolean isMiniBoss() {
+		return (size >= MINI_BOSS_SIZE && size < BOSS_SIZE);
+	}
 
 	public boolean isLarge() {
-		return (size >= LARGE_SIZE && size < BOSS_SIZE);
+		return (size >= LARGE_SIZE && size < MINI_BOSS_SIZE);
 	}
 
 	public boolean isMedium() {
