@@ -1,7 +1,7 @@
 public class Asteroid extends Actor  {
 	private static final long serialVersionUID = 8547862796786070732L;
 
-	private static final int NUMBER_OF_FRAGMENTS = 2;
+	//DECREMENTED private static final int NUMBER_OF_FRAGMENTS = 2;
 	public static final float SMALL_SIZE = 0.10f;
 	public static final float MEDIUM_SIZE = 0.20f;
 	public static final float LARGE_SIZE = 0.30f;
@@ -9,15 +9,18 @@ public class Asteroid extends Actor  {
 	public static final float BOSS_SIZE = 0.70f;
 	private static final int INVOLNERABLE_TO_ASTEROIDS_FOR = 10;
 	private static final float DEBRIS_ANGLE = (float)Math.PI / 1.5f;
-	private static final int BOSS_HP = 60;
-	private static final int MINI_BOSS_HP = 30;
-	private static final int LARGE_HP = 6;
+	private static final int BOSS_HP = 40;
+	private static final int MINI_BOSS_HP = 20;
+	private static final int LARGE_HP = 5;
 	private static final int MEDIUM_HP = 3;
 	private static final int SMALL_HP = 1;
+	private static int numberOfFragments = 2;
 
 	private static boolean asteroidCollisionEnabled;
 	protected int hitPoints;
 	private static int asteroidsDestroyed;
+
+	
 
 	static public Asteroid spawn(){
 		Asteroid asteroid = null;
@@ -125,10 +128,12 @@ public class Asteroid extends Actor  {
 	public void bulletHit(){
 		//System.err.println(hitPoints);
 		hitPoints--;
-		if (hitPoints <= 0){
+		if (hitPoints == 0){
 			int points = ScorePanel.getScorePanel().asteroidHit(this);
 			OnscreenMessage.add(new OnscreenMessage("+"+points,this));
 			delete();
+			setNumberOfFragments(2);
+			if (Asteroids.isBossSpawned()) setNumberOfFragments(4);
 			breakApart();
 			ParticleSystem.addDebrisParticle(this);
 		}
@@ -141,23 +146,25 @@ public class Asteroid extends Actor  {
 		if (SoundEffect.isEnabled())
 			SoundEffect.forLargeAsteroidDeath().play();
 		asteroidsDestroyed++;
-		if (isMedium()){
+		while (isMedium()){
 			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), SMALL_SIZE, id));
-			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), SMALL_SIZE, id));
+			numberOfFragments--;
+			if (numberOfFragments <= 0) return;
 		}
-		if (isLarge()){
+		while (isLarge()){
 			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), MEDIUM_SIZE, id));
-			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(2), MEDIUM_SIZE, id));
+			numberOfFragments--;
+			if (numberOfFragments <= 0) return;
 		}
-		if (isMiniBoss()){
+		while(isMiniBoss()){
 			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), LARGE_SIZE, id));
-			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), LARGE_SIZE, id));
-			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), LARGE_SIZE, id));
+			numberOfFragments--;
+			if (numberOfFragments <= 0) return;
 		}
-		if (isBoss()){
+		while (isBoss()){
 			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), MINI_BOSS_SIZE, id));
-			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), MINI_BOSS_SIZE, id));
-			Actor.actors.add(new Asteroid(new Vector(position), breakApartVelocity(3), MINI_BOSS_SIZE, id));
+			numberOfFragments--;
+			if (numberOfFragments <= 0) return;
 		}
 	}
 
@@ -235,6 +242,12 @@ public class Asteroid extends Actor  {
 	public Asteroid setSize(float new_size){
 		size = new_size;
 		return this;
+	}
+	public static void setNumberOfFragments(int frag){
+		numberOfFragments = frag;
+	}
+	public static int getNumberOfFragments(){
+		return numberOfFragments;
 	}
 
 	public static int getAsteroidsDestroyed(){

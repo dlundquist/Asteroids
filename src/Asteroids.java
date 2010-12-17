@@ -127,6 +127,8 @@ public class Asteroids {
 		if (asteroidsLeft == MINI_BOSS_AT && asteroidTimer == 2){
 			Actor.actors.add(Asteroid.miniBossAsteroid());
 			OnscreenMessage.add(new OnscreenMessage("Mini Boss!"));
+			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
+			Actor.actors.add(new ShieldRegen(Actor.randomPosition()));
 			asteroidsLeft--;
 		}
 		//Make a boss asteroid at the end
@@ -156,7 +158,9 @@ public class Asteroids {
 		default:
 		}
 	}
-
+	public static boolean isBossSpawned(){
+		return bossSpawned;
+	}
 
 	public static void dispose() {
 

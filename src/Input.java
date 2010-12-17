@@ -37,11 +37,6 @@ public class Input  {
 			downTimer++;
 			ignoreUpDown = true;
 		}else ignoreUpDown = false;
-		if (upTimer < REACTION_TIME && spaceTimer < REACTION_TIME){
-			player.boostShip();
-			upTimer = REACTION_TIME;
-			spaceTimer = REACTION_TIME;
-		}
 		if (leftTimer < REACTION_TIME && rightTimer < REACTION_TIME){	
 			player.flipShip();
 			leftTimer = REACTION_TIME;
@@ -65,6 +60,10 @@ public class Input  {
 			spaceTimer = REACTION_TIME;
 		}
 //Key down functions---------------------------------------------------------------------
+		if(keyboard.keyDown(KeyEvent.VK_S)){
+			player.brakeShip();
+			ignoreUpDown = true;
+		}
 		if(keyboard.keyDown(KeyEvent.VK_DOWN)&& (ignoreUpDown == false)) {
 			player.reverseThrust();
 			downTimer++;
@@ -90,8 +89,13 @@ public class Input  {
 		}
 		if(keyboard.keyDown(KeyEvent.VK_S)){
 			player.brakeShip();
+			ignoreUpDown = true;
 		}
 //Key down once functions----------------------------------------------------------
+		if(keyboard.keyDownOnce(KeyEvent.VK_S)){
+			player.brakeShip();
+			ignoreUpDown = true;
+		}
 		if(keyboard.keyDownOnce(KeyEvent.VK_DOWN)) {
 			player.reverseThrust();
 			downTimer = 0;
@@ -114,7 +118,6 @@ public class Input  {
 			player.shootOnce();
 			spaceTimer = 0;
 		}
-
 		if(keyboard.keyDownOnce(KeyEvent.VK_W)){
 			player.warpShip();
 		}
@@ -123,9 +126,6 @@ public class Input  {
 		}
 		if(keyboard.keyDownOnce(KeyEvent.VK_A)){
 			player.boostShip();
-		}
-		if(keyboard.keyDownOnce(KeyEvent.VK_S)){
-			player.brakeShip();
 		}
 		if(keyboard.keyDownOnce(KeyEvent.VK_P)){
 			Asteroids.togglePause();

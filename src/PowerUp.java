@@ -10,9 +10,9 @@
 abstract public class PowerUp extends Actor {
 	private static final long serialVersionUID = -6702121556971776417L;
 	private static final float POWERUP_SIZE = 0.1f;
-	private static int TRIPLE_CHANCE = 40;
+	private static int TRIPLE_CHANCE = 50;
 	private static int EXTRALIFE_CHANCE =10;
-	private static int SHIELD_CHANCE = 40;
+	private static int SHIELD_CHANCE = 33;
 
 	PowerUp(Vector pos){
 		position = pos;

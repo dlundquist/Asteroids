@@ -9,8 +9,9 @@ public class BasicWeapon extends Weapon{
 		Bullet bullet = new Bullet(owner);
 		if(SoundEffect.isEnabled())
 			SoundEffect.forBulletShot().play();
-		Weapon.setShootDelay(10+ Asteroids.getLevelNumber()*3);
+		Weapon.setShootDelay(10);
 		Actor.actors.add(bullet);
+		shootDelay=10;
 	}
 	@Override
 	void shoot() {
@@ -26,7 +27,7 @@ public class BasicWeapon extends Weapon{
 
 		Actor.actors.add(bullet);
 		/* reset our shoot delay */
-		shootDelay = 10 + Asteroids.getLevelNumber()*3;
+		shootDelay = 10;
 		
 	}
 	
