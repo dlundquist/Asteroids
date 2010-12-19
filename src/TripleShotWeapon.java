@@ -13,34 +13,30 @@ public class TripleShotWeapon extends Weapon{
 	TripleShotWeapon(Actor owner) {
 		super(owner);
 		shotsLeft += shotsPer;
+		System.out.println("triple equipped");
 	}
 
 	@Override
 	void shoot() {
 		if (shootDelay > 0)
 			return;
-		if (shotsLeft <= 0) {
-			((PlayerShip)owner).weapon = new BasicWeapon((PlayerShip)owner);
-		}
 		else {addBullets();
 		/* reset our shoot delay */
 		shootDelay = getTripleDelay();
 		}
 	}
 	private void addBullets(){
-		if (shotsLeft <=1)shotsLeft = 1;
 		shotsLeft--;
-		System.out.println(shotsLeft);
-		if (shotsLeft % shotsPer == 0 && shotLevel>0)decrementShotLevel();
-
+		if (shotsLeft <=0)shotsLeft = 0;//Just in case
+		if (shotLevel > 0 && shotsLeft >= 1) {
+			if(SoundEffect.isEnabled())
+				SoundEffect.forBulletShot().play();
 		for(float i = 0; i <= shotLevel;i++){
-			if (shotLevel==0) return;
-			else
 				Actor.actors.add(new Bullet(owner, i * FIRING_ARC/shotLevel).setSize(TRIPLE_BULLET_SIZE));
 		}
-		
-		if(SoundEffect.isEnabled())
-			SoundEffect.forBulletShot().play();
+		}
+		if (shotsLeft % shotsPer == 0 && shotLevel>0)decrementShotLevel();
+		if (shotLevel == 0) ((PlayerShip)owner).weapon = new BasicWeapon((PlayerShip)owner);
 	}
 	public static int getTripleShotsLeft(){
 		return shotsLeft;
@@ -49,7 +45,7 @@ public class TripleShotWeapon extends Weapon{
 		return 10;
 	}
 	public static void resetShotLevel(){
-		shotLevel= 1;
+		shotLevel= 0;
 	}
 	public static void incrementShotLevel(){
 		shotLevel++;

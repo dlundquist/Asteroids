@@ -90,7 +90,7 @@ public class Asteroid extends Actor  {
 	}
 
 	private static Vector getRandomVelocity(){
-		return new Vector((gen.nextFloat() - 0.5f )/80, (gen.nextFloat() - 0.5f) /80);
+		return new Vector((gen.nextFloat() - 0.5f )/800, (gen.nextFloat() - 0.5f) /800);
 	}
 
 	private void setSpriteForSize() {
@@ -113,12 +113,6 @@ public class Asteroid extends Actor  {
 		// We don't want to blow up on PowerUps
 		if(other instanceof PowerUp){
 			return;
-			/*
-		// Score code that we still need to integrate w/ below
-		} else if(other instanceof Bullet){
-			if (other.parentId == Asteroids.getPlayer().id)  // UFO bullets do not count to player's score
-				ScorePanel.getScorePanel().asteroidHit(this);
-			 */
 		}  
 		if(other instanceof Bullet){
 			bulletHit();
@@ -168,59 +162,7 @@ public class Asteroid extends Actor  {
 		}
 	}
 
-		// If the asteroid isn't small, spawn fragments
-		/*if (isSmall() == false){
-			float original_mass = getMass();
-			Vector originalMomemntum = getMomentum();
-
-			// Create NUMBER_OF_FRAGMENTS - 1 fragments, we will create the last later w/ the remaining momentum
-			float fragment_mass = original_mass / NUMBER_OF_FRAGMENTS;
-			for (int i = 1; i < NUMBER_OF_FRAGMENTS; i++) {
-				// pick a new direction of our asteroid	fragment
-				float direction = (float) (velocity.theta() + gen.nextFloat() * DEBRIS_ANGLE - DEBRIS_ANGLE / 2);
-
-				// TODO fix velocity so energy is conserved pick an energy less than the original energy
-				// changed: velocity.magnitude() to 2, to cap velocity increase scaling at double rather than squared
-				Vector newVelocity = new Vector(direction).scaleBy(velocity.magnitude());//*gen.nextFloat());
-
-				Vector newMomentum = new Vector(newVelocity).scaleBy(fragment_mass);
-
-				original_mass -= fragment_mass;
-				originalMomemntum.decrementBy(newMomentum); // Subtract the momentum of this fragment from our parent asteroid
-
-				float new_size = (float) Math.pow(fragment_mass, 1.0f / MASS_SCALING); // Subtract our new asteroid mass from the original asteroid
-				newVelocity.scaleBy(0.8f);
-
-				Actor.actors.add(new Asteroid(new Vector(position), newVelocity, new_size, id));
-			}
-
-			// Create one last fragment with the remaining momentum
-			float new_size = (float) Math.pow(original_mass, 1.0f / MASS_SCALING);
-			Vector newVelocity = originalMomemntum.scaleBy(1 / original_mass);
-			newVelocity.scaleBy(0.8f);
-
-			Actor.actors.add(new Asteroid(new Vector(position), newVelocity, new_size, id));
-		}
-
-		ParticleSystem.addDebrisParticle(this);
-	}
-
-	*/
-	/**int subAsteroids = gen.nextInt(2) + 2;
-				//System.out.println(subAsteroids+"... created from ID: " + id);
-				for(int i = 1; i < subAsteroids; i++){
-					double angle = gen.nextDouble()*2*Math.PI;
-					Vector child_velocity = new Vector(angle);
-					child_velocity.scaleMag(velocity.magnitude()*2);
-					Asteroid subAsteroid = new Asteroid(new Vector(position), child_velocity, size/subAsteroids, id);
-					Actor.fresh_actors.add(subAsteroid);
-					//System.out.println("\t" + i + " :  id-" + subAsteroid.id);
-				}
-				velocity = new Vector(gen.nextDouble()*2*Math.PI);
-				velocity.scaleMag(velocity.magnitude()*2);
-			}
-		}
-	 */
+	
 	public static void setAsteroidsDestroyed(int a){
 		asteroidsDestroyed = a;
 	}

@@ -4,6 +4,7 @@
 public class BasicWeapon extends Weapon{
 	BasicWeapon(Actor owner) {
 		super(owner);
+		System.out.println("basic equipped");
 	}
 	void shootOnce(){
 		Bullet bullet = new Bullet(owner);

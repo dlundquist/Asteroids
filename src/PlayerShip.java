@@ -8,7 +8,7 @@ public class PlayerShip extends Actor {
 	private static final double ROTATION_INCREMENT = 0.07f;
 	private static final double BRAKE_AMOUNT = .96;
 	private static final double BOOST_AMOUNT = 0.025;
-	private static final int STARTING_LIVES = 3;
+	private static final int STARTING_LIVES = 300;
 	private static final int INVUL_TIME = 180;
 	public static boolean isAlive;
 

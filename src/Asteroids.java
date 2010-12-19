@@ -11,6 +11,7 @@ public class Asteroids {
 	private static int levelNumber;
 	private static final int ASTEROIDS_IN_GAME = 100;
 	private static final int MINI_BOSS_AT = 50;
+	private static final int MAX_LEVEL = 9;
 	private static int asteroidsLeft = ASTEROIDS_IN_GAME;
 	private static int asteroidTimer;
 	private static boolean gameOver = false;
@@ -110,23 +111,30 @@ public class Asteroids {
 		/* when the timer reaches 0, create a new asteroid, reduce the timer, and 
 		 * subtract 1 from the asteroids left total
 		 */
-		if (asteroidsLeft % 3 == 0 && asteroidTimer == 1 ){
+		if (asteroidsLeft % (5+levelNumber*2) == 0 && asteroidTimer == 1 ){
+			if (asteroidsLeft != MINI_BOSS_AT){
 			PowerUp.spawnWeaponPowerUp();
+			spawnEnemy();
+			}
 		}
-		if (asteroidsLeft % 5 ==0 && asteroidTimer == 1){
-			PowerUp.spawnLifePowerUp();
-		}
+		if (asteroidsLeft == 10)
+			OnscreenMessage.add(new OnscreenMessage("WARNING: Boss Approacing!"));
+		if (asteroidsLeft == MINI_BOSS_AT)
+			OnscreenMessage.add(new OnscreenMessage("Mini Boss!"));
+		if (asteroidsLeft == 1)
+			OnscreenMessage.add(new OnscreenMessage("BOSS!"));
+		
+		//Spawn a large asteroid and possibly an life powerup.
 		if (asteroidTimer == 1 && asteroidsLeft > 0){
 			Actor.actors.add(Asteroid.newLargeAsteroid());
-			spawnEnemy();
 			asteroidsLeft--;
 			asteroidTimer = asteroidsLeft*3;
+			PowerUp.spawnLifePowerUp();
 			if (asteroidTimer < (ASTEROIDS_IN_GAME-(15*levelNumber)+45))
 				asteroidTimer = (ASTEROIDS_IN_GAME-(15*levelNumber)+45);
-		}  
+		} //Spawn a mini Boss
 		if (asteroidsLeft == MINI_BOSS_AT && asteroidTimer == 2){
 			Actor.actors.add(Asteroid.miniBossAsteroid());
-			OnscreenMessage.add(new OnscreenMessage("Mini Boss!"));
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 			Actor.actors.add(new ShieldRegen(Actor.randomPosition()));
 			asteroidsLeft--;
@@ -134,7 +142,6 @@ public class Asteroids {
 		//Make a boss asteroid at the end
 		if (asteroidsLeft <= 0 && bossSpawned == false){
 			Actor.actors.add(Asteroid.bossAsteroid());
-			OnscreenMessage.add(new OnscreenMessage("Boss!"));
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 			Actor.actors.add(new TripleShotPowerUp(Actor.randomPosition()));
 			Actor.actors.add(new LifePowerUp(Actor.randomPosition()));
@@ -152,7 +159,7 @@ public class Asteroids {
 
 	// Spawns an enemy
 	private static void spawnEnemy() {
-		switch(Actor.gen.nextInt(9)) {
+		switch(Actor.gen.nextInt(MAX_LEVEL-levelNumber)) {
 		case(0):
 			Bandit.spawn();
 		default:
@@ -211,7 +218,7 @@ public class Asteroids {
 	}
 	private static void newLevel(){
 		levelNumber++;
-		if (levelNumber>8)levelNumber = 9; // Max Level
+		if (levelNumber>= MAX_LEVEL)levelNumber = MAX_LEVEL;
 		asteroidTimer = ASTEROIDS_IN_GAME*3;
 		paused = false;
 		asteroidsLeft = ASTEROIDS_IN_GAME;
