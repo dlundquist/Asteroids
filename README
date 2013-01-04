@@ -1,7 +1,7 @@
 Asteroids! - a Java asteroids implementation in OpenGL for Dave Straayer's
             CS142 class.
 
-Design
+Design:
 Since there are a limited number of students with OpenGL experience, we have
 kept all the OpenGL related code in two classes ScenePanel and Sprite.  We used
 two other advanced concepts that we have not yet covered in class to keep the
@@ -10,7 +10,7 @@ etc.) inherit from the Actor base class, and we store all the actors currently
 in the game in a Vector so we can have a single code path to update, render,
 and handle collision detection for all entities currently in play.
 
-Classes
+Classes:
     Asteroids - contains static methods for the game logic
     Vector - Provides simple 2D vectors used for position and velocity.
     GUI - Provides the GUI window.
